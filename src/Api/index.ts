@@ -200,11 +200,11 @@ export function resend_signup(email: string): Promise<void> {
   return new Promise(async (resolve, reject) => {
     try {
 
-      const { data, error } = await supabase.auth.resend({
+      const { error } = await supabase.auth.resend({
         type: 'signup',
         email,
         options: {
-          emailRedirectTo: 'https://prj001-nextjs.vercel.app/change-password'
+          emailRedirectTo: 'https://prj001-nextjs.vercel.app/success'
         }
       })
 
