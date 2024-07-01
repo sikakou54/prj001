@@ -2,6 +2,7 @@ import { Box, Button, Checkbox, Heading, Modal, Text, VStack, useColorModeValue 
 import { WebView } from 'react-native-webview'
 import { COLOR } from '../Type'
 import { useState } from 'react'
+
 interface Props {
     terms: string | undefined
     policy: string | undefined
@@ -13,6 +14,7 @@ const TermsPolicyModel = (props: Props) => {
     const [terms, setTerms] = useState<boolean>(undefined === props.terms ? true : false)
     const [policy, setPolicy] = useState<boolean>(undefined === props.policy ? true : false)
     const [isClose, setIsClose] = useState<boolean>(false)
+    const randomParam = `?${Math.random().toString(36).substring(7)}`;
 
     return (
         <Modal
@@ -35,7 +37,7 @@ const TermsPolicyModel = (props: Props) => {
                 <Modal.Header
                     alignItems={'center'}
                     justifyContent={'center'}
-                >AKSERのご利用に関する同意事項</Modal.Header>
+                >Opiniのご利用に関する同意事項</Modal.Header>
                 <Modal.Body
                     w={'full'}
                     h={'full'}
@@ -54,10 +56,10 @@ const TermsPolicyModel = (props: Props) => {
                                     color={COLOR.GRAY}
                                     fontSize={'sm'}
                                 >利用規約</Heading>
-                                <Box w={'full'} h={150} borderWidth={1} borderColor={COLOR.GRAY}>
+                                <Box w={'full'} h={150} rounded={'md'}>
                                     <WebView
-                                        source={{ uri: props.terms }}
-                                        style={{ flex: 1, backgroundColor: useColorModeValue(COLOR.LIGHT_GRAY, COLOR.DEEP_BLACK) }}
+                                        source={{ uri: `${props.terms}${randomParam}` }}
+                                        style={{ backgroundColor: COLOR.LIGHT_GRAY }}
                                         javaScriptEnabled={true}
                                         domStorageEnabled={true}
                                     />
@@ -70,10 +72,10 @@ const TermsPolicyModel = (props: Props) => {
                                     color={COLOR.GRAY}
                                     fontSize={'sm'}
                                 >プライバシーポリシー</Heading>
-                                <Box w={'full'} h={150} borderWidth={1} borderColor={COLOR.GRAY}>
+                                <Box w={'full'} h={150} rounded={'md'}>
                                     <WebView
-                                        source={{ uri: props.policy }}
-                                        style={{ flex: 1, backgroundColor: useColorModeValue(COLOR.LIGHT_GRAY, COLOR.DEEP_BLACK) }}
+                                        source={{ uri: `${props.policy}${randomParam}` }}
+                                        style={{ backgroundColor: COLOR.LIGHT_GRAY }}
                                         javaScriptEnabled={true}
                                         domStorageEnabled={true}
                                     />
