@@ -99,6 +99,8 @@ const Page = () => {
     function errorMessagePassword() {
         if (error == ERROR_CODE.PASSWORD_EMPTY_ERROR) {
             return ERROR_MESSAGE.PASSWORD_EMPTY_ERROR
+        } else if (error === ERROR_CODE.NOT_LOGIN_ERROR) {
+            return ERROR_MESSAGE.NOT_LOGIN_ERROR
         }
         return undefined
     }
@@ -141,21 +143,6 @@ const Page = () => {
                     secureTextEntry={true}
                     errorMessage={errorMessagePassword()}
                 />
-                {error === ERROR_CODE.NOT_LOGIN_ERROR && (
-                    <FormControl
-                        isInvalid={true}
-                        w={'full'}
-                    >
-                        <FormControl.ErrorMessage
-                            leftIcon={
-                                <WarningOutlineIcon
-                                    size={18}
-                                    color={useColorModeValue(COLOR.BLACK, COLOR.WHITE)}
-                                />
-                            }
-                        >{ERROR_MESSAGE.NOT_LOGIN_ERROR}</FormControl.ErrorMessage>
-                    </FormControl>
-                )}
             </VStack>
             <VStack
                 w={'95%'}

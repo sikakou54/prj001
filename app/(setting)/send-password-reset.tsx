@@ -42,11 +42,6 @@ function Page() {
                         mail: UserInfo.mail,
                     },
                 })
-            } else if (code === SystemException.UserNotFoundException) {
-                Toast.show({
-                    description: ERROR_MESSAGE.CONFIRM_RESEND_LIMIT_ERROR,
-                    placement: 'top'
-                })
             } else if (code === SystemException.LimitExceededException) {
                 toast?.showToast({
                     title: '送信制限に達しました',
@@ -98,6 +93,7 @@ function Page() {
                 bg={COLOR.LIGHT_GREEN}
                 borderRadius={10}
                 rounded={'md'}
+                isDisabled={'' === text}
             >変更する</Button>
         </Box>
     )

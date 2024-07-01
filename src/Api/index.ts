@@ -200,7 +200,7 @@ export function resend_signup(email: string): Promise<void> {
   return new Promise(async (resolve, reject) => {
     try {
 
-      const { error } = await supabase.auth.resend({
+      const { data, error } = await supabase.auth.resend({
         type: 'signup',
         email,
         options: {
@@ -235,10 +235,11 @@ export function reset_password(mail: string): Promise<void> {
       const { error } = await supabase.auth.resetPasswordForEmail(mail, {
         redirectTo: 'https://prj001-nextjs.vercel.app/change-password'
       })
-
       if (error) {
         if ('over_email_send_rate_limit' === error.code) {
           return reject(new SystemException(SystemException.LimitExceededException))
+        } else if ('validation_failed' === error.code) {
+          return reject(new SystemException(SystemException.InvalidEmailException))
         } else if (error.message === 'Failed to fetch' || error.message.includes('Network request failed')) {
           throw new SystemException(SystemException.NetworkingError)
         }
