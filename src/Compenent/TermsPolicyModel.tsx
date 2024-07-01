@@ -56,7 +56,11 @@ const TermsPolicyModel = (props: Props) => {
                                     color={COLOR.GRAY}
                                     fontSize={'sm'}
                                 >利用規約</Heading>
-                                <Box w={'full'} h={150} rounded={'md'}>
+                                <Box
+                                    w={'full'}
+                                    h={150}
+                                    rounded={'md'}
+                                >
                                     <WebView
                                         source={{ uri: `${props.terms}${randomParam}` }}
                                         style={{ backgroundColor: COLOR.LIGHT_GRAY }}
@@ -72,7 +76,11 @@ const TermsPolicyModel = (props: Props) => {
                                     color={COLOR.GRAY}
                                     fontSize={'sm'}
                                 >プライバシーポリシー</Heading>
-                                <Box w={'full'} h={150} rounded={'md'}>
+                                <Box
+                                    w={'full'}
+                                    h={150}
+                                    rounded={'md'}
+                                >
                                     <WebView
                                         source={{ uri: `${props.policy}${randomParam}` }}
                                         style={{ backgroundColor: COLOR.LIGHT_GRAY }}
@@ -94,7 +102,7 @@ const TermsPolicyModel = (props: Props) => {
                                     _icon={{ color: COLOR.WHITE }}
                                     size={'md'}
                                 >
-                                    <Text fontSize={'md'}>利用規約に同意する</Text>
+                                    <Text fontSize={'sm'}>利用規約に同意する</Text>
                                 </Checkbox>
                             )}
                             {undefined !== props.policy && (
@@ -105,7 +113,7 @@ const TermsPolicyModel = (props: Props) => {
                                     _icon={{ color: COLOR.WHITE }}
                                     size={'md'}
                                 >
-                                    <Text fontSize={'md'}>プライバシーポリシーに同意する</Text>
+                                    <Text fontSize={'sm'}>プライバシーポリシーに同意する</Text>
                                 </Checkbox>
                             )}
                         </VStack>
