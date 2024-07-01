@@ -3,7 +3,6 @@ import { Stack, router, useLocalSearchParams } from 'expo-router'
 import {
     Box,
     Button,
-    Toast,
     VStack,
     useColorModeValue,
 } from 'native-base'
