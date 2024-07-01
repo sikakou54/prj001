@@ -20,6 +20,7 @@ import { decode } from 'base64-arraybuffer'
 import Constants from 'expo-constants'
 import * as Application from 'expo-application'
 import * as Updates from 'expo-updates'
+import * as Linking from "expo-linking"
 
 export function delete_device_token(user_id: string, device_id: string): Promise<void> {
 
@@ -126,6 +127,7 @@ export function signIn(email: string, password: string): Promise<string> {
 
 export function signUp(email: string, password: string, name: string, terms_version: number, policy_version: number): Promise<string> {
 
+  console.log('signUp', name)
   return new Promise(async (resolve, reject) => {
     try {
 
@@ -146,6 +148,7 @@ export function signUp(email: string, password: string, name: string, terms_vers
         throw new SystemException(SystemException.UsernameExistsException)
       }
       if (error) {
+        console.log('signUp', error)
         if (error.message === 'Failed to fetch' || error.message.includes('Network request failed')) {
           throw new SystemException(SystemException.NetworkingError)
         }

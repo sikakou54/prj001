@@ -19,12 +19,11 @@ import {
 import { useDispatch } from 'react-redux'
 import { AppDispatch } from '../../src/Store'
 import { resend_signup, signIn } from '../../src/Store/Reducer'
-import { Stack, router } from 'expo-router'
+import { Stack, router, useNavigation } from 'expo-router'
 import { checkMailFormat, isEmpty } from '../../src/Api/Common'
 import TextInput from '../../src/Compenent/TextInput'
 
 const Page = () => {
-
     const bg = useColorModeValue(COLOR.LIGHT_GRAY, COLOR.DEEP_BLACK)
     const cardBg = useColorModeValue(COLOR.WHITE, COLOR.BLACK)
     const dispatch: AppDispatch = useDispatch()

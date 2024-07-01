@@ -1,14 +1,16 @@
 import React from 'react'
 import {
     Box,
+    Button,
     Text,
     VStack,
     useColorModeValue,
 } from 'native-base'
-import { Stack } from 'expo-router'
+import { Stack, router, useNavigation } from 'expo-router'
 import { COLOR } from '../../src/Type'
 
 const Page = () => {
+    const navigation = useNavigation()
     const bg = useColorModeValue(COLOR.LIGHT_GRAY, COLOR.DEEP_BLACK)
     return (
         <Box
@@ -24,14 +26,31 @@ const Page = () => {
                 }}
             />
             <VStack
-                h={'full'}
                 w={'90%'}
-                space={1}
-                m={5}
+                alignItems={'center'}
+                justifyContent={'center'}
+                mt={5}
+                space={5}
             >
-                <Text>認証メールを送信しました</Text>
-                <Text>リンクを押してパスワード変更を行なってください</Text>
+                <VStack
+                    w={'full'}
+                    h={12}
+                    alignItems={'center'}
+                    justifyContent={'center'}
+                    space={1}
+                >
+                    <Text>認証メールを送信しました</Text>
+                    <Text>リンクを押してパスワード変更を行なってください</Text>
+                </VStack>
+                <Button
+                    onPress={() => router.back()}
+                    w={'full'}
+                    h={12}
+                    bg={COLOR.LIGHT_GREEN}
+                    rounded={'full'}
+                >完了</Button>
             </VStack>
+
         </Box>
     )
 }
