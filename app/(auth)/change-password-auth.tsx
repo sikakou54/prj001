@@ -43,7 +43,10 @@ const Page = () => {
                     <Text>リンクを押してパスワード変更を行なってください</Text>
                 </VStack>
                 <Button
-                    onPress={() => router.back()}
+                    onPress={() => {
+                        router.back()
+                        router.back()
+                    }}
                     w={'full'}
                     h={12}
                     bg={COLOR.LIGHT_GREEN}
