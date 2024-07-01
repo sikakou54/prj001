@@ -46,7 +46,8 @@ import {
 } from 'expo-router'
 import { VictoryPie } from 'victory-native'
 import {
-    AntDesign
+    AntDesign,
+    FontAwesome
 } from '@expo/vector-icons'
 import {
     impactAsync,
@@ -114,17 +115,6 @@ export default function Page() {
             callback
         })
     }, [])
-
-    useEffect(() => {
-        if (undefined === content) {
-            toast?.showToast({
-                title: 'この通知は存在しません',
-                disc: 'CLOSEまたは削除されました',
-                bg: COLOR.GRAY
-            })
-            router.back();
-        }
-    }, [content])
 
     useEffect(() => {
         setChartData(Choices.map((item) => ({
@@ -319,7 +309,17 @@ export default function Page() {
                     refreshControl={
                         <RefreshControl
                             refreshing={false}
-                            onRefresh={() => dispatch(load_send_notify_detail({ notify_id }))}
+                            onRefresh={() => dispatch(load_send_notify_detail({ notify_id })).then((item) => {
+                                const payload = item.payload as ApplicationStatus
+                                if (payload.status === ApplicationState.Failed) {
+                                    toast?.showToast({
+                                        title: 'この通知は存在しません',
+                                        disc: 'CLOSEまたは削除されました',
+                                        bg: COLOR.GRAY
+                                    })
+                                    router.back();
+                                }
+                            })}
                         />
                     }
                 >

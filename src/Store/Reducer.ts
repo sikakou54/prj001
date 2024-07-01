@@ -1183,15 +1183,19 @@ export const load_send_notify_detail = createAsyncThunk(
         const item = await Api.get_send_notify_choice(params.notify_id)
         api.dispatch(actions.set_send_notifys({ contents: [contens], isUpSert: true }))
         api.dispatch(actions.set_send_notify_choice(item))
+        return api.fulfillWithValue({
+          status: ApplicationState.Success,
+          code: SystemException.None,
+          data: {},
+        } as ApplicationStatus)
       } else {
         api.dispatch(actions.remove_send_notify({ notify_id: params.notify_id }))
+        return api.fulfillWithValue({
+          status: ApplicationState.Failed,
+          code: SystemException.None,
+          data: {},
+        } as ApplicationStatus)
       }
-
-      return api.fulfillWithValue({
-        status: ApplicationState.Success,
-        code: SystemException.None,
-        data: {},
-      } as ApplicationStatus)
 
     } catch (e) {
       console.log('load_send_notify_detail', e)

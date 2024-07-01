@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react'
+import React, { useCallback, useContext } from 'react'
 import {
     ApplicationState,
     ApplicationStatus,
@@ -27,11 +27,13 @@ import {
 } from '../Store/Reducer'
 import Card from './Card'
 import AvatarIcon from './AvatorIcon'
+import { ToastContext } from '../context'
 
 export default function SendNotifyList() {
     const bg = useColorModeValue(COLOR.LIGHT_GRAY, COLOR.DEEP_BLACK)
     const contents: SendNotifyContent[] = useSelector((state: RootState) => state.Notify.Send.contents, shallowEqual)
     const dispatch: AppDispatch = useDispatch()
+    const toast = useContext(ToastContext)
     const ListItem = React.memo(({
         notify_id,
         name,
@@ -165,6 +167,12 @@ export default function SendNotifyList() {
                     params: {
                         notify_id
                     },
+                })
+            } else {
+                toast?.showToast({
+                    title: 'この通知は存在しません',
+                    disc: 'CLOSEまたは削除されました',
+                    bg: COLOR.GRAY
                 })
             }
         })
