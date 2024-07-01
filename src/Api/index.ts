@@ -15,7 +15,6 @@ import {
 import messaging from "@react-native-firebase/messaging"
 import * as ImagePicker from 'expo-image-picker'
 import { SupaBaseRpcApi, SupaBaseRpcSingleApi, supabase, supabaseAdmin } from '../supabase'
-import * as Linking from "expo-linking"
 import * as FileSystem from 'expo-file-system'
 import { decode } from 'base64-arraybuffer'
 import Constants from 'expo-constants'
@@ -133,7 +132,7 @@ export function signUp(email: string, password: string, name: string, terms_vers
       const { data, error } = await supabase.auth.signUp({
         email,
         options: {
-          emailRedirectTo: Linking.createURL('(auth)/login'),
+          emailRedirectTo: 'https://prj001-nextjs.vercel.app/success',
           data: {
             username: name,
             terms_version,
@@ -202,7 +201,7 @@ export function resend_signup(email: string): Promise<void> {
         type: 'signup',
         email,
         options: {
-          emailRedirectTo: Linking.createURL('(auth)/login')
+          emailRedirectTo: 'https://prj001-nextjs.vercel.app/change-password'
         }
       })
 
@@ -231,7 +230,7 @@ export function reset_password(mail: string): Promise<void> {
     try {
 
       const { error } = await supabase.auth.resetPasswordForEmail(mail, {
-        redirectTo: Linking.createURL('(auth)/change-password')
+        redirectTo: 'https://prj001-nextjs.vercel.app/change-password'
       })
 
       if (error) {

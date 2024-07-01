@@ -2,8 +2,7 @@ import { AntDesign } from '@expo/vector-icons'
 import { Box } from 'native-base'
 import React from 'react'
 import { COLOR } from '../../src/Type'
-import { Stack, router } from 'expo-router'
-import { TouchableOpacity } from 'react-native'
+import { Stack } from 'expo-router'
 
 export default function question() {
     return (
