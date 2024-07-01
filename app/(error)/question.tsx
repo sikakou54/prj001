@@ -2,7 +2,8 @@ import { AntDesign } from '@expo/vector-icons'
 import { Box } from 'native-base'
 import React from 'react'
 import { COLOR } from '../../src/Type'
-import { Stack } from 'expo-router'
+import { Stack, router } from 'expo-router'
+import { TouchableOpacity } from 'react-native'
 
 export default function question() {
     return (
@@ -20,9 +21,25 @@ export default function question() {
             />
             <AntDesign
                 name='question'
-                size={150}
+                size={100}
                 color={COLOR.GRAY}
             />
+            <Box
+                w={'full'}
+                h={100}
+                alignItems={'center'}
+                justifyContent={'center'}
+            >
+                <TouchableOpacity
+                    onPress={() => router.replace('/')}
+                >
+                    <AntDesign
+                        name='reload1'
+                        size={45}
+                        color={COLOR.GRAY}
+                    />
+                </TouchableOpacity>
+            </Box>
         </Box>
     )
 }

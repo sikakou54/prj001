@@ -100,8 +100,7 @@ export default function Page() {
                 } else if (code === SystemException.ConditionalCheckFailedException) {
                     toast?.showToast({
                         title: '他の端末によって情報が更新されています',
-                        bg: COLOR.GRAY,
-
+                        bg: COLOR.GRAY
                     })
                 }
             })
@@ -266,12 +265,6 @@ export default function Page() {
             return null
         }
     }, [content, Choices])
-
-    useEffect(() => {
-        if (undefined === content) {
-            router.replace('/(error)/question')
-        }
-    }, [content])
 
     if (undefined !== content) {
         return (
