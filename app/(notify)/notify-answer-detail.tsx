@@ -426,6 +426,19 @@ export default function Page() {
             </Box>
         )
     } else {
-        return null
+        return (
+            <Box
+                w={'full'}
+                h={'full'}
+                bg={bg}
+            >
+                <Stack.Screen
+                    options={{
+                        headerShown: false,
+                        animation: 'fade'
+                    }}
+                />
+            </Box>
+        )
     }
 }

@@ -42,16 +42,6 @@ const Page = () => {
                     <Text>認証メールを送信しました</Text>
                     <Text>リンクを押してパスワード変更を行なってください</Text>
                 </VStack>
-                <Button
-                    onPress={() => {
-                        router.back()
-                        router.back()
-                    }}
-                    w={'full'}
-                    h={12}
-                    bg={COLOR.LIGHT_GREEN}
-                    rounded={'full'}
-                >完了</Button>
             </VStack>
 
         </Box>

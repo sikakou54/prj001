@@ -22,8 +22,10 @@ import { resend_signup, signIn } from '../../src/Store/Reducer'
 import { Stack, router, useNavigation } from 'expo-router'
 import { checkMailFormat, isEmpty } from '../../src/Api/Common'
 import TextInput from '../../src/Compenent/TextInput'
+import { CommonActions } from '@react-navigation/native';
 
 const Page = () => {
+    const navigation = useNavigation()
     const bg = useColorModeValue(COLOR.LIGHT_GRAY, COLOR.DEEP_BLACK)
     const cardBg = useColorModeValue(COLOR.WHITE, COLOR.BLACK)
     const dispatch: AppDispatch = useDispatch()
@@ -56,7 +58,12 @@ const Page = () => {
         dispatch(signIn({ mail, password })).then((item) => {
             const { status, code }: ApplicationStatus = item.payload as ApplicationStatus
             if (status === ApplicationState.Success) {
-                router.replace('/')
+                navigation.reset({
+                    index: 0,
+                    routes: [{
+                        name: 'index' as never
+                    }]
+                })
             } else if (code === SystemException.UserUnAuthenticatedException) {
                 dispatch(resend_signup({ mail: mail as string })).then((item) => {
                     const { status }: ApplicationStatus = item.payload as ApplicationStatus

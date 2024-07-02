@@ -16,7 +16,8 @@ import {
 import { store } from '../src/Store'
 import {
     Stack,
-    router
+    router,
+    useNavigation
 } from 'expo-router'
 import {
     AppConfig,
@@ -76,6 +77,7 @@ const customTheme = extendTheme({
 })
 
 function AppContainer() {
+    const navigation = useNavigation()
     const bg = useColorModeValue(COLOR.LIGHT_GRAY, COLOR.DEEP_BLACK)
     const isGlobalLoading: boolean = useSelector((state: RootState) => state.Condition.isGlobalLoading, shallowEqual)
     const Config: AppConfig = useSelector((state: RootState) => state.Config, shallowEqual)
@@ -141,13 +143,33 @@ function AppContainer() {
 
     useEffect(() => {
         if (Config.maintenance) {
-            router.replace('/(error)/maintenance')
+            navigation.reset({
+                index: 0,
+                routes: [{
+                    name: '(error)/maintenance' as never
+                }]
+            })
         } else if (SystemException.SystemError === Error.code) {
-            router.replace('/(error)/system-error')
+            navigation.reset({
+                index: 0,
+                routes: [{
+                    name: '(error)/system-error' as never
+                }]
+            })
         } else if (SystemException.NetworkingError === Error.code) {
-            router.replace('/(error)/network-error')
+            navigation.reset({
+                index: 0,
+                routes: [{
+                    name: '(error)/network-error' as never
+                }]
+            })
         } else if (SystemException.NotFoundUser === Error.code) {
-            router.replace('/(auth)/home')
+            navigation.reset({
+                index: 0,
+                routes: [{
+                    name: '(auth)/home' as never
+                }]
+            })
         }
     }, [Error, Config])
 
