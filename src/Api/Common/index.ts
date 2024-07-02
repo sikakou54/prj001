@@ -154,13 +154,7 @@ export async function pickUpImage(): Promise<ImagePicker.ImagePickerAsset | null
 }
 
 export function getFileNameFromUrl(url: string) {
-
-  // URLからパス部分を取得
-  const path = new URL(url).pathname;
-
-  // パスから最後の要素（ファイル名）を抽出
-  const fileName = path.substring(path.lastIndexOf('/') + 1);
-
-  // クエリパラメータを除去してファイル名を返す
-  return fileName.split('?')[0];
+  const path = new URL(url).pathname
+  const fileName = path.substring(path.lastIndexOf('/') + 1)
+  return fileName.split('?')[0]
 }
