@@ -16,7 +16,6 @@ import { ApplicationState, ApplicationStatus, COLOR, SystemException } from '../
 import { ToastContext } from '../../src/context'
 
 const Page = () => {
-
     const bg = useColorModeValue(COLOR.LIGHT_GRAY, COLOR.DEEP_BLACK)
     const dispatch: AppDispatch = useDispatch()
     const { mail } = useLocalSearchParams()
