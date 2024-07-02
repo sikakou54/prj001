@@ -10,10 +10,8 @@ import {
 import {
     Box,
     Button,
-    FormControl,
     Text,
     VStack,
-    WarningOutlineIcon,
     useColorModeValue,
 } from 'native-base'
 import { useDispatch } from 'react-redux'
@@ -22,7 +20,6 @@ import { resend_signup, signIn } from '../../src/Store/Reducer'
 import { Stack, router, useNavigation } from 'expo-router'
 import { checkMailFormat, isEmpty } from '../../src/Api/Common'
 import TextInput from '../../src/Compenent/TextInput'
-import { CommonActions } from '@react-navigation/native';
 
 const Page = () => {
     const navigation = useNavigation()
