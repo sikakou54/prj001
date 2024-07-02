@@ -1,4 +1,4 @@
-import { Stack, router } from 'expo-router'
+import { Stack, router, useNavigation } from 'expo-router'
 import { Avatar, Box, FormControl, HStack, Text, VStack, useColorModeValue } from 'native-base'
 import { AlertResult, AlertType, ApplicationState, ApplicationStatus, COLOR, RootState, UserInfo } from '../../src/Type'
 import { shallowEqual, useDispatch, useSelector } from 'react-redux'
@@ -13,6 +13,7 @@ import * as Notifications from 'expo-notifications'
 import { AlertContext } from '../../src/context'
 
 function Page() {
+    const navigation = useNavigation()
     const dispatch: AppDispatch = useDispatch()
     const UserInfo: UserInfo = useSelector((state: RootState) => state.UserInfo, shallowEqual)
     const bg = useColorModeValue(COLOR.LIGHT_GRAY, COLOR.DEEP_BLACK)
@@ -32,7 +33,12 @@ function Page() {
                         const { status }: ApplicationStatus = item.payload as ApplicationStatus
                         if (status === ApplicationState.Success) {
                             Notifications.setBadgeCountAsync(0)
-                            router.replace('/home')
+                            navigation.reset({
+                                index: 0,
+                                routes: [{
+                                    name: '(auth)/home' as never
+                                }]
+                            })
                         }
                     })
                 }

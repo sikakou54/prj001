@@ -1936,7 +1936,6 @@ export const delete_user = createAsyncThunk(
       const userInfo = await Api.get_userInfo()
       await Api.delete_user(userInfo.id)
 
-      api.dispatch(actions.set_user_info(userInfo))
       api.dispatch(actions.reset(initialState))
 
       return api.fulfillWithValue({
