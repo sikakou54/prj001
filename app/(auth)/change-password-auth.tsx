@@ -1,16 +1,14 @@
 import React from 'react'
 import {
     Box,
-    Button,
     Text,
     VStack,
     useColorModeValue,
 } from 'native-base'
-import { Stack, router, useNavigation } from 'expo-router'
+import { Stack } from 'expo-router'
 import { COLOR } from '../../src/Type'
 
 const Page = () => {
-    const navigation = useNavigation()
     const bg = useColorModeValue(COLOR.LIGHT_GRAY, COLOR.DEEP_BLACK)
     return (
         <Box
