@@ -3,7 +3,7 @@ import React, { useCallback, useContext } from 'react'
 import { shallowEqual, useDispatch, useSelector } from 'react-redux'
 import { AlertResult, AlertType, ApplicationState, ApplicationStatus, COLOR, DeviceInfo, RootState, UserInfo } from '../../src/Type'
 import { TouchableOpacity } from 'react-native'
-import { Stack, router } from 'expo-router'
+import { Stack, router, useNavigation } from 'expo-router'
 import { AntDesign } from '@expo/vector-icons'
 import { AppDispatch } from '../../src/Store'
 import { signOut } from '../../src/Store/Reducer'
@@ -11,6 +11,7 @@ import TextBox from '../../src/Compenent/TextBox'
 import { AlertContext } from '../../src/context'
 
 export default function Page() {
+    const navigation = useNavigation()
     const bg = useColorModeValue(COLOR.LIGHT_GRAY, COLOR.DEEP_BLACK)
     const dispatch: AppDispatch = useDispatch()
     const UserInfo: UserInfo = useSelector((state: RootState) => state.UserInfo, shallowEqual)
@@ -27,7 +28,12 @@ export default function Page() {
                     })).then((item) => {
                         const { status }: ApplicationStatus = item.payload as ApplicationStatus
                         if (status === ApplicationState.Success) {
-                            router.replace('/home')
+                            navigation.reset({
+                                index: 0,
+                                routes: [{
+                                    name: '(auth)/home' as never
+                                }]
+                            })
                         }
                     })
                 }
