@@ -68,9 +68,7 @@ function Page() {
     }, [])
 
     useEffect(() => {
-
         if (null !== asset) {
-
             dispatch(upload_group_avator({ group_id: group_id as string, asset })).then((item) => {
                 const { status, data }: ApplicationStatus = item.payload as ApplicationStatus
                 if (status === ApplicationState.Success && !data.isCancel) {
