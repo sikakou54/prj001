@@ -29,7 +29,6 @@ import TextInput from '../../src/Compenent/TextInput'
 import TermsPolicyModel from '../../src/Compenent/TermsPolicyModel'
 
 const ResistScreen = () => {
-
     const bg = useColorModeValue(COLOR.LIGHT_GRAY, COLOR.DEEP_BLACK)
     const cardBg = useColorModeValue(COLOR.WHITE, COLOR.BLACK)
     const [userName, set_username] = useState<string>('')
