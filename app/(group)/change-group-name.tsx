@@ -90,12 +90,13 @@ function Page() {
                     >変更する</Button>
                 </>
             ) : (
-                <Box
+                <VStack
                     w={'full'}
                     h={'full'}
                     justifyContent={'center'}
                     alignItems={'center'}
                     bg={bg}
+                    space={1}
                 >
                     <AntDesign
                         name='question'
@@ -105,8 +106,9 @@ function Page() {
                     <Text
                         fontWeight={'bold'}
                         fontSize={'sm'}
+                        color={COLOR.GRAY}
                     >グループが存在しません</Text>
-                </Box>
+                </VStack>
             )}
         </Box>
     )

@@ -4,6 +4,7 @@ import {
     HStack,
     Image,
     Text,
+    VStack,
     useColorModeValue,
 } from 'native-base'
 import { AntDesign, Entypo, FontAwesome } from '@expo/vector-icons'
@@ -172,12 +173,13 @@ function Page() {
                     )}
                 </Box>
             ) : (
-                <Box
+                <VStack
                     w={'full'}
-                    h={'92%'}
+                    h={'full'}
                     justifyContent={'center'}
                     alignItems={'center'}
                     bg={bg}
+                    space={1}
                 >
                     <AntDesign
                         name='question'
@@ -187,8 +189,9 @@ function Page() {
                     <Text
                         fontWeight={'bold'}
                         fontSize={'sm'}
+                        color={COLOR.GRAY}
                     >グループが存在しません</Text>
-                </Box>
+                </VStack>
             )}
         </Box>
     )

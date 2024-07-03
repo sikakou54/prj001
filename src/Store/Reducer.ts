@@ -311,9 +311,13 @@ const Slice = createSlice({
     builder.addCase(load_group.pending, onPending)
     builder.addCase(load_group.rejected, onRejected)
 
-    builder.addCase(load_group_paging.fulfilled, onFulfilled_Paging)
-    builder.addCase(load_group_paging.pending, onPending_Paging)
-    builder.addCase(load_group_paging.rejected, onRejected_Paging)
+    builder.addCase(load_group_list.fulfilled, onFulfilled)
+    builder.addCase(load_group_list.pending, onPending)
+    builder.addCase(load_group_list.rejected, onRejected)
+
+    builder.addCase(load_group_list_paging.fulfilled, onFulfilled_Paging)
+    builder.addCase(load_group_list_paging.pending, onPending_Paging)
+    builder.addCase(load_group_list_paging.rejected, onRejected_Paging)
 
     builder.addCase(load_send_notify.fulfilled, onFulfilled)
     builder.addCase(load_send_notify.pending, onPending)
@@ -517,7 +521,7 @@ export const load = createAsyncThunk('load', async (_, api) => {
  ****************************************************************************************************/
 export const load_group = createAsyncThunk(
   'load_group',
-  async (_, api) => {
+  async ({ group_id }: { group_id: string }, api) => {
 
     try {
 
@@ -532,10 +536,14 @@ export const load_group = createAsyncThunk(
         } as ApplicationStatus)
       }
       const userInfo = await Api.get_userInfo()
-      const contents = await Api.get_group_contents(userInfo.id)
+      const content = await Api.get_group_content(userInfo.id, group_id)
 
       api.dispatch(actions.set_user_info(userInfo))
-      api.dispatch(actions.set_group_contents({ contents, is_offset: false }))
+      if (null !== content) {
+        api.dispatch(actions.set_group_content(content))
+      } else {
+        api.dispatch(actions.remove_group_contents({ group_id }))
+      }
 
       return api.fulfillWithValue({
         status: ApplicationState.Success,
@@ -565,10 +573,62 @@ export const load_group = createAsyncThunk(
 
 
 /****************************************************************************************************
- * load_group_paging
+ * load_group_list
  ****************************************************************************************************/
-export const load_group_paging = createAsyncThunk(
-  'load_group_paging',
+export const load_group_list = createAsyncThunk(
+  'load_group_list',
+  async (_, api) => {
+
+    try {
+
+      const config = await Api.get_app_config()
+      api.dispatch(actions.set_config(config))
+      if (config.maintenance) {
+        api.dispatch(actions.reset(initialState))
+        return api.fulfillWithValue({
+          status: ApplicationState.Failed,
+          code: SystemException.None,
+          data: {},
+        } as ApplicationStatus)
+      }
+      const userInfo = await Api.get_userInfo()
+      const contents = await Api.get_group_contents(userInfo.id)
+
+      api.dispatch(actions.set_user_info(userInfo))
+      api.dispatch(actions.set_group_contents({ contents, is_offset: false }))
+
+      return api.fulfillWithValue({
+        status: ApplicationState.Success,
+        code: SystemException.None,
+        data: {},
+      } as ApplicationStatus)
+
+    } catch (e) {
+      console.log('load_group_list', e)
+      if (e instanceof SystemException) {
+        return api.rejectWithValue({
+          status: ApplicationState.Failed,
+          code: e.code,
+          data: {},
+          error: e
+        } as ApplicationStatus)
+      }
+      return api.rejectWithValue({
+        status: ApplicationState.Failed,
+        code: SystemException.SystemError,
+        data: {},
+        error: e
+      } as ApplicationStatus)
+    }
+  }
+)
+
+
+/****************************************************************************************************
+ * load_group_list_paging
+ ****************************************************************************************************/
+export const load_group_list_paging = createAsyncThunk(
+  'load_group_list_paging',
   async ({ user_id, offset }: { user_id: string, offset: number }, api) => {
 
     try {
@@ -594,7 +654,7 @@ export const load_group_paging = createAsyncThunk(
       } as ApplicationStatus)
 
     } catch (e) {
-      console.log('load_group_paging', e)
+      console.log('load_group_list_paging', e)
       if (e instanceof SystemException) {
         return api.rejectWithValue({
           status: ApplicationState.Failed,

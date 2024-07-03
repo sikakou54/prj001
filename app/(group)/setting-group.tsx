@@ -2,8 +2,10 @@ import React, { useCallback, useContext, useEffect, useState } from 'react'
 import {
     Avatar,
     Box,
+    Center,
     FormControl,
     HStack,
+    ScrollView,
     Text,
     VStack,
     useColorModeValue,
@@ -11,7 +13,7 @@ import {
 import { AntDesign, Entypo, Feather } from '@expo/vector-icons'
 import { AppDispatch } from '../../src/Store'
 import { shallowEqual, useDispatch, useSelector } from 'react-redux'
-import { load_group_member, delete_group_member } from '../../src/Store/Reducer'
+import { load_group_member, delete_group_member, load_group } from '../../src/Store/Reducer'
 import {
     ApplicationState,
     ApplicationStatus,
@@ -21,7 +23,7 @@ import {
     AlertResult,
     AlertType
 } from '../../src/Type'
-import { TouchableOpacity } from 'react-native'
+import { RefreshControl, TouchableOpacity } from 'react-native'
 import { Stack, router, useLocalSearchParams } from 'expo-router'
 import * as Clipboard from 'expo-clipboard'
 import TextBox from '../../src/Compenent/TextBox'
@@ -126,168 +128,185 @@ function Page() {
                     onPress={(() => router.back())}
                 />
             </HStack>
-            {undefined !== content ? (
-                <VStack w={'95%'} h={'92%'} space={3} mt={5}>
-                    <Box w={'full'} alignItems={'center'} justifyContent={'center'}>
-                        <TouchableOpacity onPress={pickImage}>
-                            <Avatar borderColor={cardBg} borderWidth={4} bg="gray.400" size={120}>
-                                <AvatarIcon
-                                    img={content.img}
-                                    defaultIcon={<Text color={COLOR.WHITE} fontSize={'4xl'}>{(content.name).substring(0, 1)}</Text>}
-                                    size={120}
-                                />
-                                <Avatar.Badge bg={bg} borderColor={cardBg} borderWidth={2} size={9} alignItems={'center'} justifyContent={'center'}><Feather name='edit-2' size={18} color={COLOR.GRAY} /></Avatar.Badge>
-                            </Avatar>
-                        </TouchableOpacity>
-                    </Box>
-                    <FormControl.Label>グループ情報</FormControl.Label>
-                    <VStack w={'full'}>
-                        <TextBox
-                            onPress={() => {
-                                router.push({
-                                    pathname: '/change-group-name',
-                                    params: {
-                                        group_id: group_id as string,
-                                    }
-                                })
-                            }}
-                            fontSize={'sm'}
-                            leftIcon={
-                                <Feather
-                                    name='users'
-                                    size={18}
-                                    color={useColorModeValue(COLOR.BLACK, COLOR.WHITE)}
-                                />
-                            }
-                            rightIcon={
-                                <AntDesign
-                                    name='right'
-                                    size={18}
-                                    color={useColorModeValue(COLOR.BLACK, COLOR.WHITE)}
-                                />
-                            }
-                            text={content.name}
-                            roundedTop={'md'}
-                        />
-                        <TextBox
-                            onPress={() =>
-                                dispatch(load_group_member({ group_id: group_id as string })).then((item) => {
-                                    const { status }: ApplicationStatus = item.payload as ApplicationStatus
-                                    if (status === ApplicationState.Success) {
+            <ScrollView
+                w={'full'}
+                h={'92%'}
+                refreshControl={
+                    <RefreshControl
+                        refreshing={false}
+                        onRefresh={() =>
+                            dispatch(load_group({ group_id }))
+                        }
+                    />
+                }
+            >
+                <Center w={'full'} h={'full'}>
+                    {undefined !== content ? (
+                        <VStack w={'95%'} h={'full'} space={3} mt={5}>
+                            <Box w={'full'} alignItems={'center'} justifyContent={'center'}>
+                                <TouchableOpacity onPress={pickImage}>
+                                    <Avatar borderColor={cardBg} borderWidth={4} bg="gray.400" size={120}>
+                                        <AvatarIcon
+                                            img={content.img}
+                                            defaultIcon={<Text color={COLOR.WHITE} fontSize={'4xl'}>{(content.name).substring(0, 1)}</Text>}
+                                            size={120}
+                                        />
+                                        <Avatar.Badge bg={bg} borderColor={cardBg} borderWidth={2} size={9} alignItems={'center'} justifyContent={'center'}><Feather name='edit-2' size={18} color={COLOR.GRAY} /></Avatar.Badge>
+                                    </Avatar>
+                                </TouchableOpacity>
+                            </Box>
+                            <FormControl.Label>グループ情報</FormControl.Label>
+                            <VStack w={'full'}>
+                                <TextBox
+                                    onPress={() => {
                                         router.push({
-                                            pathname: '/group-member-list',
+                                            pathname: '/change-group-name',
                                             params: {
-                                                group_id
+                                                group_id: group_id as string,
+                                            }
+                                        })
+                                    }}
+                                    fontSize={'sm'}
+                                    leftIcon={
+                                        <Feather
+                                            name='users'
+                                            size={18}
+                                            color={useColorModeValue(COLOR.BLACK, COLOR.WHITE)}
+                                        />
+                                    }
+                                    rightIcon={
+                                        <AntDesign
+                                            name='right'
+                                            size={18}
+                                            color={useColorModeValue(COLOR.BLACK, COLOR.WHITE)}
+                                        />
+                                    }
+                                    text={content.name}
+                                    roundedTop={'md'}
+                                />
+                                <TextBox
+                                    onPress={() =>
+                                        dispatch(load_group_member({ group_id: group_id as string })).then((item) => {
+                                            const { status }: ApplicationStatus = item.payload as ApplicationStatus
+                                            if (status === ApplicationState.Success) {
+                                                router.push({
+                                                    pathname: '/group-member-list',
+                                                    params: {
+                                                        group_id
+                                                    }
+                                                })
                                             }
                                         })
                                     }
-                                })
-                            }
-                            leftIcon={
-                                <Feather
-                                    name='user'
-                                    size={18}
-                                    color={useColorModeValue(COLOR.BLACK, COLOR.WHITE)}
+                                    leftIcon={
+                                        <Feather
+                                            name='user'
+                                            size={18}
+                                            color={useColorModeValue(COLOR.BLACK, COLOR.WHITE)}
+                                        />
+                                    }
+                                    rightIcon={
+                                        <AntDesign
+                                            name='right'
+                                            size={18}
+                                            color={useColorModeValue(COLOR.BLACK, COLOR.WHITE)}
+                                        />
+                                    }
+                                    text={`${content.count}人`}
+                                    fontSize={'sm'}
                                 />
-                            }
-                            rightIcon={
-                                <AntDesign
-                                    name='right'
-                                    size={18}
-                                    color={useColorModeValue(COLOR.BLACK, COLOR.WHITE)}
+                                <TextBox
+                                    onPress={onCopy}
+                                    leftIcon={
+                                        <Entypo
+                                            name='code'
+                                            size={18}
+                                            color={useColorModeValue(COLOR.BLACK, COLOR.WHITE)}
+                                        />
+                                    }
+                                    rightIcon={
+                                        <Feather
+                                            name='copy'
+                                            size={18}
+                                            color={useColorModeValue(COLOR.BLACK, COLOR.WHITE)}
+                                        />
+                                    }
+                                    roundedBottom={'md'}
+                                    fontSize={'sm'}
+                                    text={content.code}
                                 />
-                            }
-                            text={`${content.count}人`}
-                            fontSize={'sm'}
-                        />
-                        <TextBox
-                            onPress={onCopy}
-                            leftIcon={
-                                <Entypo
-                                    name='code'
-                                    size={18}
-                                    color={useColorModeValue(COLOR.BLACK, COLOR.WHITE)}
-                                />
-                            }
-                            rightIcon={
-                                <Feather
-                                    name='copy'
-                                    size={18}
-                                    color={useColorModeValue(COLOR.BLACK, COLOR.WHITE)}
-                                />
-                            }
-                            roundedBottom={'md'}
-                            fontSize={'sm'}
-                            text={content.code}
-                        />
-                    </VStack>
-                    <FormControl.Label>設定</FormControl.Label>
-                    <TextBox
-                        rounded={'md'}
-                        onPress={() => router.push({
-                            pathname: '/(group)/change-group-public',
-                            params: {
-                                group_id
-                            },
-                        })}
-                        rightIcon={
-                            <HStack alignItems={'center'} justifyContent={'flex-end'} pr={3}>
-                                <Text w={60} fontSize={'xs'} color={COLOR.GRAY}>{content.public === 1 ? '許可する' : '禁止する'}</Text>
-                                <AntDesign
-                                    name='right'
-                                    size={18}
-                                    color={useColorModeValue(COLOR.BLACK, COLOR.WHITE)}
-                                />
-                            </HStack>
-                        }
-                        text={'グループへの参加'}
-                        fontSize={'sm'}
-                    />
-                    <Box
-                        w={'full'}
-                        alignItems={'center'}
-                        justifyContent={'center'}
-                    >
-                        <TouchableOpacity
-                            onPress={
-                                () => {
-                                    alert?.setAlert({
-                                        type: AlertType.YesNo,
-                                        title: 'グループを退会します',
-                                        disc: 'よろしいですか？',
-                                        callback: callbackGroupDelete
-                                    })
+                            </VStack>
+                            <FormControl.Label>設定</FormControl.Label>
+                            <TextBox
+                                rounded={'md'}
+                                onPress={() => router.push({
+                                    pathname: '/(group)/change-group-public',
+                                    params: {
+                                        group_id
+                                    },
+                                })}
+                                rightIcon={
+                                    <HStack alignItems={'center'} justifyContent={'flex-end'} pr={3}>
+                                        <Text w={60} fontSize={'xs'} color={COLOR.GRAY}>{content.public === 1 ? '許可する' : '禁止する'}</Text>
+                                        <AntDesign
+                                            name='right'
+                                            size={18}
+                                            color={useColorModeValue(COLOR.BLACK, COLOR.WHITE)}
+                                        />
+                                    </HStack>
                                 }
-                            }
+                                text={'グループへの参加'}
+                                fontSize={'sm'}
+                            />
+                            <Box
+                                w={'full'}
+                                alignItems={'center'}
+                                justifyContent={'center'}
+                            >
+                                <TouchableOpacity
+                                    onPress={
+                                        () => {
+                                            alert?.setAlert({
+                                                type: AlertType.YesNo,
+                                                title: 'グループを退会します',
+                                                disc: 'よろしいですか？',
+                                                callback: callbackGroupDelete
+                                            })
+                                        }
+                                    }
+                                >
+                                    <Text
+                                        m={5}
+                                        fontSize={'md'}
+                                        fontWeight={'bold'}
+                                        color={'red.500'}
+                                    >退会する</Text>
+                                </TouchableOpacity>
+                            </Box>
+                        </VStack>
+                    ) : (
+                        <VStack
+                            w={'full'}
+                            h={'full'}
+                            justifyContent={'center'}
+                            alignItems={'center'}
+                            bg={bg}
+                            space={1}
                         >
+                            <AntDesign
+                                name='question'
+                                size={100}
+                                color={COLOR.GRAY}
+                            />
                             <Text
-                                m={5}
-                                fontSize={'md'}
                                 fontWeight={'bold'}
-                                color={'red.500'}
-                            >退会する</Text>
-                        </TouchableOpacity>
-                    </Box>
-                </VStack>
-            ) : (
-                <Box
-                    w={'full'}
-                    h={'92%'}
-                    justifyContent={'center'}
-                    alignItems={'center'}
-                    bg={bg}
-                >
-                    <AntDesign
-                        name='question'
-                        size={100}
-                        color={COLOR.GRAY}
-                    />
-                    <Text
-                        fontWeight={'bold'}
-                        fontSize={'sm'}
-                    >グループが存在しません</Text>
-                </Box>
-            )}
+                                fontSize={'sm'}
+                                color={COLOR.GRAY}
+                            >グループが存在しません</Text>
+                        </VStack>
+                    )}
+                </Center>
+            </ScrollView>
         </Box>
     )
 }

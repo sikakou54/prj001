@@ -16,7 +16,7 @@ import { AppDispatch } from '../../src/Store'
 import AvatarIcon from '../../src/Compenent/AvatorIcon'
 import { COLOR, GroupContent } from '../../src/Type'
 import { RootState, UserInfo } from '../../src/Type'
-import { load_group, load_group_paging } from '../../src/Store/Reducer'
+import { load_group_list, load_group_list_paging } from '../../src/Store/Reducer'
 import { AntDesign } from '@expo/vector-icons'
 
 export default function Page() {
@@ -123,7 +123,7 @@ export default function Page() {
     }, [colorMode])
     const onEndReached = useCallback(({ distanceFromEnd }: { distanceFromEnd: number }) => {
         //console.log('onEndReached!', distanceFromEnd)
-        dispatch(load_group_paging({ user_id: userInfo.id, offset: contents.length }))
+        dispatch(load_group_list_paging({ user_id: userInfo.id, offset: contents.length }))
     }, [contents])
 
     if (contents.length > 0) {
@@ -147,7 +147,7 @@ export default function Page() {
                     maxToRenderPerBatch={30}
                     onStartReachedThreshold={0}
                     onEndReachedThreshold={0.3}
-                    onRefresh={() => dispatch(load_group())}
+                    onRefresh={() => dispatch(load_group_list())}
                 />
             </Box>
         )
@@ -166,7 +166,7 @@ export default function Page() {
                     refreshControl={
                         <RefreshControl
                             refreshing={false}
-                            onRefresh={() => dispatch(load_group())}
+                            onRefresh={() => dispatch(load_group_list())}
                         />
                     }
                 >

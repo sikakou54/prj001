@@ -13,7 +13,7 @@ import Card from '../../src/Compenent/Card'
 import AvatarIcon from '../../src/Compenent/AvatorIcon'
 import { GroupContent } from '../../src/Type'
 import { AppDispatch } from '../../src/Store'
-import { load_group, load_group_paging } from '../../src/Store/Reducer'
+import { load_group_list, load_group_list_paging } from '../../src/Store/Reducer'
 
 function Page() {
     const dispatch: AppDispatch = useDispatch()
@@ -82,7 +82,7 @@ function Page() {
     const keyExtractor = useCallback((item: GroupContent) => item.group_id, [])
     const onEndReached = useCallback(({ distanceFromEnd }: { distanceFromEnd: number }) => {
         //console.log('onEndReached!', distanceFromEnd)
-        dispatch(load_group_paging({ user_id: UserInfo.id, offset: contents.length }))
+        dispatch(load_group_list_paging({ user_id: UserInfo.id, offset: contents.length }))
     }, [contents, UserInfo])
 
     return (
@@ -101,7 +101,7 @@ function Page() {
                 w={'full'}
                 h={'full'}
                 data={contents.filter((item) => item.count > 0)}
-                onRefresh={() => dispatch(load_group())}
+                onRefresh={() => dispatch(load_group_list())}
                 refreshing={false}
                 renderItem={renderItem}
                 keyExtractor={keyExtractor}
