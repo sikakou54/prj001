@@ -35,6 +35,7 @@ export default function SendNotifyList() {
     const contents: SendNotifyContent[] = useSelector((state: RootState) => state.Notify.Send.contents, shallowEqual)
     const dispatch: AppDispatch = useDispatch()
     const toast = useContext(ToastContext)
+
     const keyExtractor = useCallback((item: SendNotifyContent) => item.notify_id, [])
     const onEndReached = useCallback(({ distanceFromEnd }: { distanceFromEnd: number }) => {
         //console.log('onEndReached!', distanceFromEnd)
@@ -58,7 +59,7 @@ export default function SendNotifyList() {
                 })
             }
         })
-    }, [])
+    }, [dispatch])
     const renderItem = useCallback(({ item }: { item: SendNotifyContent }) => (
         <SendNotifyListItem
             onPress={onNotifyListPress}
