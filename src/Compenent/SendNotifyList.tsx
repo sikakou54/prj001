@@ -44,7 +44,7 @@ export default function SendNotifyList() {
                     pathname: '/(notify)/notify-answer-detail',
                     params: {
                         notify_id
-                    },
+                    }
                 })
             } else {
                 toast?.showToast({

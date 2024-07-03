@@ -36,8 +36,8 @@ export default function ReceiveNotifyList() {
                 router.push({
                     pathname: '/answer',
                     params: {
-                        notify_id,
-                    },
+                        notify_id
+                    }
                 })
             }
         })
