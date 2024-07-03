@@ -216,7 +216,8 @@ const ResistScreen = () => {
                 }}
                 terms={Config.terms.url}
                 policy={Config.policy.url}
-                isOpen={true} />
+                isOpen={true}
+            />
         </Box>
     )
 }
