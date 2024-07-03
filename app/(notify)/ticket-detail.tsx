@@ -124,7 +124,6 @@ export default function Page() {
                             leftIcon={
                                 <MaterialCommunityIcons
                                     name='ticket-confirmation'
-                                    style={{ paddingRight: 10 }}
                                     size={30}
                                     color={useColorModeValue(COLOR.DEEP_GREEN, COLOR.WHITE)}
                                 />
