@@ -42,11 +42,11 @@ export default function ReceiveNotifyListItem(props: Props) {
                         defaultIcon={<Text color={COLOR.WHITE}>{props.group_name.substring(0, 1)}</Text>}
                         size={45}
                     />
-                    <Box top={-5} right={0.5}>
+                    <Box top={-8} right={1}>
                         <AvatarIcon
                             img={props.img_user}
                             defaultIcon={<Text color={COLOR.WHITE}>{props.group_name.substring(0, 1)}</Text>}
-                            size={35}
+                            size={38}
                         />
                     </Box>
                 </ZStack>
