@@ -16,7 +16,6 @@ const renderScene = SceneMap({
     ID2: ReceiveNotifyList,
 })
 const width = Dimensions.get('window').width
-
 export default function Page() {
     const { colorMode } = useColorMode()
     const bg = useColorModeValue(COLOR.WHITE, COLOR.BLACK)
