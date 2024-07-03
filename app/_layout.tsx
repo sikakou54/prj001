@@ -105,6 +105,7 @@ function AppContainer() {
             callback: (result: AlertResult) => { }
         })
     }, [alertText])
+
     const showToast = useCallback((param: { title: string, disc?: string, bg?: string, onClose?: () => void }) => {
         const { title, disc, bg, onClose } = param
         toast.show({
