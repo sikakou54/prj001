@@ -257,189 +257,176 @@ export default function Page() {
         }
     }, [content, Choices])
 
-    if (undefined !== content) {
-        return (
-            <Box
-                w={'full'}
-                h={'full'}
-                bg={bg}
-                alignItems={'center'}
-                safeAreaTop
-            >
-                <Stack.Screen
-                    options={{
-                        headerShown: false,
-                        animation: 'slide_from_bottom',
-                        gestureEnabled: true,
-                        gestureDirection: 'vertical'
-                    }}
-                />
-                <HStack
-                    justifyContent={'space-between'}
-                    alignItems={'center'}
-                    w={'full'}
-                    h={'8%'}
-                >
+    return (
+        <Box
+            w={'full'}
+            h={'full'}
+            bg={bg}
+            alignItems={'center'}
+            safeAreaTop
+        >
+            <Stack.Screen
+                options={{
+                    headerShown: false,
+                    animation: 'slide_from_bottom',
+                    gestureEnabled: true,
+                    gestureDirection: 'vertical'
+                }}
+            />
+            {undefined !== content && (
+                <>
                     <HStack
-                        w={'90%'}
                         justifyContent={'space-between'}
                         alignItems={'center'}
-                        pl={3}
-                        pr={3}
-                        space={2}
+                        w={'full'}
+                        h={'8%'}
                     >
-                        <AntDesign
-                            name='closecircleo'
-                            size={26}
-                            color={useColorModeValue(COLOR.BLACK, COLOR.WHITE)}
-                            onPress={(() => router.back())}
-                        />
-                        <Box w={'full'}>
-                            <Text
-                                fontSize={'sm'}
-                                w={'90%'}
-                                numberOfLines={2}
-                                ellipsizeMode={'tail'}
-                            >{content.name}</Text>
-                        </Box>
+                        <HStack
+                            w={'90%'}
+                            justifyContent={'space-between'}
+                            alignItems={'center'}
+                            pl={3}
+                            pr={3}
+                            space={2}
+                        >
+                            <AntDesign
+                                name='closecircleo'
+                                size={26}
+                                color={useColorModeValue(COLOR.BLACK, COLOR.WHITE)}
+                                onPress={(() => router.back())}
+                            />
+                            <Box w={'full'}>
+                                <Text
+                                    fontSize={'sm'}
+                                    w={'90%'}
+                                    numberOfLines={2}
+                                    ellipsizeMode={'tail'}
+                                >{content.name}</Text>
+                            </Box>
+                        </HStack>
                     </HStack>
-                </HStack>
-                <ScrollView
-                    w={'full'}
-                    h={'82%'}
-                    refreshControl={
-                        <RefreshControl
-                            refreshing={false}
-                            onRefresh={() => dispatch(load_send_notify_detail({ notify_id })).then((item) => {
-                                const payload = item.payload as ApplicationStatus
-                                if (payload.status === ApplicationState.Failed) {
-                                    toast?.showToast({
-                                        title: 'この通知は存在しません',
-                                        disc: 'CLOSEまたは削除されました',
-                                        bg: COLOR.GRAY
-                                    })
-                                    router.back()
-                                }
-                            })}
-                        />
-                    }
-                >
-                    <TextBox
-                        text={content.group_name}
-                        leftIcon={
-                            <AvatarIcon
-                                img={content.img}
-                                size={45}
-                                defaultIcon={<Text color={COLOR.WHITE}>{content.group_name.substring(0, 1)}</Text>}
+                    <ScrollView
+                        w={'full'}
+                        h={'82%'}
+                        refreshControl={
+                            <RefreshControl
+                                refreshing={false}
+                                onRefresh={() => dispatch(load_send_notify_detail({ notify_id })).then((item) => {
+                                    const payload = item.payload as ApplicationStatus
+                                    if (payload.status === ApplicationState.Failed) {
+                                        toast?.showToast({
+                                            title: 'この通知は存在しません',
+                                            disc: 'CLOSEまたは削除されました',
+                                            bg: COLOR.GRAY
+                                        })
+                                        router.back()
+                                    }
+                                })}
                             />
                         }
-                    />
-                    {data.filter((item) => item.y !== 0).length !== 0 ? (
-                        <VictoryPie
-                            width={width}
-                            height={width}
-                            data={data.filter((item) => item.y !== 0)}
-                            labels={({ datum }) => datum.labels}
-                            key={notify_id}
-                            events={[
-                                {
-                                    target: 'data',
-                                    eventHandlers: {
-                                        onPressOut: () => {
-                                            return [
-                                                {
-                                                    target: 'data',
-                                                    mutation: ({ datum }) => {
-                                                        setSelectChoice(datum.choice)
-                                                        impactAsync(
-                                                            ImpactFeedbackStyle.Light
-                                                        )
+                    >
+                        <TextBox
+                            text={content.group_name}
+                            leftIcon={
+                                <AvatarIcon
+                                    img={content.img}
+                                    size={45}
+                                    defaultIcon={<Text color={COLOR.WHITE}>{content.group_name.substring(0, 1)}</Text>}
+                                />
+                            }
+                        />
+                        {data.filter((item) => item.y !== 0).length !== 0 ? (
+                            <VictoryPie
+                                width={width}
+                                height={width}
+                                data={data.filter((item) => item.y !== 0)}
+                                labels={({ datum }) => datum.labels}
+                                key={notify_id}
+                                events={[
+                                    {
+                                        target: 'data',
+                                        eventHandlers: {
+                                            onPressOut: () => {
+                                                return [
+                                                    {
+                                                        target: 'data',
+                                                        mutation: ({ datum }) => {
+                                                            setSelectChoice(datum.choice)
+                                                            impactAsync(
+                                                                ImpactFeedbackStyle.Light
+                                                            )
+                                                        },
                                                     },
-                                                },
-                                            ]
+                                                ]
+                                            },
                                         },
                                     },
-                                },
-                            ]}
-                            labelRadius={105}
-                            padAngle={2}
-                            innerRadius={80}
-                            style={{
-                                data: {
-                                    fill: ({ datum }: any) => datum.fill,
-                                    fillOpacity: 0.9,
-                                    stroke: COLOR.GRAY,
-                                    strokeWidth: 1,
-                                },
-                                labels: {
-                                    fill: ({ datum }: any) => datum.color,
-                                    fontSize: 20,
-                                    fontFamily: 'NotoSansJP'
-                                },
-                            }}
-                        />
-                    ) : (
+                                ]}
+                                labelRadius={105}
+                                padAngle={2}
+                                innerRadius={80}
+                                style={{
+                                    data: {
+                                        fill: ({ datum }: any) => datum.fill,
+                                        fillOpacity: 0.9,
+                                        stroke: COLOR.GRAY,
+                                        strokeWidth: 1,
+                                    },
+                                    labels: {
+                                        fill: ({ datum }: any) => datum.color,
+                                        fontSize: 20,
+                                        fontFamily: 'NotoSansJP'
+                                    },
+                                }}
+                            />
+                        ) : (
+                            <Box
+                                w={width}
+                                h={width}
+                                alignItems={'center'}
+                                justifyContent={'center'}
+                            >
+                                <Text color={COLOR.GRAY}>メンバーがいません</Text>
+                            </Box>
+                        )}
+                        {data.map((item) => (
+                            <ChoiceListItem
+                                key={item.choice}
+                                choice={item.choice}
+                                isSelect={item.isSelect}
+                                text={item.text}
+                            />
+                        ))}
                         <Box
-                            w={width}
-                            h={width}
+                            w={'full'}
+                            h={90}
                             alignItems={'center'}
                             justifyContent={'center'}
                         >
-                            <Text color={COLOR.GRAY}>メンバーがいません</Text>
+                            <TouchableOpacity
+                                onPress={onCloseNotify}>
+                                <Text
+                                    fontSize={'md'}
+                                    color={COLOR.RED}
+                                >CLOSE</Text>
+                            </TouchableOpacity>
                         </Box>
-                    )}
-                    {data.map((item) => (
-                        <ChoiceListItem
-                            key={item.choice}
-                            choice={item.choice}
-                            isSelect={item.isSelect}
-                            text={item.text}
-                        />
-                    ))}
+                    </ScrollView>
                     <Box
                         w={'full'}
-                        h={90}
+                        h={'10%'}
                         alignItems={'center'}
                         justifyContent={'center'}
                     >
-                        <TouchableOpacity
-                            onPress={onCloseNotify}>
-                            <Text
-                                fontSize={'md'}
-                                color={COLOR.RED}
-                            >CLOSE</Text>
-                        </TouchableOpacity>
+                        <AdmobBanner
+                            size={BannerAdSize.BANNER}
+                            debug={config.debug}
+                            android={config.admob.banner.android}
+                            ios={config.admob.banner.ios}
+                        />
                     </Box>
-                </ScrollView>
-                <Box
-                    w={'full'}
-                    h={'10%'}
-                    alignItems={'center'}
-                    justifyContent={'center'}
-                >
-                    <AdmobBanner
-                        size={BannerAdSize.BANNER}
-                        debug={config.debug}
-                        android={config.admob.banner.android}
-                        ios={config.admob.banner.ios}
-                    />
-                </Box>
-            </Box>
-        )
-    } else {
-        return (
-            <Box
-                w={'full'}
-                h={'full'}
-                bg={bg}
-            >
-                <Stack.Screen
-                    options={{
-                        headerShown: false,
-                        animation: 'fade'
-                    }}
-                />
-            </Box>
-        )
-    }
+                </>
+            )}
+        </Box>
+    )
 }
