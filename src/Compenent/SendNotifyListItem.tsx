@@ -23,8 +23,6 @@ interface Props {
     is_anonym: number
 }
 export default function SendNotifyListItem(props: Props) {
-    const bg = useColorModeValue(COLOR.LIGHT_GRAY, COLOR.DEEP_BLACK)
-
     return (
         <Card
             onPress={() => props.onPress(props.notify_id)}

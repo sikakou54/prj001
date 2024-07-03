@@ -22,8 +22,6 @@ interface Props {
     is_anonym: number
 }
 export default function ReceiveNotifyListItem(props: Props) {
-    const bg = useColorModeValue(COLOR.LIGHT_GRAY, COLOR.DEEP_BLACK)
-
     return (
         <Card
             bg={useColorModeValue(COLOR.WHITE, COLOR.BLACK)}
