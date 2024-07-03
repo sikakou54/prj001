@@ -17,6 +17,7 @@ import {
     ScrollView,
     Text,
     VStack,
+    ZStack,
     useColorModeValue
 } from 'native-base'
 import {
@@ -128,42 +129,59 @@ function Page() {
                         <FormControl.Label
                             w={'95%'}
                             fontWeight={'bold'}
-                            fontSize={'sm'}
-                        >グループ</FormControl.Label>
-                        <Box w={'95%'}>
-                            <TextBox
-                                leftIcon={
-                                    <AvatarIcon
-                                        img={content.img}
-                                        defaultIcon={<Text color={COLOR.WHITE}>{content.group_name.substring(0, 1)}</Text>}
-                                        size={38}
-                                    />
-                                }
-                                numberOfLines={2}
-                                text={content.group_name}
-                                roundedTop={'md'}
-                                roundedBottom={'md'}
-                            />
-                        </Box>
-                        <FormControl.Label
-                            w={'95%'}
-                            fontWeight={'bold'}
                             fontSize={'md'}
                         >送信者</FormControl.Label>
                         <Box w={'95%'}>
-                            <TextBox
-                                leftIcon={
-                                    <AvatarIcon
-                                        img={content.img_user}
-                                        defaultIcon={<Text color={COLOR.WHITE}>{content.group_name.substring(0, 1)}</Text>}
-                                        size={38}
-                                    />
-                                }
-                                numberOfLines={2}
-                                text={content.user_name}
-                                roundedTop={'md'}
-                                roundedBottom={'md'}
-                            />
+                            <Card
+                                rounded={'md'}
+                                p={3}
+                                bg={cardBg}
+                            >
+                                <HStack
+                                    w={'full'}
+                                    space={1}
+                                >
+                                    <Box
+                                        w={'15%'}
+                                        alignItems={'center'}
+                                        justifyContent={'center'}
+                                    >
+                                        <ZStack
+                                            w={'full'}
+                                        >
+                                            <AvatarIcon
+                                                img={content.img}
+                                                defaultIcon={<Text color={COLOR.WHITE}>{content.group_name.substring(0, 1)}</Text>}
+                                                size={42}
+                                            />
+                                            <Box
+                                                top={-8}
+                                                right={2}
+                                            >
+                                                <AvatarIcon
+                                                    img={content.img_user}
+                                                    defaultIcon={<Text color={COLOR.WHITE}>{content.user_name.substring(0, 1)}</Text>}
+                                                    size={38}
+                                                />
+                                            </Box>
+                                        </ZStack>
+                                    </Box>
+                                    <VStack
+                                        w={'95%'}
+                                        alignItems={'center'}
+                                    >
+                                        <Text
+                                            w={'full'}
+                                            fontSize={'sm'}
+                                        >{content.user_name}</Text>
+                                        <Text
+                                            w={'full'}
+                                            fontSize={'xs'}
+                                            color={COLOR.GRAY}
+                                        >{content.group_name}</Text>
+                                    </VStack>
+                                </HStack>
+                            </Card>
                         </Box>
                         <FormControl.Label
                             w={'95%'}
