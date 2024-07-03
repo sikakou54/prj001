@@ -89,98 +89,96 @@ function Page() {
         }
     }, [content])
 
-    if (undefined !== content) {
-
-        return (
-            <Box
-                w={'full'}
-                h={'full'}
-                bg={bg}
-                safeAreaTop
-            >
-                <Stack.Screen
-                    options={{
-                        headerShown: false,
-                        animation: 'fade',
-                        gestureEnabled: true,
-                        gestureDirection: 'vertical',
-                    }}
-                />
-                <HStack
-                    justifyContent={'space-between'}
-                    alignItems={'center'}
-                    w={'full'}
-                    h={'8%'}
-                    pl={3}
-                    pr={3}
-                >
-                    <AntDesign
-                        name='closecircleo'
-                        size={26}
-                        color={useColorModeValue(COLOR.BLACK, COLOR.WHITE)}
-                        onPress={(() => router.back())}
-                    />
-                    <HStack w={180} alignItems={'center'} justifyContent={null !== content.img ? 'space-around' : 'flex-end'}>
-                        {content.img && (
+    return (
+        <Box
+            w={'full'}
+            h={'full'}
+            bg={bg}
+            safeAreaTop
+        >
+            <Stack.Screen
+                options={{
+                    headerShown: false,
+                    animation: 'fade',
+                    gestureEnabled: true,
+                    gestureDirection: 'vertical',
+                }}
+            />
+            {undefined !== content && (
+                <>
+                    <HStack
+                        justifyContent={'space-between'}
+                        alignItems={'center'}
+                        w={'full'}
+                        h={'8%'}
+                        pl={3}
+                        pr={3}
+                    >
+                        <AntDesign
+                            name='closecircleo'
+                            size={26}
+                            color={useColorModeValue(COLOR.BLACK, COLOR.WHITE)}
+                            onPress={(() => router.back())}
+                        />
+                        <HStack w={180} alignItems={'center'} justifyContent={null !== content.img ? 'space-around' : 'flex-end'}>
+                            {content.img && (
+                                <IconLabel
+                                    onPress={onDeleteImage}
+                                    w={90}
+                                    h={12}
+                                    borderColor={'none'}
+                                    text={'削除'}
+                                    icon={
+                                        <AntDesign
+                                            name='delete'
+                                            onPress={() => { }}
+                                            size={26}
+                                            color={COLOR.RED}
+                                        />
+                                    }
+                                />
+                            )}
                             <IconLabel
-                                onPress={onDeleteImage}
+                                onPress={pickImage}
                                 w={90}
                                 h={12}
                                 borderColor={'none'}
-                                text={'削除'}
+                                text={'変更'}
                                 icon={
-                                    <AntDesign
-                                        name='delete'
+                                    <FontAwesome
+                                        name='exchange'
                                         onPress={() => { }}
                                         size={26}
-                                        color={COLOR.RED}
+                                        color={COLOR.GREEN}
                                     />
                                 }
                             />
-                        )}
-                        <IconLabel
-                            onPress={pickImage}
-                            w={90}
-                            h={12}
-                            borderColor={'none'}
-                            text={'変更'}
-                            icon={
-                                <FontAwesome
-                                    name='exchange'
-                                    onPress={() => { }}
-                                    size={26}
-                                    color={COLOR.GREEN}
-                                />
-                            }
-                        />
+                        </HStack>
                     </HStack>
-                </HStack>
-                <Box
-                    w={'full'}
-                    h={'92%'}
-                    justifyContent={'center'}
-                    alignItems={'center'} >
-                    {content.img ? (
-                        <Image
-                            alt={content.name}
-                            w={width}
-                            h={width}
-                            source={{ uri: content.img }}
-                        />
-                    ) : (
-                        <Entypo
-                            name='image'
-                            size={250}
-                            color={COLOR.GRAY}
-                        />
-                    )}
-                </Box>
-            </Box>
-        )
-
-    } else {
-        return null
-    }
+                    <Box
+                        w={'full'}
+                        h={'92%'}
+                        justifyContent={'center'}
+                        alignItems={'center'} >
+                        {content.img ? (
+                            <Image
+                                alt={content.name}
+                                w={width}
+                                h={width}
+                                source={{ uri: content.img }}
+                            />
+                        ) : (
+                            <Entypo
+                                name='image'
+                                size={250}
+                                color={COLOR.GRAY}
+                            />
+                        )}
+                    </Box>
+                </>
+            )}
+        </Box>
+    )
 }
 
 export default Page

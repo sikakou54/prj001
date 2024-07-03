@@ -54,49 +54,49 @@ function Page() {
         }
     }, [content])
 
-    if (undefined !== content) {
-        return (
-            <Box
-                w={'full'}
-                h={'full'}
-                bg={bg}
-                alignItems={'center'}
-            >
-                <Stack.Screen
-                    options={{
-                        title: 'グループ名を変更する',
-                    }}
-                />
-                <VStack
-                    w={'95%'}
-                    alignItems={'center'}
-                    mt={5}
-                    mb={5}
-                >
-                    <TextInput
-                        bg={cardBg}
-                        roundedTop={'md'}
-                        roundedBottom={'md'}
-                        label='グループ名'
-                        maxLength={20}
-                        onChangeText={setName}
-                        text={group_name}
-                    />
-                </VStack>
-                <Button
-                    w={'95%'}
-                    h={12}
-                    borderRadius={10}
-                    onPress={regist}
-                    bg={COLOR.LIGHT_GREEN}
-                    isDisabled={'' === group_name || content?.name === group_name}
-                    rounded={'md'}
-                >変更する</Button>
-            </Box>
-        )
-    } else {
-        return null
-    }
+    return (
+        <Box
+            w={'full'}
+            h={'full'}
+            bg={bg}
+            alignItems={'center'}
+        >
+            <Stack.Screen
+                options={{
+                    title: 'グループ名を変更する',
+                }}
+            />
+            {undefined !== content && (
+                <>
+                    <VStack
+                        w={'95%'}
+                        alignItems={'center'}
+                        mt={5}
+                        mb={5}
+                    >
+                        <TextInput
+                            bg={cardBg}
+                            roundedTop={'md'}
+                            roundedBottom={'md'}
+                            label='グループ名'
+                            maxLength={20}
+                            onChangeText={setName}
+                            text={group_name}
+                        />
+                    </VStack>
+                    <Button
+                        w={'95%'}
+                        h={12}
+                        borderRadius={10}
+                        onPress={regist}
+                        bg={COLOR.LIGHT_GREEN}
+                        isDisabled={'' === group_name || content?.name === group_name}
+                        rounded={'md'}
+                    >変更する</Button>
+                </>
+            )}
+        </Box>
+    )
 
 }
 

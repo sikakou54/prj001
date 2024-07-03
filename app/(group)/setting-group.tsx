@@ -101,38 +101,38 @@ function Page() {
         }
     }, [btnClickState])
 
-    if (undefined !== content) {
-        return (
-            <Box
-                w={'full'}
-                h={'full'}
-                bg={bg}
+    return (
+        <Box
+            w={'full'}
+            h={'full'}
+            bg={bg}
+            alignItems={'center'}
+            safeAreaTop
+        >
+            <Stack.Screen
+                options={{
+                    headerShown: false,
+                    animation: 'slide_from_bottom',
+                    gestureEnabled: true,
+                    gestureDirection: 'vertical',
+                }}
+            />
+            <HStack
+                justifyContent={'space-between'}
                 alignItems={'center'}
-                safeAreaTop
+                w={'full'}
+                h={'8%'}
+                pl={3}
+                pr={3}
             >
-                <Stack.Screen
-                    options={{
-                        headerShown: false,
-                        animation: 'slide_from_bottom',
-                        gestureEnabled: true,
-                        gestureDirection: 'vertical',
-                    }}
+                <AntDesign
+                    name='closecircleo'
+                    size={26}
+                    color={useColorModeValue(COLOR.BLACK, COLOR.WHITE)}
+                    onPress={(() => router.back())}
                 />
-                <HStack
-                    justifyContent={'space-between'}
-                    alignItems={'center'}
-                    w={'full'}
-                    h={'8%'}
-                    pl={3}
-                    pr={3}
-                >
-                    <AntDesign
-                        name='closecircleo'
-                        size={26}
-                        color={useColorModeValue(COLOR.BLACK, COLOR.WHITE)}
-                        onPress={(() => router.back())}
-                    />
-                </HStack>
+            </HStack>
+            {undefined !== content && (
                 <VStack w={'95%'} space={3} mt={5}>
                     <Box w={'full'} alignItems={'center'} justifyContent={'center'}>
                         <TouchableOpacity onPress={pickImage}>
@@ -275,11 +275,9 @@ function Page() {
                         </TouchableOpacity>
                     </Box>
                 </VStack>
-            </Box>
-        )
-    } else {
-        return null
-    }
+            )}
+        </Box>
+    )
 }
 
 export default Page

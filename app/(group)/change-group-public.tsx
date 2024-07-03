@@ -53,64 +53,64 @@ function Page() {
         }
     }, [content])
 
-    if (undefined !== content) {
-        return (
-            <Box
-                w={'full'}
-                h={'full'}
-                bg={bg}
-                alignItems={'center'}
-            >
-                <Stack.Screen
-                    options={{
-                        title: 'グループの参加を設定する',
-                    }}
-                />
-                <VStack
-                    alignItems={'center'}
-                    mt={5}
-                    w={'95%'}
-                    mb={5}
-                >
-                    <TextBox
-                        onPress={() => setPublic(1)}
-                        text={'許可する'}
-                        roundedTop={'md'}
-                        rightIcon={
-                            isPublic === 1 ? (<FontAwesome
-                                name='check-circle'
-                                size={30}
-                                color={COLOR.GREEN}
-                            />) : (undefined)
-                        }
-                    />
-                    <TextBox
-                        onPress={() => setPublic(0)}
-                        text={'禁止する'}
-                        roundedBottom={'md'}
-                        rightIcon={
-                            isPublic === 0 ? (<FontAwesome
-                                name='check-circle'
-                                size={30}
-                                color={COLOR.GREEN}
-                            />) : (undefined)
-                        }
-                    />
-                </VStack>
-                <Button
-                    w={'95%'}
-                    h={12}
-                    borderRadius={10}
-                    onPress={setting}
-                    bg={COLOR.LIGHT_GREEN}
-                    isDisabled={isPublic === content.public}
-                    rounded={'md'}
-                >変更する</Button>
-            </Box>
-        )
-    } else {
-        return null
-    }
+    return (
+        <Box
+            w={'full'}
+            h={'full'}
+            bg={bg}
+            alignItems={'center'}
+        >
+            <Stack.Screen
+                options={{
+                    title: 'グループの参加を設定する',
+                }}
+            />
+            {undefined !== content && (
+                <>
+                    <VStack
+                        alignItems={'center'}
+                        mt={5}
+                        w={'95%'}
+                        mb={5}
+                    >
+                        <TextBox
+                            onPress={() => setPublic(1)}
+                            text={'許可する'}
+                            roundedTop={'md'}
+                            rightIcon={
+                                isPublic === 1 ? (<FontAwesome
+                                    name='check-circle'
+                                    size={30}
+                                    color={COLOR.GREEN}
+                                />) : (undefined)
+                            }
+                        />
+                        <TextBox
+                            onPress={() => setPublic(0)}
+                            text={'禁止する'}
+                            roundedBottom={'md'}
+                            rightIcon={
+                                isPublic === 0 ? (<FontAwesome
+                                    name='check-circle'
+                                    size={30}
+                                    color={COLOR.GREEN}
+                                />) : (undefined)
+                            }
+                        />
+                    </VStack>
+                    <Button
+                        w={'95%'}
+                        h={12}
+                        borderRadius={10}
+                        onPress={setting}
+                        bg={COLOR.LIGHT_GREEN}
+                        isDisabled={isPublic === content.public}
+                        rounded={'md'}
+                    >変更する</Button>
+                </>
+            )}
+        </Box>
+    )
 }
 
 export default Page
