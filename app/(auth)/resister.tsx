@@ -97,9 +97,12 @@ const ResistScreen = () => {
     }, [check, dispatch, mail, password, userName, Config, router])
 
     const errorMessageUserName = useCallback(() => {
-        return error === ERROR_CODE.USERNAME_EMPTY_ERROR
-            ? ERROR_MESSAGE.USERNAME_EMPTY_ERROR
-            : undefined
+        switch (error) {
+            case ERROR_CODE.USERNAME_EMPTY_ERROR:
+                return ERROR_MESSAGE.USERNAME_EMPTY_ERROR
+            default:
+                return undefined
+        }
     }, [error])
 
     const errorMessageMail = useCallback(() => {
