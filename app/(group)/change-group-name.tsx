@@ -1,5 +1,5 @@
 import React, { useCallback, useContext, useEffect, useState } from 'react'
-import { Box, Button, VStack, useColorModeValue } from 'native-base'
+import { Box, Button, Text, VStack, useColorModeValue } from 'native-base'
 import { AppDispatch } from '../../src/Store'
 import { shallowEqual, useDispatch, useSelector } from 'react-redux'
 import { update_group_name } from '../../src/Store/Reducer'
@@ -14,6 +14,7 @@ import { Stack, router, useLocalSearchParams } from 'expo-router'
 import TextInput from '../../src/Compenent/TextInput'
 import { GroupContent } from '../../src/Type'
 import { ToastContext } from '../../src/context'
+import { AntDesign } from '@expo/vector-icons'
 
 function Page() {
     const bg = useColorModeValue(COLOR.LIGHT_GRAY, COLOR.DEEP_BLACK)
@@ -48,12 +49,6 @@ function Page() {
         })
     }, [group_id, group_name])
 
-    useEffect(() => {
-        if (undefined === content) {
-            router.replace('/(error)/question')
-        }
-    }, [content])
-
     return (
         <Box
             w={'full'}
@@ -66,7 +61,7 @@ function Page() {
                     title: 'グループ名を変更する',
                 }}
             />
-            {undefined !== content && (
+            {undefined !== content ? (
                 <>
                     <VStack
                         w={'95%'}
@@ -94,6 +89,24 @@ function Page() {
                         rounded={'md'}
                     >変更する</Button>
                 </>
+            ) : (
+                <Box
+                    w={'full'}
+                    h={'full'}
+                    justifyContent={'center'}
+                    alignItems={'center'}
+                    bg={bg}
+                >
+                    <AntDesign
+                        name='question'
+                        size={100}
+                        color={COLOR.GRAY}
+                    />
+                    <Text
+                        fontWeight={'bold'}
+                        fontSize={'sm'}
+                    >グループが存在しません</Text>
+                </Box>
             )}
         </Box>
     )

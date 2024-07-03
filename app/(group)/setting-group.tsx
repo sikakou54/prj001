@@ -89,12 +89,6 @@ function Page() {
     }, [btnClickState, content])
 
     useEffect(() => {
-        if (undefined === content) {
-            router.replace('/(error)/question')
-        }
-    }, [content])
-
-    useEffect(() => {
         //コピーを連打したした時の対応
         if (true === btnClickState) {
             setTimeout(() => setBtnClickState(false), 2500)
@@ -132,8 +126,8 @@ function Page() {
                     onPress={(() => router.back())}
                 />
             </HStack>
-            {undefined !== content && (
-                <VStack w={'95%'} space={3} mt={5}>
+            {undefined !== content ? (
+                <VStack w={'95%'} h={'92%'} space={3} mt={5}>
                     <Box w={'full'} alignItems={'center'} justifyContent={'center'}>
                         <TouchableOpacity onPress={pickImage}>
                             <Avatar borderColor={cardBg} borderWidth={4} bg="gray.400" size={120}>
@@ -275,6 +269,24 @@ function Page() {
                         </TouchableOpacity>
                     </Box>
                 </VStack>
+            ) : (
+                <Box
+                    w={'full'}
+                    h={'92%'}
+                    justifyContent={'center'}
+                    alignItems={'center'}
+                    bg={bg}
+                >
+                    <AntDesign
+                        name='question'
+                        size={100}
+                        color={COLOR.GRAY}
+                    />
+                    <Text
+                        fontWeight={'bold'}
+                        fontSize={'sm'}
+                    >グループが存在しません</Text>
+                </Box>
             )}
         </Box>
     )

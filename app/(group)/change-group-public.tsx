@@ -1,5 +1,5 @@
 import React, { useCallback, useContext, useEffect, useState } from 'react'
-import { Box, Button, VStack, useColorModeValue } from 'native-base'
+import { Box, Button, Text, VStack, useColorModeValue } from 'native-base'
 import { AppDispatch } from '../../src/Store'
 import { shallowEqual, useDispatch, useSelector } from 'react-redux'
 import { update_group_public } from '../../src/Store/Reducer'
@@ -13,7 +13,7 @@ import {
 import { Stack, router, useLocalSearchParams } from 'expo-router'
 import { GroupContent } from '../../src/Type'
 import TextBox from '../../src/Compenent/TextBox'
-import { FontAwesome } from '@expo/vector-icons'
+import { AntDesign, FontAwesome } from '@expo/vector-icons'
 import { ToastContext } from '../../src/context'
 
 function Page() {
@@ -47,12 +47,6 @@ function Page() {
         })
     }, [group_id, isPublic])
 
-    useEffect(() => {
-        if (undefined === content) {
-            router.replace('/(error)/question')
-        }
-    }, [content])
-
     return (
         <Box
             w={'full'}
@@ -65,7 +59,7 @@ function Page() {
                     title: 'グループの参加を設定する',
                 }}
             />
-            {undefined !== content && (
+            {undefined !== content ? (
                 <>
                     <VStack
                         alignItems={'center'}
@@ -108,6 +102,24 @@ function Page() {
                         rounded={'md'}
                     >変更する</Button>
                 </>
+            ) : (
+                <Box
+                    w={'full'}
+                    h={'full'}
+                    justifyContent={'center'}
+                    alignItems={'center'}
+                    bg={bg}
+                >
+                    <AntDesign
+                        name='question'
+                        size={100}
+                        color={COLOR.GRAY}
+                    />
+                    <Text
+                        fontWeight={'bold'}
+                        fontSize={'sm'}
+                    >グループが存在しません</Text>
+                </Box>
             )}
         </Box>
     )

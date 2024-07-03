@@ -3,6 +3,7 @@ import {
     Box,
     HStack,
     Image,
+    Text,
     useColorModeValue,
 } from 'native-base'
 import { AntDesign, Entypo, FontAwesome } from '@expo/vector-icons'
@@ -83,12 +84,6 @@ function Page() {
         }
     }, [asset])
 
-    useEffect(() => {
-        if (undefined === content) {
-            router.replace('/(error)/question')
-        }
-    }, [content])
-
     return (
         <Box
             w={'full'}
@@ -104,78 +99,96 @@ function Page() {
                     gestureDirection: 'vertical',
                 }}
             />
-            {undefined !== content && (
-                <>
-                    <HStack
-                        justifyContent={'space-between'}
-                        alignItems={'center'}
-                        w={'full'}
-                        h={'8%'}
-                        pl={3}
-                        pr={3}
-                    >
-                        <AntDesign
-                            name='closecircleo'
-                            size={26}
-                            color={useColorModeValue(COLOR.BLACK, COLOR.WHITE)}
-                            onPress={(() => router.back())}
-                        />
-                        <HStack w={180} alignItems={'center'} justifyContent={null !== content.img ? 'space-around' : 'flex-end'}>
-                            {content.img && (
-                                <IconLabel
-                                    onPress={onDeleteImage}
-                                    w={90}
-                                    h={12}
-                                    borderColor={'none'}
-                                    text={'削除'}
-                                    icon={
-                                        <AntDesign
-                                            name='delete'
-                                            onPress={() => { }}
-                                            size={26}
-                                            color={COLOR.RED}
-                                        />
-                                    }
-                                />
-                            )}
+            <HStack
+                justifyContent={'space-between'}
+                alignItems={'center'}
+                w={'full'}
+                h={'8%'}
+                pl={3}
+                pr={3}
+            >
+                <AntDesign
+                    name='closecircleo'
+                    size={26}
+                    color={useColorModeValue(COLOR.BLACK, COLOR.WHITE)}
+                    onPress={(() => router.back())}
+                />
+                {undefined !== content && (
+                    <HStack w={180} alignItems={'center'} justifyContent={null !== content.img ? 'space-around' : 'flex-end'}>
+                        {content.img && (
                             <IconLabel
-                                onPress={pickImage}
+                                onPress={onDeleteImage}
                                 w={90}
                                 h={12}
                                 borderColor={'none'}
-                                text={'変更'}
+                                text={'削除'}
                                 icon={
-                                    <FontAwesome
-                                        name='exchange'
+                                    <AntDesign
+                                        name='delete'
                                         onPress={() => { }}
                                         size={26}
-                                        color={COLOR.GREEN}
+                                        color={COLOR.RED}
                                     />
                                 }
                             />
-                        </HStack>
-                    </HStack>
-                    <Box
-                        w={'full'}
-                        h={'92%'}
-                        justifyContent={'center'}
-                        alignItems={'center'} >
-                        {content.img ? (
-                            <Image
-                                alt={content.name}
-                                w={width}
-                                h={width}
-                                source={{ uri: content.img }}
-                            />
-                        ) : (
-                            <Entypo
-                                name='image'
-                                size={250}
-                                color={COLOR.GRAY}
-                            />
                         )}
-                    </Box>
-                </>
+                        <IconLabel
+                            onPress={pickImage}
+                            w={90}
+                            h={12}
+                            borderColor={'none'}
+                            text={'変更'}
+                            icon={
+                                <FontAwesome
+                                    name='exchange'
+                                    onPress={() => { }}
+                                    size={26}
+                                    color={COLOR.GREEN}
+                                />
+                            }
+                        />
+                    </HStack>
+                )}
+            </HStack>
+            {undefined !== content ? (
+                <Box
+                    w={'full'}
+                    h={'92%'}
+                    justifyContent={'center'}
+                    alignItems={'center'} >
+                    {content.img ? (
+                        <Image
+                            alt={content.name}
+                            w={width}
+                            h={width}
+                            source={{ uri: content.img }}
+                        />
+                    ) : (
+                        <Entypo
+                            name='image'
+                            size={250}
+                            color={COLOR.GRAY}
+                        />
+                    )}
+                </Box>
+            ) : (
+                <Box
+                    w={'full'}
+                    h={'92%'}
+                    justifyContent={'center'}
+                    alignItems={'center'}
+                    bg={bg}
+                >
+                    <AntDesign
+                        name='question'
+                        size={100}
+                        color={COLOR.GRAY}
+                    />
+                    <Text
+                        fontWeight={'bold'}
+                        fontSize={'sm'}
+                    >グループが存在しません</Text>
+                </Box>
             )}
         </Box>
     )
