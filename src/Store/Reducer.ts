@@ -754,10 +754,10 @@ export const load_group_member_paging = createAsyncThunk(
         } as ApplicationStatus)
       }
       const userInfo = await Api.get_userInfo()
-      const item = await Api.get_group_member(params.group_id, params.offset)
+      const member = await Api.get_group_member(params.group_id, params.offset)
 
       api.dispatch(actions.set_user_info(userInfo))
-      api.dispatch(actions.set_group_member({ member: item, is_offset: true }))
+      api.dispatch(actions.set_group_member({ member, is_offset: true }))
 
       const appState: ApplicationStatus = {
         status: ApplicationState.Success,
