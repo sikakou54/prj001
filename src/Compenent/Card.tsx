@@ -15,7 +15,6 @@ interface Props {
     roundedTop?: string
     roundedBottom?: string
 }
-
 export default function Card(props: Props) {
     if (undefined !== props.onPress) {
         return (
