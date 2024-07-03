@@ -9,11 +9,8 @@ import {
 import {
     Box,
     FlatList,
-    HStack,
-    Progress,
     ScrollView,
     Text,
-    VStack,
     useColorModeValue,
 } from 'native-base'
 import { shallowEqual, useDispatch, useSelector } from 'react-redux'
@@ -25,8 +22,6 @@ import {
     load_send_notify_detail,
     load_send_notify_paging,
 } from '../Store/Reducer'
-import Card from './Card'
-import AvatarIcon from './AvatorIcon'
 import { ToastContext } from '../context'
 import SendNotifyListItem from './SendNotifyListItem'
 
