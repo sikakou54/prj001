@@ -273,38 +273,38 @@ export default function Page() {
                     gestureDirection: 'vertical'
                 }}
             />
+            <HStack
+                justifyContent={'space-between'}
+                alignItems={'center'}
+                w={'full'}
+                h={'8%'}
+            >
+                <HStack
+                    w={'90%'}
+                    justifyContent={'space-between'}
+                    alignItems={'center'}
+                    pl={3}
+                    pr={3}
+                    space={2}
+                >
+                    <AntDesign
+                        name='closecircleo'
+                        size={26}
+                        color={useColorModeValue(COLOR.BLACK, COLOR.WHITE)}
+                        onPress={(() => router.back())}
+                    />
+                    <Box w={'full'}>
+                        <Text
+                            fontSize={'sm'}
+                            w={'90%'}
+                            numberOfLines={2}
+                            ellipsizeMode={'tail'}
+                        >{undefined !== content ? content.name : 'CLOSEされた通知'}</Text>
+                    </Box>
+                </HStack>
+            </HStack>
             {undefined !== content && (
                 <>
-                    <HStack
-                        justifyContent={'space-between'}
-                        alignItems={'center'}
-                        w={'full'}
-                        h={'8%'}
-                    >
-                        <HStack
-                            w={'90%'}
-                            justifyContent={'space-between'}
-                            alignItems={'center'}
-                            pl={3}
-                            pr={3}
-                            space={2}
-                        >
-                            <AntDesign
-                                name='closecircleo'
-                                size={26}
-                                color={useColorModeValue(COLOR.BLACK, COLOR.WHITE)}
-                                onPress={(() => router.back())}
-                            />
-                            <Box w={'full'}>
-                                <Text
-                                    fontSize={'sm'}
-                                    w={'90%'}
-                                    numberOfLines={2}
-                                    ellipsizeMode={'tail'}
-                                >{content.name}</Text>
-                            </Box>
-                        </HStack>
-                    </HStack>
                     <ScrollView
                         w={'full'}
                         h={'82%'}
