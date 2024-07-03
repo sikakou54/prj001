@@ -299,7 +299,7 @@ export default function Page() {
                             w={'90%'}
                             numberOfLines={2}
                             ellipsizeMode={'tail'}
-                        >{undefined !== content ? content.name : 'CLOSEされた通知'}</Text>
+                        >{undefined !== content ? content.name : 'CLOSE済みの通知'}</Text>
                     </Box>
                 </HStack>
             </HStack>
