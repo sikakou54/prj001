@@ -47,31 +47,29 @@ const Page = () => {
     }, [mail, password])
 
     const login = useCallback(() => {
-        if (!check()) {
-            return
+        if (check()) {
+            dispatch(signIn({ mail, password })).then((item) => {
+                const { status, code }: ApplicationStatus = item.payload as ApplicationStatus
+                if (status === ApplicationState.Success) {
+                    navigation.reset({
+                        index: 0,
+                        routes: [{ name: 'index' as never }],
+                    })
+                } else if (code === SystemException.UserUnAuthenticatedException) {
+                    dispatch(resend_signup({ mail: mail as string })).then((item) => {
+                        const { status }: ApplicationStatus = item.payload as ApplicationStatus
+                        if (ApplicationState.Success === status) {
+                            router.push({
+                                pathname: '/send-auth-mail-sinup',
+                                params: { mail },
+                            })
+                        }
+                    })
+                } else {
+                    setError(ERROR_CODE.NOT_LOGIN_ERROR)
+                }
+            })
         }
-
-        dispatch(signIn({ mail, password })).then((item) => {
-            const { status, code }: ApplicationStatus = item.payload as ApplicationStatus
-            if (status === ApplicationState.Success) {
-                navigation.reset({
-                    index: 0,
-                    routes: [{ name: 'index' as never }],
-                })
-            } else if (code === SystemException.UserUnAuthenticatedException) {
-                dispatch(resend_signup({ mail: mail as string })).then((item) => {
-                    const { status }: ApplicationStatus = item.payload as ApplicationStatus
-                    if (ApplicationState.Success === status) {
-                        router.push({
-                            pathname: '/send-auth-mail-sinup',
-                            params: { mail },
-                        })
-                    }
-                })
-            } else {
-                setError(ERROR_CODE.NOT_LOGIN_ERROR)
-            }
-        })
     }, [check, dispatch, mail, password, navigation])
 
     const onChangeMain = useCallback((text: string) => {
