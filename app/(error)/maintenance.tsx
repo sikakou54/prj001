@@ -33,7 +33,7 @@ export default function Page() {
             >ただいまメンテナンス中です</Text>
             <Text
                 fontWeight={'bold'}
-                fontSize={'sm'}
+                fontSize={'md'}
             >しばらくお待ちください</Text>
         </VStack>
     )

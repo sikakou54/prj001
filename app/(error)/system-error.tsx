@@ -33,7 +33,7 @@ export default function Page() {
             >システムエラーが発生しました</Text>
             <Text
                 fontWeight={'bold'}
-                fontSize={'sm'}
+                fontSize={'md'}
             >アプリを再起動してもう一度お試しください</Text>
             <Box
                 w={'full'}

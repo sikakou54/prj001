@@ -33,7 +33,7 @@ export default function Page() {
             >ネットワーク接続が不安定です</Text>
             <Text
                 fontWeight={'bold'}
-                fontSize={'sm'}
+                fontSize={'md'}
             >通信環境の良いところで再度お試しください</Text>
             <Box
                 w={'full'}
