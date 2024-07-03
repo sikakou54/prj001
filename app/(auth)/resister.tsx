@@ -86,7 +86,7 @@ const ResistScreen = () => {
             const { status, code }: ApplicationStatus = item.payload as ApplicationStatus;
             if (status === ApplicationState.Success) {
                 router.push({
-                    pathname: '/sinup-auth',
+                    pathname: '/send-auth-mail-sinup',
                     params: {
                         mail
                     }

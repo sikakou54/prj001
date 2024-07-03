@@ -63,7 +63,7 @@ const Page = () => {
                     const { status }: ApplicationStatus = item.payload as ApplicationStatus;
                     if (ApplicationState.Success === status) {
                         router.push({
-                            pathname: '/sinup-auth',
+                            pathname: '/send-auth-mail-sinup',
                             params: { mail },
                         });
                     }

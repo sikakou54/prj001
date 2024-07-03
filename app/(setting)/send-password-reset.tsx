@@ -37,7 +37,7 @@ function Page() {
             const { status, code } = item.payload as ApplicationStatus
             if (status === ApplicationState.Success) {
                 router.push({
-                    pathname: '/(auth)/change-password-auth',
+                    pathname: '/(auth)/send-auth-mail-change-password',
                     params: {
                         mail: UserInfo.mail,
                     },
