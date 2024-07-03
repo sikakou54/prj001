@@ -75,7 +75,6 @@ const customTheme = extendTheme({
         }
     }
 })
-
 function AppContainer() {
     const navigation = useNavigation()
     const bg = useColorModeValue(COLOR.LIGHT_GRAY, COLOR.DEEP_BLACK)
@@ -96,7 +95,6 @@ function AppContainer() {
         disc: '',
         callback: (result: AlertResult) => { }
     })
-
     const onClose = useCallback((result: AlertResult) => {
         if (undefined !== alertText.callback) {
             alertText.callback(result)
