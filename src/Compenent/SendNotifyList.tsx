@@ -35,7 +35,7 @@ export default function SendNotifyList() {
         //console.log('onEndReached!', distanceFromEnd)
         dispatch(load_send_notify_paging({ offset: contents.length }))
     }, [contents])
-    const onNotifyListPress = useCallback((notify_id: string) => {
+    const onSendNotifyListItemPress = useCallback((notify_id: string) => {
         dispatch(load_send_notify_detail({ notify_id })).then((item) => {
             const { status }: ApplicationStatus = item.payload as ApplicationStatus
             if (status === ApplicationState.Success) {
@@ -56,7 +56,7 @@ export default function SendNotifyList() {
     }, [dispatch])
     const renderItem = useCallback(({ item }: { item: SendNotifyContent }) => (
         <SendNotifyListItem
-            onPress={onNotifyListPress}
+            onPress={onSendNotifyListItemPress}
             notify_id={item.notify_id}
             name={item.name}
             percent={item.percent}

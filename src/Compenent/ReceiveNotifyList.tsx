@@ -28,7 +28,7 @@ export default function ReceiveNotifyList() {
     const bg = useColorModeValue(COLOR.LIGHT_GRAY, COLOR.DEEP_BLACK)
     const contents: ReceiveNotifyContent[] = useSelector((state: RootState) => state.Notify.Receive.contents, shallowEqual)
     const dispatch: AppDispatch = useDispatch()
-    const onReceiveNotifyPress = useCallback((notify_id: string) => {
+    const onReceiveNotifyItemPress = useCallback((notify_id: string) => {
         dispatch(load_receive_notify_choice({ notify_id })).then((item) => {
             const { status }: ApplicationStatus = item.payload as ApplicationStatus
             if (status === ApplicationState.Success) {
@@ -43,7 +43,7 @@ export default function ReceiveNotifyList() {
     }, [dispatch])
     const renderItem = useCallback(({ item }: { item: ReceiveNotifyContent }) => (
         <ReceiveNotifyListItem
-            onPress={() => onReceiveNotifyPress(item.notify_id)}
+            onPress={() => onReceiveNotifyItemPress(item.notify_id)}
             notify_id={item.notify_id}
             name={item.name}
             group_name={item.group_name}
