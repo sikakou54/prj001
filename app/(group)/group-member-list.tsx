@@ -204,9 +204,9 @@ export default function GroupMemberList() {
                         onEndReached={onEndReached}
                         onStartReachedThreshold={0}
                         renderHiddenItem={renderHiddenItem}
-                        rightOpenValue={-75} // Enable left swipe with a width of 75 for the delete button
-                        disableRightSwipe={true} // Disable right swipe
-                        stopRightSwipe={-75} // Optional: limit left swipe
+                        rightOpenValue={-75}
+                        disableRightSwipe={true}
+                        stopRightSwipe={-75}
                     />
                 </VStack>
             </Box>
