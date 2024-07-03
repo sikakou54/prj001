@@ -49,7 +49,12 @@ function Page() {
                     title: '検索結果',
                 }}
             />
-            <VStack w={'95%'} pt={5} alignItems={'center'} space={5}>
+            <VStack
+                w={'95%'}
+                pt={5}
+                alignItems={'center'}
+                space={5}
+            >
                 <TextBox
                     leftIcon={
                         <AvatarIcon
