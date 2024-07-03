@@ -337,8 +337,6 @@ export function add_member(params: { user_id: string, group_id: string }): Promi
       if (error) {
         if (error.message === 'Failed to fetch' || error.message.includes('Network request failed')) {
           throw new SystemException(SystemException.NetworkingError)
-        } else if (error.message === 'LIMIT OVER 1000' || error.message.includes('LIMIT OVER 1000')) {
-          throw new SystemException(SystemException.LimitExceededException)
         }
         throw new SystemException(SystemException.SystemError)
       }

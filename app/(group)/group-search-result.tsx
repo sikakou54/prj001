@@ -30,14 +30,7 @@ function Page() {
             if (status.status === ApplicationState.Success) {
                 toast?.showToast({
                     title: `${name}に参加しました`,
-                    bg: COLOR.LIGHT_GREEN,
-
-                })
-            } else if (status.code === SystemException.LimitExceededException) {
-                toast?.showToast({
-                    title: `参加上限に達しているため参加できません`,
-                    bg: COLOR.GRAY,
-
+                    bg: COLOR.LIGHT_GREEN
                 })
             }
             router.back()
