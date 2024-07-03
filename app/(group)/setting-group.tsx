@@ -134,9 +134,7 @@ function Page() {
                 refreshControl={
                     <RefreshControl
                         refreshing={false}
-                        onRefresh={() =>
-                            dispatch(load_group({ group_id }))
-                        }
+                        onRefresh={() => dispatch(load_group({ group_id }))}
                     />
                 }
             >
