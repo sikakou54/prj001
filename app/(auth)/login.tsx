@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useCallback } from 'react';
 import {
     ApplicationStatus,
     ApplicationState,
@@ -6,108 +6,103 @@ import {
     ERROR_MESSAGE,
     COLOR,
     SystemException,
-} from '../../src/Type'
+} from '../../src/Type';
 import {
     Box,
     Button,
     Text,
     VStack,
     useColorModeValue,
-} from 'native-base'
-import { useDispatch } from 'react-redux'
-import { AppDispatch } from '../../src/Store'
-import { resend_signup, signIn } from '../../src/Store/Reducer'
-import { Stack, router, useNavigation } from 'expo-router'
-import { checkMailFormat, isEmpty } from '../../src/Api/Common'
-import TextInput from '../../src/Compenent/TextInput'
+} from 'native-base';
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from '../../src/Store';
+import { resend_signup, signIn } from '../../src/Store/Reducer';
+import { Stack, router, useNavigation } from 'expo-router';
+import { checkMailFormat, isEmpty } from '../../src/Api/Common';
+import TextInput from '../../src/Compenent/TextInput';
 
 const Page = () => {
-    const navigation = useNavigation()
-    const bg = useColorModeValue(COLOR.LIGHT_GRAY, COLOR.DEEP_BLACK)
-    const cardBg = useColorModeValue(COLOR.WHITE, COLOR.BLACK)
-    const dispatch: AppDispatch = useDispatch()
-    const [mail, setMail] = useState<string>('')
-    const [password, setPassword] = useState<string>('')
-    const [error, setError] = useState<number>(ERROR_CODE.NONE)
+    const navigation = useNavigation();
+    const bg = useColorModeValue(COLOR.LIGHT_GRAY, COLOR.DEEP_BLACK);
+    const cardBg = useColorModeValue(COLOR.WHITE, COLOR.BLACK);
+    const dispatch: AppDispatch = useDispatch();
+    const [mail, setMail] = useState<string>('');
+    const [password, setPassword] = useState<string>('');
+    const [error, setError] = useState<number>(ERROR_CODE.NONE);
 
-    function check() {
+    const check = useCallback(() => {
         if (isEmpty(mail)) {
-            setError(ERROR_CODE.MAIL_EMPTY_ERROR)
-            return false
+            setError(ERROR_CODE.MAIL_EMPTY_ERROR);
+            return false;
         }
         if (!checkMailFormat(mail)) {
-            setError(ERROR_CODE.MAIL_FORMAT_ERROR)
-            return false
+            setError(ERROR_CODE.MAIL_FORMAT_ERROR);
+            return false;
         }
         if (isEmpty(password)) {
-            setError(ERROR_CODE.PASSWORD_EMPTY_ERROR)
-            return false
+            setError(ERROR_CODE.PASSWORD_EMPTY_ERROR);
+            return false;
         }
-        return true
-    }
+        return true;
+    }, [mail, password]);
 
-    function login() {
-
+    const login = useCallback(() => {
         if (!check()) {
-            return
+            return;
         }
 
         dispatch(signIn({ mail, password })).then((item) => {
-            const { status, code }: ApplicationStatus = item.payload as ApplicationStatus
+            const { status, code }: ApplicationStatus = item.payload as ApplicationStatus;
             if (status === ApplicationState.Success) {
                 navigation.reset({
                     index: 0,
-                    routes: [{
-                        name: 'index' as never
-                    }]
-                })
+                    routes: [{ name: 'index' as never }],
+                });
             } else if (code === SystemException.UserUnAuthenticatedException) {
                 dispatch(resend_signup({ mail: mail as string })).then((item) => {
-                    const { status }: ApplicationStatus = item.payload as ApplicationStatus
+                    const { status }: ApplicationStatus = item.payload as ApplicationStatus;
                     if (ApplicationState.Success === status) {
                         router.push({
                             pathname: '/sinup-auth',
-                            params: {
-                                mail
-                            }
-                        })
+                            params: { mail },
+                        });
                     }
-                })
+                });
             } else {
-                setError(ERROR_CODE.NOT_LOGIN_ERROR)
+                setError(ERROR_CODE.NOT_LOGIN_ERROR);
             }
-        })
-    }
+        });
+    }, [check, dispatch, mail, password, navigation]);
 
-    function onChangeMain(text: string) {
-        setMail(text)
-    }
+    const onChangeMain = useCallback((text: string) => {
+        setMail(text);
+    }, []);
 
-    function onChangePassword(text: string) {
-        setPassword(text)
-    }
+    const onChangePassword = useCallback((text: string) => {
+        setPassword(text);
+    }, []);
 
-    function errorMessageMail() {
-        if (error == ERROR_CODE.MAIL_EMPTY_ERROR) {
-            return ERROR_MESSAGE.MAIL_FORMAT_ERROR
+    const errorMessageMail = useCallback(() => {
+        if (error === ERROR_CODE.MAIL_EMPTY_ERROR) {
+            return ERROR_MESSAGE.MAIL_FORMAT_ERROR;
         }
-        if (error == ERROR_CODE.MAIL_FORMAT_ERROR) {
-            return ERROR_MESSAGE.MAIL_FORMAT_ERROR
+        if (error === ERROR_CODE.MAIL_FORMAT_ERROR) {
+            return ERROR_MESSAGE.MAIL_FORMAT_ERROR;
         }
-        if (error == ERROR_CODE.MAIL_EXIST_ERROR) {
-            return ERROR_MESSAGE.MAIL_EXIST_ERROR
+        if (error === ERROR_CODE.MAIL_EXIST_ERROR) {
+            return ERROR_MESSAGE.MAIL_EXIST_ERROR;
         }
-        return undefined
-    }
+        return undefined;
+    }, [error]);
 
-    function errorMessagePassword() {
-        if (error == ERROR_CODE.PASSWORD_EMPTY_ERROR) {
-            return ERROR_MESSAGE.PASSWORD_EMPTY_ERROR
+    const errorMessagePassword = useCallback(() => {
+        if (error === ERROR_CODE.PASSWORD_EMPTY_ERROR) {
+            return ERROR_MESSAGE.PASSWORD_EMPTY_ERROR;
         } else if (error === ERROR_CODE.NOT_LOGIN_ERROR) {
-            return ERROR_MESSAGE.NOT_LOGIN_ERROR
+            return ERROR_MESSAGE.NOT_LOGIN_ERROR;
         }
-        return undefined
-    }
+        return undefined;
+    }, [error]);
 
     return (
         <Box
@@ -119,7 +114,7 @@ const Page = () => {
             <Stack.Screen
                 options={{
                     headerShown: true,
-                    title: 'ログイン'
+                    title: 'ログイン',
                 }}
             />
             <VStack
@@ -133,7 +128,7 @@ const Page = () => {
                     roundedTop={'md'}
                     label='メールアドレス'
                     //maxLength={30}
-                    onChangeText={(text) => onChangeMain(text)}
+                    onChangeText={onChangeMain}
                     text={mail}
                     errorMessage={errorMessageMail()}
                 />
@@ -142,7 +137,7 @@ const Page = () => {
                     roundedBottom={'md'}
                     label='パスワード'
                     //maxLength={30}
-                    onChangeText={(text) => onChangePassword(text)}
+                    onChangeText={onChangePassword}
                     text={password}
                     secureTextEntry={true}
                     errorMessage={errorMessagePassword()}
@@ -176,8 +171,8 @@ const Page = () => {
                     >パスワードを忘れた方はこちら</Text>
                 </Button>
             </VStack>
-        </Box >
-    )
-}
+        </Box>
+    );
+};
 
-export default Page
+export default Page;
