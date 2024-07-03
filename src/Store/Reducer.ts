@@ -1921,11 +1921,7 @@ export const add_notify = createAsyncThunk(
  ****************************************************************************************************/
 export const update_answer = createAsyncThunk(
   'update_answer',
-  async (params: {
-    group_id: string,
-    notify_id: string,
-    choice: number,
-  }, api) => {
+  async (params: { group_id: string, notify_id: string, choice: number }, api) => {
 
     try {
 
