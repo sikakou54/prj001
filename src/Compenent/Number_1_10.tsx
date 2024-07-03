@@ -3,7 +3,6 @@ import { useColorModeValue } from 'native-base'
 import { COLOR } from '../Type'
 
 export default function Number_1_10({ num, size }: { num: number, size: number }) {
-
   const color = useColorModeValue(COLOR.BLACK, COLOR.WHITE)
 
   switch (num) {
