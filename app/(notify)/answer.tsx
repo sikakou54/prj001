@@ -139,6 +139,7 @@ function Page() {
                             >
                                 <HStack
                                     w={'full'}
+                                    alignItems={'center'}
                                     space={1}
                                 >
                                     <Box
