@@ -298,7 +298,7 @@ function Page() {
                             />
                             <Text
                                 fontWeight={'bold'}
-                                fontSize={'sm'}
+                                fontSize={'md'}
                                 color={COLOR.GRAY}
                             >グループが存在しません</Text>
                         </VStack>
