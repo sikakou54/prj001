@@ -29,7 +29,7 @@ import AvatarIcon from './AvatorIcon'
 
 export default function ReceiveNotifyList() {
     const bg = useColorModeValue(COLOR.LIGHT_GRAY, COLOR.DEEP_BLACK)
-    const ReceiveNotifyContent: ReceiveNotifyContent[] = useSelector((state: RootState) => state.Notify.Receive.contents, shallowEqual)
+    const contents: ReceiveNotifyContent[] = useSelector((state: RootState) => state.Notify.Receive.contents, shallowEqual)
     const dispatch: AppDispatch = useDispatch()
     const ListItem = React.memo(({
         name,
@@ -120,7 +120,6 @@ export default function ReceiveNotifyList() {
             </HStack>
         </Card >
     ))
-
     const renderItem = useCallback(({ item }: { item: ReceiveNotifyContent }) => (
         <ListItem
             notify_id={item.notify_id}
@@ -134,17 +133,16 @@ export default function ReceiveNotifyList() {
     const keyExtractor = useCallback((item: ReceiveNotifyContent) => item.notify_id, [])
     const onEndReached = useCallback(({ distanceFromEnd }: { distanceFromEnd: number }) => {
         //console.log('onEndReached!', distanceFromEnd)
-        dispatch(load_receive_notify_list_paging({ offset: ReceiveNotifyContent.length }))
-    }, [ReceiveNotifyContent])
+        dispatch(load_receive_notify_list_paging({ offset: contents.length }))
+    }, [contents])
 
-    if (ReceiveNotifyContent.length > 0) {
-
-        return (
-            <Box w={'full'} h={'full'} bg={bg}>
+    return (
+        <Box w={'full'} h={'full'} bg={bg}>
+            {contents.length > 0 ? (
                 <FlatList
                     w={'full'}
                     h={'full'}
-                    data={ReceiveNotifyContent}
+                    data={contents}
                     renderItem={renderItem}
                     keyExtractor={keyExtractor}
                     refreshing={false}
@@ -155,17 +153,7 @@ export default function ReceiveNotifyList() {
                     maxToRenderPerBatch={30}
                     onStartReachedThreshold={0}
                 />
-            </Box>
-        )
-
-    } else {
-
-        return (
-            <Box
-                w={'full'}
-                h={'full'}
-                bg={bg}
-            >
+            ) : (
                 <ScrollView
                     w={'full'}
                     h={'full'}
@@ -188,7 +176,7 @@ export default function ReceiveNotifyList() {
                         >通知がありません</Text>
                     </Box>
                 </ScrollView>
-            </Box>
-        )
-    }
+            )}
+        </Box>
+    )
 }

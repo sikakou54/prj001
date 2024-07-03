@@ -143,7 +143,6 @@ export default function SendNotifyList() {
             </Card>
         )
     })
-
     const renderItem = useCallback(({ item }: { item: SendNotifyContent }) => (
         <ListItem
             notify_id={item.notify_id}
@@ -179,9 +178,9 @@ export default function SendNotifyList() {
         })
     }, [])
 
-    if (contents.length > 0) {
-        return (
-            <Box w={'full'} h={'full'} bg={bg}>
+    return (
+        <Box w={'full'} h={'full'} bg={bg}>
+            {contents.length > 0 ? (
                 <FlatList
                     w={'full'}
                     h={'full'}
@@ -195,11 +194,7 @@ export default function SendNotifyList() {
                     initialNumToRender={30}
                     maxToRenderPerBatch={30}
                 />
-            </Box>
-        )
-    } else {
-        return (
-            <Box w={'full'} h={'full'} bg={bg}>
+            ) : (
                 <ScrollView
                     w={'full'}
                     refreshControl={
@@ -220,7 +215,7 @@ export default function SendNotifyList() {
                         >通知がありません</Text>
                     </Box>
                 </ScrollView>
-            </Box>
-        )
-    }
+            )}
+        </Box>
+    )
 }
