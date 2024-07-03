@@ -1,4 +1,4 @@
-import { Box, Button, Checkbox, Heading, Modal, Text, VStack, useColorModeValue } from 'native-base'
+import { Box, Button, Checkbox, Heading, Modal, Text, VStack } from 'native-base'
 import { WebView } from 'react-native-webview'
 import { COLOR } from '../Type'
 import { useState } from 'react'
