@@ -63,15 +63,14 @@ export default function NotifyAnswerMemberList() {
         dispatch(load_send_notify_answer_list_paging({ choice: Number(choice), notify_id, offset: answer.length }))
     }, [answer, choice, notify_id])
 
-    if (answer.length > 0) {
-
-        return (
-            <Box h={'full'} bg={bg}>
-                <Stack.Screen
-                    options={{
-                        title: textTrim(useTitle(), 20)
-                    }}
-                />
+    return (
+        <Box h={'full'} bg={bg}>
+            <Stack.Screen
+                options={{
+                    title: textTrim(useTitle(), 20)
+                }}
+            />
+            {answer.length > 0 ? (
                 <FlatList
                     w={'full'}
                     h={'full'}
@@ -85,23 +84,7 @@ export default function NotifyAnswerMemberList() {
                     initialNumToRender={30}
                     maxToRenderPerBatch={30}
                 />
-            </Box>
-        )
-
-    } else {
-
-        return (
-            <Box
-                w={'full'}
-                h={'full'}
-                bg={bg}
-                alignItems={'center'}
-            >
-                <Stack.Screen
-                    options={{
-                        title: textTrim(useTitle(), 20)
-                    }}
-                />
+            ) : (
                 <ScrollView
                     w={'full'}
                     h={'full'}
@@ -124,7 +107,7 @@ export default function NotifyAnswerMemberList() {
                         >回答がありません</Text>
                     </Box>
                 </ScrollView>
-            </Box>
-        )
-    }
+            )}
+        </Box>
+    )
 }
