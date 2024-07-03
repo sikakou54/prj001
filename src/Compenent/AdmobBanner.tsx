@@ -26,7 +26,7 @@ export default function AdmobBanner({ size, debug, android, ios }: Props) {
                 setUnitId(id)
             }
         }
-    }, [debug]);
+    }, [debug])
 
     return (
         <Box w={'full'} bg={bg} alignItems={'center'}>

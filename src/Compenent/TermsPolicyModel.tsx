@@ -14,7 +14,7 @@ const TermsPolicyModel = (props: Props) => {
     const [terms, setTerms] = useState<boolean>(undefined === props.terms ? true : false)
     const [policy, setPolicy] = useState<boolean>(undefined === props.policy ? true : false)
     const [isClose, setIsClose] = useState<boolean>(false)
-    const randomParam = `?${Math.random().toString(36).substring(7)}`;
+    const randomParam = `?${Math.random().toString(36).substring(7)}`
 
     return (
         <Modal

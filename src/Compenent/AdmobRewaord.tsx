@@ -46,7 +46,7 @@ export default function AdmobRewardTest({ onClose, debug, ios, android }: Props)
 
     useEffect(() => {
         if (isLoaded) {
-            show();
+            show()
         }
     }, [isLoaded])
 

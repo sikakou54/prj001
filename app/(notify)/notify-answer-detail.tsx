@@ -318,7 +318,7 @@ export default function Page() {
                                         disc: 'CLOSEまたは削除されました',
                                         bg: COLOR.GRAY
                                     })
-                                    router.back();
+                                    router.back()
                                 }
                             })}
                         />

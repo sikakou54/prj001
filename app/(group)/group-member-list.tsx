@@ -30,7 +30,7 @@ import {
 import Card from '../../src/Compenent/Card'
 import AvatarIcon from '../../src/Compenent/AvatorIcon'
 import { AlertContext, ToastContext } from '../../src/context'
-import { SwipeListView } from 'react-native-swipe-list-view';
+import { SwipeListView } from 'react-native-swipe-list-view'
 
 export default function GroupMemberList() {
     const bg = useColorModeValue(COLOR.LIGHT_GRAY, COLOR.DEEP_BLACK)
@@ -159,7 +159,7 @@ export default function GroupMemberList() {
                 </Box>
             </TouchableOpacity>
         </HStack>
-    ), []);
+    ), [])
 
     useEffect(() => {
         if (undefined !== select_user) {

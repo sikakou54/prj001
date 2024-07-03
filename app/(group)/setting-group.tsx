@@ -97,7 +97,7 @@ function Page() {
     useEffect(() => {
         //コピーを連打したした時の対応
         if (true === btnClickState) {
-            setTimeout(() => setBtnClickState(false), 2500);
+            setTimeout(() => setBtnClickState(false), 2500)
         }
     }, [btnClickState])
 

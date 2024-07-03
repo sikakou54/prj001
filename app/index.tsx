@@ -15,7 +15,7 @@ import { Image } from 'native-base'
 import { useFonts } from 'expo-font'
 import { requestTrackingPermissionsAsync } from 'expo-tracking-transparency'
 import { MobileAds } from 'react-native-google-mobile-ads'
-import * as SplashScreen from 'expo-splash-screen';
+import * as SplashScreen from 'expo-splash-screen'
 
 export default function Page() {
     const navigation = useNavigation()
@@ -55,19 +55,19 @@ export default function Page() {
                     }]
                 })
             }
-            await SplashScreen.hideAsync();
+            await SplashScreen.hideAsync()
         } catch (error) {
             router.replace('/(error)/system-error')
         }
     }, [])
 
     const showSplash = useCallback(async () => {
-        await SplashScreen.preventAutoHideAsync();
-    }, []);
+        await SplashScreen.preventAutoHideAsync()
+    }, [])
 
     useEffect(() => {
-        showSplash();
-    }, []);
+        showSplash()
+    }, [])
 
     useEffect(() => {
         if (fontsLoaded || fontError) {
