@@ -84,6 +84,7 @@ export default function GroupMemberList() {
             </Card>
         )
     })
+
     const renderItem = useCallback(({ item }: { item: GroupMember }) => (
         <ListItem
             user_id={item.user_id}

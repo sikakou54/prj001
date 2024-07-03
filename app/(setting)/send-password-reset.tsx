@@ -31,6 +31,7 @@ function Page() {
     const [text, setText] = useState<string>(undefined !== mail ? mail : '')
     const UserInfo: UserInfo = useSelector((state: RootState) => state.UserInfo, shallowEqual)
     const toast = useContext(ToastContext)
+
     const reset = useCallback(() => {
         dispatch(reset_password({ mail: UserInfo.mail })).then((item) => {
             const { status, code } = item.payload as ApplicationStatus

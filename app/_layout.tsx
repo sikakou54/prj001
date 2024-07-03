@@ -96,6 +96,7 @@ function AppContainer() {
         disc: '',
         callback: (result: AlertResult) => { }
     })
+
     const onClose = useCallback((result: AlertResult) => {
         if (undefined !== alertText.callback) {
             alertText.callback(result)

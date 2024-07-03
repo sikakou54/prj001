@@ -64,6 +64,7 @@ export default function Page() {
             </Card>
         )
     })
+
     const renderItem = useCallback(({ item }: { item: GroupContent }) => (
         <ListItem
             group_id={item.group_id}

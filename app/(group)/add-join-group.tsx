@@ -21,6 +21,7 @@ function Page() {
     const [code, setCode] = useState<string>('')
     const dispatch: AppDispatch = useDispatch()
     const [message, sestMessage] = useState<string | undefined>(undefined)
+
     const search = useCallback(() => {
         dispatch(search_group({ code })).then((item) => {
             const { status, data }: ApplicationStatus = item.payload as ApplicationStatus

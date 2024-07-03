@@ -46,6 +46,7 @@ export default function NotifyAnswerMemberList() {
             />
         )
     })
+
     const renderItem = useCallback(({ item }: { item: SendNotifyAsnwer }) => (
         <ListItem
             name={item.name}

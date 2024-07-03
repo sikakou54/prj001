@@ -6,6 +6,7 @@ import { TouchableOpacity } from 'react-native'
 
 export default function Page() {
     const bg = useColorModeValue(COLOR.LIGHT_GRAY, COLOR.DEEP_BLACK)
+
     return (
         <VStack
             w={'full'}

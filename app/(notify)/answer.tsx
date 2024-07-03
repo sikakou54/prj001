@@ -63,6 +63,7 @@ function Page() {
     const toast = useContext(ToastContext)
     const alert = useContext(AlertContext)
     const config = useContext(AppConfigContext)
+
     const answer = useCallback(() => {
         if (ReceiveNotifyContent) {
             dispatch(update_answer({

@@ -22,6 +22,7 @@ function Page() {
     const pickImage = useCallback(async () => {
         router.push({ pathname: '/(setting)/setting-account-image' })
     }, [])
+
     const onPressAcountDelete = useCallback(() => {
         alert?.setAlert({
             type: AlertType.OkCancel,

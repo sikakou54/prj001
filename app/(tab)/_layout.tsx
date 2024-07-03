@@ -19,6 +19,7 @@ export default function TabLayout() {
     const UserInfo: UserInfo = useSelector((state: RootState) => state.UserInfo, shallowEqual)
     const Config: AppConfig = useSelector((state: RootState) => state.Config, shallowEqual)
     const dispatch: AppDispatch = useDispatch()
+
     const onFetchNotification = useCallback((message: NotificationMessage) => {
         console.log('onFetchNotification', message)
         const { id, item } = message

@@ -11,6 +11,7 @@ interface Props {
 }
 export default function Alert(props: Props) {
     const cancelRef = React.useRef(null)
+
     return (
         <Center>
             <AlertDialog

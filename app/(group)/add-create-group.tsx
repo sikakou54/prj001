@@ -22,6 +22,7 @@ function Page() {
     const [errorMessage, setErrorMessage] = useState<string | undefined>(undefined)
     const dispatch: AppDispatch = useDispatch()
     const toast = useContext(ToastContext)
+
     const regist = useCallback(() => {
         dispatch(add_group({ code, group_name })).then((item) => {
             const { status, code }: ApplicationStatus = item.payload as ApplicationStatus

@@ -10,6 +10,7 @@ import { COLOR } from '../../src/Type'
 
 const Page = () => {
     const bg = useColorModeValue(COLOR.LIGHT_GRAY, COLOR.DEEP_BLACK)
+
     return (
         <Box
             w={'full'}

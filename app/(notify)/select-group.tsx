@@ -26,6 +26,7 @@ function Page() {
         isChecked: string
     }>()
     const contents: GroupContent[] = useSelector((state: RootState) => state.Group.contents, shallowEqual)
+
     const onPressSelectList = useCallback((group_id: string) => {
         router.push({
             pathname: '/confirm-notify',

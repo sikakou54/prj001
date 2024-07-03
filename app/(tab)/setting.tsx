@@ -17,6 +17,7 @@ export default function Page() {
     const UserInfo: UserInfo = useSelector((state: RootState) => state.UserInfo, shallowEqual)
     const DeviceInfo: DeviceInfo = useSelector((state: RootState) => state.DeviceInfo, shallowEqual)
     const alert = useContext(AlertContext)
+
     const onPressLogOut = useCallback(() => {
         alert?.setAlert({
             type: AlertType.YesNo,

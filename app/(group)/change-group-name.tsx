@@ -24,6 +24,7 @@ function Page() {
     const [group_name, setName] = useState<string>(content ? content.name : '')
     const dispatch: AppDispatch = useDispatch()
     const toast = useContext(ToastContext)
+
     const regist = useCallback(() => {
         dispatch(update_group_name({
             group_id,

@@ -34,6 +34,7 @@ function Page() {
     const toast = useContext(ToastContext)
     const alert = useContext(AlertContext)
     const [asset, setAsset] = useState<ImagePicker.ImagePickerAsset | null>(null)
+
     const callback = useCallback((result: AlertResult) => {
         if (result === AlertResult.Ok &&
             null !== UserInfo.img &&

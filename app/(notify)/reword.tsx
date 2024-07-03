@@ -11,6 +11,7 @@ export default function Page() {
     const toast = useContext(ToastContext)
     const dispatch: AppDispatch = useDispatch()
     const config = useContext(AppConfigContext)
+
     const onClose = useCallback((result: boolean) => {
         if (result) {
             dispatch(add_ticket({

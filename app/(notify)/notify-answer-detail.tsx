@@ -88,6 +88,7 @@ export default function Page() {
     const toast = useContext(ToastContext)
     const alert = useContext(AlertContext)
     const config = useContext(AppConfigContext)
+
     const callback = useCallback((result: AlertResult) => {
         if (result === AlertResult.Yes) {
             dispatch(update_notify_close({ notify_id })).then((item) => {

@@ -18,6 +18,7 @@ interface Props {
 }
 export default function TextBox(props: Props) {
     const cardBg = useColorModeValue(COLOR.WHITE, COLOR.BLACK)
+
     return (
         <Card
             key={props.key}

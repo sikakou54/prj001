@@ -24,6 +24,7 @@ function Page() {
     const dispatch: AppDispatch = useDispatch()
     const toast = useContext(ToastContext)
     const [isPublic, setPublic] = useState<number>(undefined !== content ? content.public : 0)
+
     const setting = useCallback(() => {
         dispatch(update_group_public({
             group_id,

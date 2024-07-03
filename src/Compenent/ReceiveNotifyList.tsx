@@ -120,6 +120,7 @@ export default function ReceiveNotifyList() {
             </HStack>
         </Card >
     ))
+
     const renderItem = useCallback(({ item }: { item: ReceiveNotifyContent }) => (
         <ListItem
             notify_id={item.notify_id}

@@ -27,6 +27,7 @@ function Page() {
     const UserInfo: UserInfo = useSelector((state: RootState) => state.UserInfo, shallowEqual)
     const [username, setUsername] = useState<string>(UserInfo.name)
     const toast = useContext(ToastContext)
+
     return (
         <Box
             w={'full'}

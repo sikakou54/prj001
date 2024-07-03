@@ -143,6 +143,7 @@ export default function SendNotifyList() {
             </Card>
         )
     })
+
     const renderItem = useCallback(({ item }: { item: SendNotifyContent }) => (
         <ListItem
             notify_id={item.notify_id}

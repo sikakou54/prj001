@@ -23,6 +23,7 @@ function Page() {
     const dispatch: AppDispatch = useDispatch()
     const toast = useContext(ToastContext)
     const isDisabled = useMemo(() => { return 'true' === isExist }, [isExist])
+
     const join = useCallback(() => {
         dispatch(add_member({ group_id: group_id as string })).then((item) => {
             const status: ApplicationStatus = item.payload as ApplicationStatus

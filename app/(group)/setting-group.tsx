@@ -39,6 +39,7 @@ function Page() {
     const toast = useContext(ToastContext)
     const alert = useContext(AlertContext)
     const [btnClickState, setBtnClickState] = useState<boolean>(false)
+
     const callbackGroupDelete = useCallback((result: AlertResult) => {
         if (result === AlertResult.Yes) {
             if (undefined !== content) {

@@ -29,6 +29,7 @@ function Page() {
     const [isNext, setIsNext] = useState<boolean>(false)
     const bg = useColorModeValue(COLOR.LIGHT_GRAY, COLOR.DEEP_BLACK)
     const cardBg = useColorModeValue(COLOR.WHITE, COLOR.BLACK)
+
     const addSelection = useCallback((item: string) => {
         setInputSelection('')
         setChoiceItems(choiceItems.concat(item))

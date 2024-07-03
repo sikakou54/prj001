@@ -6,6 +6,7 @@ import { COLOR } from '../../src/Type'
 
 function Page() {
     const router = useRouter()
+
     return (
         <Box
             w={'full'}
