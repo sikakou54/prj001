@@ -144,7 +144,7 @@ export default function TabLayout() {
                         tabBarIcon: (props) => (
                             <Feather
                                 name='users'
-                                size={26}
+                                size={32}
                                 color={props.focused ? useColorModeValue(COLOR.DEEP_GREEN, COLOR.WHITE) : COLOR.GRAY}
                             />
                         )
@@ -171,7 +171,7 @@ export default function TabLayout() {
                                 )}
                                 <Ionicons
                                     name='notifications-outline'
-                                    size={26}
+                                    size={32}
                                     color={props.focused ? useColorModeValue(COLOR.DEEP_GREEN, COLOR.WHITE) : COLOR.GRAY}
                                 />
                             </ZStack>
@@ -186,7 +186,7 @@ export default function TabLayout() {
                         tabBarIcon: (props) => (
                             <AntDesign
                                 name='setting'
-                                size={26}
+                                size={32}
                                 color={props.focused ? useColorModeValue(COLOR.DEEP_GREEN, COLOR.WHITE) : COLOR.GRAY}
                             />
                         ),
