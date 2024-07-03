@@ -35,22 +35,6 @@ export default function Page() {
                 fontWeight={'bold'}
                 fontSize={'sm'}
             >しばらくお待ちください</Text>
-            <Box
-                w={'full'}
-                h={100}
-                alignItems={'center'}
-                justifyContent={'center'}
-            >
-                <TouchableOpacity
-                    onPress={() => router.replace('/')}
-                >
-                    <AntDesign
-                        name='reload1'
-                        size={45}
-                        color={COLOR.GRAY}
-                    />
-                </TouchableOpacity>
-            </Box>
         </VStack>
     )
 }
