@@ -83,25 +83,27 @@ const Page = () => {
     }, []);
 
     const errorMessageMail = useCallback(() => {
-        if (error === ERROR_CODE.MAIL_EMPTY_ERROR) {
-            return ERROR_MESSAGE.MAIL_FORMAT_ERROR;
+        switch (error) {
+            case ERROR_CODE.MAIL_EMPTY_ERROR:
+                return ERROR_MESSAGE.MAIL_FORMAT_ERROR;
+            case ERROR_CODE.MAIL_FORMAT_ERROR:
+                return ERROR_MESSAGE.MAIL_FORMAT_ERROR;
+            case ERROR_CODE.MAIL_EXIST_ERROR:
+                return ERROR_MESSAGE.MAIL_EXIST_ERROR;
+            default:
+                return undefined;
         }
-        if (error === ERROR_CODE.MAIL_FORMAT_ERROR) {
-            return ERROR_MESSAGE.MAIL_FORMAT_ERROR;
-        }
-        if (error === ERROR_CODE.MAIL_EXIST_ERROR) {
-            return ERROR_MESSAGE.MAIL_EXIST_ERROR;
-        }
-        return undefined;
     }, [error]);
 
     const errorMessagePassword = useCallback(() => {
-        if (error === ERROR_CODE.PASSWORD_EMPTY_ERROR) {
-            return ERROR_MESSAGE.PASSWORD_EMPTY_ERROR;
-        } else if (error === ERROR_CODE.NOT_LOGIN_ERROR) {
-            return ERROR_MESSAGE.NOT_LOGIN_ERROR;
+        switch (error) {
+            case ERROR_CODE.PASSWORD_EMPTY_ERROR:
+                return ERROR_MESSAGE.PASSWORD_EMPTY_ERROR;
+            case ERROR_CODE.NOT_LOGIN_ERROR:
+                return ERROR_MESSAGE.NOT_LOGIN_ERROR;
+            default:
+                return undefined;
         }
-        return undefined;
     }, [error]);
 
     return (
