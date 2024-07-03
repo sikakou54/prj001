@@ -643,8 +643,10 @@ export const load_group_list_paging = createAsyncThunk(
           data: {},
         } as ApplicationStatus)
       }
+      const userInfo = await Api.get_userInfo()
       const contents = await Api.get_group_contents(user_id, offset)
 
+      api.dispatch(actions.set_user_info(userInfo))
       api.dispatch(actions.set_group_contents({ contents, is_offset: true }))
 
       return api.fulfillWithValue({
