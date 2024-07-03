@@ -1,8 +1,7 @@
-import { VStack, Text, useColorModeValue, Box } from 'native-base'
-import { AntDesign, Ionicons } from '@expo/vector-icons'
+import { VStack, Text, useColorModeValue } from 'native-base'
+import { Ionicons } from '@expo/vector-icons'
 import { COLOR } from '../../src/Type'
-import { Stack, router } from 'expo-router'
-import { TouchableOpacity } from 'react-native'
+import { Stack } from 'expo-router'
 
 export default function Page() {
     const bg = useColorModeValue(COLOR.LIGHT_GRAY, COLOR.DEEP_BLACK)
