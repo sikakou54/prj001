@@ -108,6 +108,7 @@ function AppContainer() {
 
     const showToast = useCallback((param: { title: string, disc?: string, bg?: string, onClose?: () => void }) => {
         const { title, disc, bg, onClose } = param
+        toast.closeAll()
         toast.show({
             placement: "top",
             duration: 1500,
