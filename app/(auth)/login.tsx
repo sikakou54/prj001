@@ -127,7 +127,6 @@ const Page = () => {
                     bg={cardBg}
                     roundedTop={'md'}
                     label='メールアドレス'
-                    //maxLength={30}
                     onChangeText={onChangeMain}
                     text={mail}
                     errorMessage={errorMessageMail()}
@@ -136,7 +135,6 @@ const Page = () => {
                     bg={cardBg}
                     roundedBottom={'md'}
                     label='パスワード'
-                    //maxLength={30}
                     onChangeText={onChangePassword}
                     text={password}
                     secureTextEntry={true}
