@@ -303,7 +303,7 @@ export default function Page() {
                     </Box>
                 </HStack>
             </HStack>
-            {undefined !== content && (
+            {undefined !== content ? (
                 <>
                     <ScrollView
                         w={'full'}
@@ -426,6 +426,19 @@ export default function Page() {
                         />
                     </Box>
                 </>
+            ) : (
+                <Box
+                    w={'full'}
+                    h={'full'}
+                    alignItems={'center'}
+                    justifyContent={'center'}
+                >
+                    <FontAwesome
+                        name='check-circle'
+                        size={100}
+                        color={COLOR.GREEN}
+                    />
+                </Box>
             )}
         </Box>
     )
