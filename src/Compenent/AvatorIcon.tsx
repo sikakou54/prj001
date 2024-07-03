@@ -9,13 +9,19 @@ interface Props {
 export default function AvatarIcon(props: Props) {
     if (props.img !== null && props.img !== '') {
         return (
-            <Avatar borderColor={COLOR.GRAY} borderWidth={0.5} bg="gray.400" source={{ uri: props.img }} size={undefined !== props.size ? props.size : 45} />
+            <Avatar
+                bg={COLOR.GRAY}
+                source={{ uri: props.img }}
+                size={undefined !== props.size ? props.size : 45}
+            />
         )
     } else {
         return (
-            <Avatar borderColor={COLOR.GRAY} borderWidth={0.5} bg="gray.400" source={undefined} size={undefined !== props.size ? props.size : 45}>
-                {props.defaultIcon}
-            </Avatar>
+            <Avatar
+                bg={COLOR.GRAY}
+                source={undefined}
+                size={undefined !== props.size ? props.size : 45}
+            >{props.defaultIcon}</Avatar>
         )
     }
 }
