@@ -171,25 +171,24 @@ export default function GroupMemberList() {
         }
     }, [select_user])
 
-    if (member.length > 0) {
-
-        return (
-            <Box
-                w={'full'}
-                h={'full'}
-                alignItems={'center'}
-                bg={bg}
-            >
-                <Stack.Screen
-                    options={{
-                        title: 'メンバー',
-                        headerTitleAlign: 'center',
-                        headerStyle: {
-                            backgroundColor: useColorModeValue(COLOR.WHITE, COLOR.BLACK),
-                        },
-                        headerTintColor: useColorModeValue(COLOR.BLACK, COLOR.WHITE)
-                    }}
-                />
+    return (
+        <Box
+            w={'full'}
+            h={'full'}
+            alignItems={'center'}
+            bg={bg}
+        >
+            <Stack.Screen
+                options={{
+                    title: 'メンバー',
+                    headerTitleAlign: 'center',
+                    headerStyle: {
+                        backgroundColor: useColorModeValue(COLOR.WHITE, COLOR.BLACK),
+                    },
+                    headerTintColor: useColorModeValue(COLOR.BLACK, COLOR.WHITE)
+                }}
+            />
+            {member.length > 0 ? (
                 <VStack w={'full'} h={'full'}>
                     <SwipeListView
                         data={member}
@@ -209,28 +208,7 @@ export default function GroupMemberList() {
                         stopRightSwipe={-75}
                     />
                 </VStack>
-            </Box>
-        )
-
-    } else {
-
-        return (
-            <Box
-                w={'full'}
-                h={'full'}
-                bg={bg}
-                alignItems={'center'}
-            >
-                <Stack.Screen
-                    options={{
-                        title: 'メンバー',
-                        headerTitleAlign: 'center',
-                        headerStyle: {
-                            backgroundColor: useColorModeValue(COLOR.WHITE, COLOR.BLACK),
-                        },
-                        headerTintColor: useColorModeValue(COLOR.BLACK, COLOR.WHITE)
-                    }}
-                />
+            ) : (
                 <ScrollView
                     h={'full'}
                     refreshControl={
@@ -250,7 +228,7 @@ export default function GroupMemberList() {
                         >メンバーがいません</Text>
                     </Box>
                 </ScrollView>
-            </Box>
-        )
-    }
+            )}
+        </Box>
+    )
 }
