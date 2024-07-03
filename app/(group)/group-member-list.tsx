@@ -189,7 +189,10 @@ export default function GroupMemberList() {
                 }}
             />
             {member.length > 0 ? (
-                <VStack w={'full'} h={'full'}>
+                <VStack
+                    w={'full'}
+                    h={'full'}
+                >
                     <SwipeListView
                         data={member}
                         keyExtractor={keyExtractor}
@@ -210,6 +213,7 @@ export default function GroupMemberList() {
                 </VStack>
             ) : (
                 <ScrollView
+                    w={'full'}
                     h={'full'}
                     refreshControl={
                         <RefreshControl
@@ -220,7 +224,11 @@ export default function GroupMemberList() {
                         />
                     }
                 >
-                    <Box w={'full'} h={'full'} alignItems={'center'}>
+                    <Box
+                        w={'full'}
+                        h={'full'}
+                        alignItems={'center'}
+                    >
                         <Text
                             mt={5}
                             fontSize={'md'}
