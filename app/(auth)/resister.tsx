@@ -1,10 +1,10 @@
-import { useState } from 'react'
+import { useState, useCallback } from 'react';
 import {
     checkMailFormat,
     isEmpty,
     strComp,
     validatePassword,
-} from '../../src/Api/Common'
+} from '../../src/Api/Common';
 import {
     AppConfig,
     ApplicationState,
@@ -14,66 +14,67 @@ import {
     ERROR_MESSAGE,
     RootState,
     SystemException,
-} from '../../src/Type'
+} from '../../src/Type';
 import {
     Box,
     Button,
     VStack,
     useColorModeValue,
-} from 'native-base'
-import { shallowEqual, useDispatch, useSelector } from 'react-redux'
-import { signUp } from '../../src/Store/Reducer'
-import { AppDispatch } from '../../src/Store'
-import { Stack, useRouter } from 'expo-router'
-import TextInput from '../../src/Compenent/TextInput'
-import TermsPolicyModel from '../../src/Compenent/TermsPolicyModel'
+} from 'native-base';
+import { shallowEqual, useDispatch, useSelector } from 'react-redux';
+import { signUp } from '../../src/Store/Reducer';
+import { AppDispatch } from '../../src/Store';
+import { Stack, useRouter } from 'expo-router';
+import TextInput from '../../src/Compenent/TextInput';
+import TermsPolicyModel from '../../src/Compenent/TermsPolicyModel';
 
 const ResistScreen = () => {
-    const bg = useColorModeValue(COLOR.LIGHT_GRAY, COLOR.DEEP_BLACK)
-    const cardBg = useColorModeValue(COLOR.WHITE, COLOR.BLACK)
-    const [userName, set_username] = useState<string>('')
-    const [mail, setMail] = useState<string>('')
-    const [password, setPassword] = useState<string>('')
-    const [confirm, setConfirm] = useState<string>('')
-    const [error, setError] = useState<number>(0)
-    const dispatch: AppDispatch = useDispatch()
-    const Config: AppConfig = useSelector((state: RootState) => state.Config, shallowEqual)
-    const router = useRouter()
-    function check() {
+    const bg = useColorModeValue(COLOR.LIGHT_GRAY, COLOR.DEEP_BLACK);
+    const cardBg = useColorModeValue(COLOR.WHITE, COLOR.BLACK);
+    const [userName, set_username] = useState<string>('');
+    const [mail, setMail] = useState<string>('');
+    const [password, setPassword] = useState<string>('');
+    const [confirm, setConfirm] = useState<string>('');
+    const [error, setError] = useState<number>(0);
+    const dispatch: AppDispatch = useDispatch();
+    const Config: AppConfig = useSelector((state: RootState) => state.Config, shallowEqual);
+    const router = useRouter();
+
+    const check = useCallback(() => {
         if (isEmpty(userName)) {
-            setError(ERROR_CODE.USERNAME_EMPTY_ERROR)
-            return false
+            setError(ERROR_CODE.USERNAME_EMPTY_ERROR);
+            return false;
         }
         if (isEmpty(mail)) {
-            setError(ERROR_CODE.MAIL_EMPTY_ERROR)
-            return false
+            setError(ERROR_CODE.MAIL_EMPTY_ERROR);
+            return false;
         }
         if (!checkMailFormat(mail)) {
-            setError(ERROR_CODE.MAIL_FORMAT_ERROR)
-            return false
+            setError(ERROR_CODE.MAIL_FORMAT_ERROR);
+            return false;
         }
         if (isEmpty(password)) {
-            setError(ERROR_CODE.PASSWORD_EMPTY_ERROR)
-            return false
+            setError(ERROR_CODE.PASSWORD_EMPTY_ERROR);
+            return false;
         }
         if (isEmpty(confirm)) {
-            setError(ERROR_CODE.CONFIRM_EMPTY_ERROR)
-            return false
+            setError(ERROR_CODE.CONFIRM_EMPTY_ERROR);
+            return false;
         }
         if (!strComp(password, confirm)) {
-            setError(ERROR_CODE.PASSWORD_COMP_ERROR)
-            return false
+            setError(ERROR_CODE.PASSWORD_COMP_ERROR);
+            return false;
         }
         if (!validatePassword(password)) {
-            setError(ERROR_CODE.PASSWORD_VALIDATE_ERROR)
-            return false
+            setError(ERROR_CODE.PASSWORD_VALIDATE_ERROR);
+            return false;
         }
-        return true
-    }
+        return true;
+    }, [userName, mail, password, confirm]);
 
-    function resist() {
+    const resist = useCallback(() => {
         if (!check()) {
-            return
+            return;
         }
         dispatch(signUp({
             mail,
@@ -82,61 +83,58 @@ const ResistScreen = () => {
             policy_ver: Config.policy.version,
             terms_ver: Config.terms.version,
         })).then((item) => {
-            const { status, code }: ApplicationStatus = item.payload as ApplicationStatus
+            const { status, code }: ApplicationStatus = item.payload as ApplicationStatus;
             if (status === ApplicationState.Success) {
                 router.push({
                     pathname: '/sinup-auth',
                     params: {
                         mail
                     }
-                })
+                });
             } else if (code === SystemException.UsernameExistsException) {
-                setError(ERROR_CODE.MAIL_EXIST_ERROR)
+                setError(ERROR_CODE.MAIL_EXIST_ERROR);
             }
-        })
-    }
+        });
+    }, [check, dispatch, mail, password, userName, Config, router]);
 
-    function errorMessageUserName() {
-        return error == ERROR_CODE.USERNAME_EMPTY_ERROR
+    const errorMessageUserName = useCallback(() => {
+        return error === ERROR_CODE.USERNAME_EMPTY_ERROR
             ? ERROR_MESSAGE.USERNAME_EMPTY_ERROR
-            : undefined
-    }
+            : undefined;
+    }, [error]);
 
-    function errorMessageMail() {
-
+    const errorMessageMail = useCallback(() => {
         switch (error) {
             case ERROR_CODE.MAIL_EMPTY_ERROR:
-                return ERROR_MESSAGE.MAIL_FORMAT_ERROR
+                return ERROR_MESSAGE.MAIL_FORMAT_ERROR;
             case ERROR_CODE.MAIL_EXIST_ERROR:
-                return ERROR_MESSAGE.MAIL_EXIST_ERROR
+                return ERROR_MESSAGE.MAIL_EXIST_ERROR;
             default:
-                return undefined
+                return undefined;
         }
-    }
+    }, [error]);
 
-    function errorMessagePassword() {
-
+    const errorMessagePassword = useCallback(() => {
         switch (error) {
             case ERROR_CODE.PASSWORD_EMPTY_ERROR:
-                return ERROR_MESSAGE.PASSWORD_EMPTY_ERROR
+                return ERROR_MESSAGE.PASSWORD_EMPTY_ERROR;
             case ERROR_CODE.PASSWORD_VALIDATE_ERROR:
-                return ERROR_MESSAGE.PASSWORD_VALIDATE_ERROR
+                return ERROR_MESSAGE.PASSWORD_VALIDATE_ERROR;
             default:
-                return undefined
+                return undefined;
         }
-    }
+    }, [error]);
 
-    function errorMessageConfirm() {
-
+    const errorMessageConfirm = useCallback(() => {
         switch (error) {
             case ERROR_CODE.CONFIRM_EMPTY_ERROR:
-                return ERROR_MESSAGE.CONFIRM_EMPTY_ERROR
+                return ERROR_MESSAGE.CONFIRM_EMPTY_ERROR;
             case ERROR_CODE.PASSWORD_COMP_ERROR:
-                return ERROR_MESSAGE.PASSWORD_COMP_ERROR
+                return ERROR_MESSAGE.PASSWORD_COMP_ERROR;
             default:
-                return undefined
+                return undefined;
         }
-    }
+    }, [error]);
 
     return (
         <Box
@@ -211,14 +209,14 @@ const ResistScreen = () => {
                 isRequired={false}
                 onClose={(result) => {
                     if (!result) {
-                        router.back()
+                        router.back();
                     }
                 }}
                 terms={Config.terms.url}
                 policy={Config.policy.url}
                 isOpen={true} />
         </Box>
-    )
-}
+    );
+};
 
-export default ResistScreen
+export default ResistScreen;

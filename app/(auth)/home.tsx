@@ -27,7 +27,7 @@ function Page() {
             >
                 <Box
                     h={'60%'}
-                    w={'90%'}
+                    w={'full'}
                     justifyContent={'center'}
                     alignItems={'center'}
                 >
