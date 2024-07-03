@@ -73,28 +73,27 @@ const ResistScreen = () => {
     }, [userName, mail, password, confirm])
 
     const resist = useCallback(() => {
-        if (!check()) {
-            return
+        if (check()) {
+            dispatch(signUp({
+                mail,
+                password,
+                name: userName,
+                policy_ver: Config.policy.version,
+                terms_ver: Config.terms.version,
+            })).then((item) => {
+                const { status, code }: ApplicationStatus = item.payload as ApplicationStatus
+                if (status === ApplicationState.Success) {
+                    router.push({
+                        pathname: '/send-auth-mail-sinup',
+                        params: {
+                            mail
+                        }
+                    })
+                } else if (code === SystemException.UsernameExistsException) {
+                    setError(ERROR_CODE.MAIL_EXIST_ERROR)
+                }
+            })
         }
-        dispatch(signUp({
-            mail,
-            password,
-            name: userName,
-            policy_ver: Config.policy.version,
-            terms_ver: Config.terms.version,
-        })).then((item) => {
-            const { status, code }: ApplicationStatus = item.payload as ApplicationStatus
-            if (status === ApplicationState.Success) {
-                router.push({
-                    pathname: '/send-auth-mail-sinup',
-                    params: {
-                        mail
-                    }
-                })
-            } else if (code === SystemException.UsernameExistsException) {
-                setError(ERROR_CODE.MAIL_EXIST_ERROR)
-            }
-        })
     }, [check, dispatch, mail, password, userName, Config, router])
 
     const errorMessageUserName = useCallback(() => {
