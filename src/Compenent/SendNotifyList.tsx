@@ -179,7 +179,11 @@ export default function SendNotifyList() {
     }, [])
 
     return (
-        <Box w={'full'} h={'full'} bg={bg}>
+        <Box
+            w={'full'}
+            h={'full'}
+            bg={bg}
+        >
             {contents.length > 0 ? (
                 <FlatList
                     w={'full'}
