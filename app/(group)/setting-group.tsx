@@ -30,6 +30,7 @@ import TextBox from '../../src/Compenent/TextBox'
 import AvatarIcon from '../../src/Compenent/AvatorIcon'
 import { GroupContent } from '../../src/Type'
 import { AlertContext, ToastContext } from '../../src/context'
+import TitleHeader from '../../src/Compenent/TitleHeader'
 
 function Page() {
     const bg = useColorModeValue(COLOR.LIGHT_GRAY, COLOR.DEEP_BLACK)
@@ -113,21 +114,7 @@ function Page() {
                     gestureDirection: 'vertical',
                 }}
             />
-            <HStack
-                justifyContent={'space-between'}
-                alignItems={'center'}
-                w={'full'}
-                h={'8%'}
-                pl={3}
-                pr={3}
-            >
-                <AntDesign
-                    name='closecircleo'
-                    size={26}
-                    color={useColorModeValue(COLOR.BLACK, COLOR.WHITE)}
-                    onPress={(() => router.back())}
-                />
-            </HStack>
+            <TitleHeader />
             <ScrollView
                 w={'full'}
                 h={'92%'}

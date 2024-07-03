@@ -11,6 +11,7 @@ import { load_ticket, update_ticket } from "../../src/Store/Reducer"
 import { router } from "expo-router"
 import { RefreshControl } from 'react-native'
 import { ToastContext } from "../../src/context"
+import TitleHeader from "../../src/Compenent/TitleHeader"
 
 export default function Page() {
     const dispatch: AppDispatch = useDispatch()
@@ -77,30 +78,7 @@ export default function Page() {
                     gestureDirection: 'vertical',
                 }}
             />
-            <HStack
-                justifyContent={'space-between'}
-                alignItems={'center'}
-                w={'full'}
-                h={'8%'}
-                pl={3}
-                pr={3}
-                space={2}
-            >
-                <AntDesign
-                    name='closecircleo'
-                    size={26}
-                    color={useColorModeValue(COLOR.BLACK, COLOR.WHITE)}
-                    onPress={(() => router.back())}
-                />
-                <Box w={'full'}>
-                    <Text
-                        fontSize={'sm'}
-                        w={'90%'}
-                        numberOfLines={2}
-                        ellipsizeMode={'tail'}
-                    >チケット</Text>
-                </Box>
-            </HStack>
+            <TitleHeader title={'チケット'} />
             <ScrollView
                 w={'full'}
                 h={'90%'}

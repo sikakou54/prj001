@@ -11,6 +11,7 @@ import { useCallback, useContext } from 'react'
 import AvatarIcon from '../../src/Compenent/AvatorIcon'
 import * as Notifications from 'expo-notifications'
 import { AlertContext } from '../../src/context'
+import TitleHeader from '../../src/Compenent/TitleHeader'
 
 function Page() {
     const navigation = useNavigation()
@@ -63,30 +64,7 @@ function Page() {
                     gestureDirection: 'vertical',
                 }}
             />
-            <HStack
-                justifyContent={'space-between'}
-                alignItems={'center'}
-                w={'full'}
-                h={'8%'}
-                pl={3}
-                pr={3}
-                space={2}
-            >
-                <AntDesign
-                    name='closecircleo'
-                    size={26}
-                    color={useColorModeValue(COLOR.BLACK, COLOR.WHITE)}
-                    onPress={(() => router.back())}
-                />
-                <Box w={'full'}>
-                    <Text
-                        fontSize={'sm'}
-                        w={'90%'}
-                        numberOfLines={2}
-                        ellipsizeMode={'tail'}
-                    >アカウント</Text>
-                </Box>
-            </HStack>
+            <TitleHeader title={'アカウント'} />
             <VStack h={'full'} alignItems={'center'} space={3} pt={3} bg={bg}>
                 <Box w={'full'} alignItems={'center'} justifyContent={'center'}>
                     <TouchableOpacity onPress={pickImage}>

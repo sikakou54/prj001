@@ -20,6 +20,7 @@ import Card from '../../src/Compenent/Card'
 import TextBox from '../../src/Compenent/TextBox'
 import { COLOR, MAX_CHOICE_NUM } from '../../src/Type'
 import Number_1_10 from '../../src/Compenent/Number_1_10'
+import TitleHeader from '../../src/Compenent/TitleHeader'
 
 function Page() {
     const [title, setTitle] = useState<string>('')
@@ -58,30 +59,7 @@ function Page() {
                     gestureDirection: 'vertical'
                 }}
             />
-            <HStack
-                justifyContent={'space-between'}
-                alignItems={'center'}
-                w={'full'}
-                h={'8%'}
-                pl={3}
-                pr={3}
-                space={2}
-            >
-                <AntDesign
-                    name='closecircleo'
-                    size={26}
-                    color={useColorModeValue(COLOR.BLACK, COLOR.WHITE)}
-                    onPress={(() => router.back())}
-                />
-                <Box w={'full'}>
-                    <Text
-                        fontSize={'sm'}
-                        w={'90%'}
-                        numberOfLines={2}
-                        ellipsizeMode={'tail'}
-                    >通知を作成する</Text>
-                </Box>
-            </HStack>
+            <TitleHeader title={'通知を作成する'} />
             <ScrollView w={'95%'} h={'82%'} >
                 <VStack
                     w={'full'}

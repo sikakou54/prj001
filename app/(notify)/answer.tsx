@@ -50,6 +50,7 @@ import {
     AlertContext,
     ToastContext
 } from '../../src/context'
+import TitleHeader from '../../src/Compenent/TitleHeader'
 
 function Page() {
     const bg = useColorModeValue(COLOR.LIGHT_GRAY, COLOR.DEEP_BLACK)
@@ -106,30 +107,7 @@ function Page() {
                     gestureDirection: 'vertical'
                 }}
             />
-            <HStack
-                justifyContent={'space-between'}
-                alignItems={'center'}
-                w={'full'}
-                h={'8%'}
-                pl={3}
-                pr={3}
-                space={2}
-            >
-                <AntDesign
-                    name='closecircleo'
-                    size={26}
-                    color={useColorModeValue(COLOR.BLACK, COLOR.WHITE)}
-                    onPress={(() => router.back())}
-                />
-                <Box w={'full'}>
-                    <Text
-                        fontSize={'sm'}
-                        w={'90%'}
-                        numberOfLines={2}
-                        ellipsizeMode={'tail'}
-                    >{undefined !== content ? content.name : '回答済またはCLOSE済の通知'}</Text>
-                </Box>
-            </HStack>
+            <TitleHeader title={undefined !== content ? content.name : '回答済またはCLOSE済の通知'} />
             {undefined !== content ? (
                 <>
                     <VStack
