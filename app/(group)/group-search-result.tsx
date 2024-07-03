@@ -7,7 +7,6 @@ import {
     ApplicationState,
     ApplicationStatus,
     COLOR,
-    SystemException,
     RootState,
     UserInfo,
 } from '../../src/Type'
