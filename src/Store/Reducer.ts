@@ -1946,8 +1946,9 @@ export const update_answer = createAsyncThunk(
         notify_id: params.notify_id,
         choice: params.choice
       })
+      const userInfo2 = await Api.get_userInfo()
 
-      api.dispatch(actions.set_user_info(userInfo))
+      api.dispatch(actions.set_user_info(userInfo2))
       api.dispatch(actions.remove_receive_notify({ notify_id: params.notify_id }))
 
       return api.fulfillWithValue({
