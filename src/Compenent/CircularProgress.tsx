@@ -6,6 +6,7 @@ import { COLOR } from '../Type'
 const CircularProgress = ({ size = 100, progress = 0, isProgressShow = false }) => {
     const [radius, setRadius] = useState(0)
     const [circumference, setCircumference] = useState(0)
+    const progressStrokeDashoffset = circumference - (progress / 100) * circumference
 
     useEffect(() => {
         const calculatedRadius = (size - 10) / 2 // 余白を考慮してサイズから10を引いて半径を計算
@@ -13,8 +14,6 @@ const CircularProgress = ({ size = 100, progress = 0, isProgressShow = false }) 
         setRadius(calculatedRadius)
         setCircumference(calculatedCircumference)
     }, [size])
-
-    const progressStrokeDashoffset = circumference - (progress / 100) * circumference
 
     return (
         <ZStack w={size} h={size} alignItems={'center'} justifyContent={'center'}>
