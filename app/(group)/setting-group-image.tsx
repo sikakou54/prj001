@@ -142,7 +142,6 @@ function Page() {
                             icon={
                                 <FontAwesome
                                     name='exchange'
-                                    onPress={() => { }}
                                     size={26}
                                     color={COLOR.GREEN}
                                 />
