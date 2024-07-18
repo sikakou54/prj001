@@ -46,7 +46,7 @@ const Page = () => {
                     justifyContent={'center'}
                     space={1}
                 >
-                    <Text>仮登録の確認メールを送信しました</Text>
+                    <Text>認証メールを送信しました</Text>
                     <Text>リンクを押して本登録を行なってください</Text>
                 </VStack>
                 <Button
