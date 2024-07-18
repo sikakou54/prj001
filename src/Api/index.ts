@@ -837,10 +837,10 @@ export function get_send_notify_choice(notify_id: string): Promise<SendNotifyCho
     try {
 
       let choiceItems: SendNotifyChoice[] = []
-      const choice = await SupaBaseRpcApi('get_notify_choice', { p_notify_id: notify_id })
+      const { data } = await SupaBaseRpcApi('get_notify_choice', { p_notify_id: notify_id })
 
-      if (choice.data) {
-        choice.data.forEach((item: any) => {
+      if (data) {
+        data.forEach((item: any) => {
           choiceItems.push({
             choice: item.choice,
             count: item.count,
@@ -869,10 +869,10 @@ export function get_receive_notifys(user_id: string, offset?: number): Promise<R
     try {
 
       let items: ReceiveNotifyContent[] = []
-      const answer = await SupaBaseRpcApi('get_receive_notify_list', { p_user_id: user_id, p_offset: undefined !== offset ? offset : 0 })
+      const { data } = await SupaBaseRpcApi('get_receive_notify_list', { p_user_id: user_id, p_offset: undefined !== offset ? offset : 0 })
 
-      for (let i = 0; i < answer.data.length; i++) {
-        const { group_id, group_name, is_anonym, notify_name, user_name, notify_id, img_group, img_user, create_at } = answer.data[i]
+      for (let i = 0; i < data.length; i++) {
+        const { group_id, group_name, is_anonym, notify_name, user_name, notify_id, img_group, img_user, create_at } = data[i]
         items.push({
           group_id: group_id,
           group_name: group_name,
