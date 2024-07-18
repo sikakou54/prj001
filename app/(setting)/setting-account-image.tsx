@@ -106,7 +106,7 @@ function Page() {
             >
                 <AntDesign
                     name='closecircleo'
-                    size={26}
+                    size={30}
                     color={useColorModeValue(COLOR.BLACK, COLOR.WHITE)}
                     onPress={(() => router.back())}
                 />
