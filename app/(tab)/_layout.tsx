@@ -129,11 +129,11 @@ export default function TabLayout() {
                     tabBarStyle: {
                         backgroundColor: useColorModeValue(COLOR.WHITE, COLOR.BLACK),
                         borderRadius: 10,
-                        height: 70,
-                        borderTopWidth: 0
+                        height: 80,
+                        borderTopWidth: 0,
                     },
                     tabBarItemStyle: {
-                        height: 70
+                        height: 80
                     }
                 }}
             >
