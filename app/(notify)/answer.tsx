@@ -113,7 +113,7 @@ function Page() {
                 <>
                     <VStack
                         w={'full'}
-                        h={'74%'}
+                        h={'72%'}
                         space={2}
                         pt={3}
                         alignItems={'center'}
@@ -157,12 +157,12 @@ function Page() {
                                             />
                                             <Box
                                                 top={-8}
-                                                right={2}
+                                                right={1}
                                             >
                                                 <AvatarIcon
                                                     img={content.img_user}
                                                     defaultIcon={<Text color={COLOR.WHITE}>{content.user_name.substring(0, 1)}</Text>}
-                                                    size={38}
+                                                    size={36}
                                                 />
                                             </Box>
                                         </ZStack>
@@ -245,7 +245,7 @@ function Page() {
                     </Box>
                     <Button
                         w={'full'}
-                        h={'8%'}
+                        h={'10%'}
                         onPress={answer}
                         isDisabled={choice === ''}
                         bg={COLOR.LIGHT_GREEN}
@@ -257,7 +257,7 @@ function Page() {
             ) : (
                 <Box
                     w={'full'}
-                    h={'95%'}
+                    h={'92%'}
                     alignItems={'center'}
                     justifyContent={'center'}
                 >
@@ -265,8 +265,8 @@ function Page() {
                     <Text
                         w={'full'}
                         textAlign={'center'}
-                        fontSize={'3xl'}
-                        color={useColorModeValue(COLOR.BLACK, COLOR.WHITE)}
+                        fontSize={'2xl'}
+                        color={COLOR.GRAY}
                     >回答済み</Text>
                 </Box>
             )}

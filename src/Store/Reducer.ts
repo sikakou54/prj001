@@ -1589,11 +1589,7 @@ export const add_group = createAsyncThunk(
         } as ApplicationStatus)
       }
       const userInfo = await Api.get_userInfo()
-      await Api.add_group(
-        userInfo.id,
-        code,
-        group_name
-      )
+      await Api.add_group(userInfo.id, code, group_name)
       const contents = await Api.get_group_contents(userInfo.id)
 
       api.dispatch(actions.set_user_info(userInfo))

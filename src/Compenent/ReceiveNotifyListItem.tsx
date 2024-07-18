@@ -38,18 +38,18 @@ export default function ReceiveNotifyListItem(props: Props) {
                     alignItems={'center'}
                 >
                     <AvatarIcon
-                        img={props.img}
+                        img={props.img_user}
                         defaultIcon={<Text color={COLOR.WHITE}>{props.group_name.substring(0, 1)}</Text>}
-                        size={45}
+                        size={42}
                     />
                     <Box
                         top={-8}
                         right={1}
                     >
                         <AvatarIcon
-                            img={props.img_user}
+                            img={props.img}
                             defaultIcon={<Text color={COLOR.WHITE}>{props.group_name.substring(0, 1)}</Text>}
-                            size={38}
+                            size={36}
                         />
                     </Box>
                 </ZStack>

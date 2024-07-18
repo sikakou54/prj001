@@ -25,7 +25,7 @@ export const supabaseAdmin = createClient(supabaseUrl as string, service_role as
     }
 })
 
-export async function SupaBaseRpcApi(name: string, params?: any): Promise<{ data: any[], count: number | null, error: any, status: any }> {
+export async function SupaBaseRpcApi(name: string, params?: any): Promise<{ data: any[], count: number | null, status: any }> {
     return new Promise(async (resolve, reject) => {
         try {
             const { data, error, status, count } = await supabase.rpc(name, params)
@@ -35,7 +35,6 @@ export async function SupaBaseRpcApi(name: string, params?: any): Promise<{ data
             resolve({
                 data,
                 count,
-                error,
                 status
             })
         } catch ({ error, status }: any) {
@@ -44,10 +43,11 @@ export async function SupaBaseRpcApi(name: string, params?: any): Promise<{ data
                 return reject(new SystemException(SystemException.NetworkingError))
             } else if (status === 0) {
                 return reject(new SystemException(SystemException.NetworkingError))
-            } else if (status >= 500 && error.message.includes('invalid transaction termination')) {
+            } else if (error.code === '2D000' || error.code === '23505') {
                 return reject(new SystemException(SystemException.TransactionCanceledException))
+            } else {
+                return reject(new SystemException(SystemException.SystemError))
             }
-            return reject(new SystemException(SystemException.SystemError))
         }
     })
 }

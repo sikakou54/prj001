@@ -115,19 +115,25 @@ function Page() {
                 }}
             />
             <TitleHeader />
-            <ScrollView
+            <Center
                 w={'full'}
                 h={'92%'}
-                refreshControl={
-                    <RefreshControl
-                        refreshing={false}
-                        onRefresh={() => dispatch(load_group({ group_id }))}
-                    />
-                }
+                justifyContent={'center'}
+                alignItems={'center'}
+                bg={bg}
             >
-                <Center w={'full'} h={'full'}>
-                    {undefined !== content ? (
-                        <VStack w={'95%'} h={'full'} space={3} mt={5}>
+                {undefined !== content ? (
+                    <ScrollView
+                        w={'95%'}
+                        h={'full'}
+                        refreshControl={
+                            <RefreshControl
+                                refreshing={false}
+                                onRefresh={() => dispatch(load_group({ group_id }))}
+                            />
+                        }
+                    >
+                        <VStack w={'full'} h={'full'} space={3} mt={5}>
                             <Box w={'full'} alignItems={'center'} justifyContent={'center'}>
                                 <TouchableOpacity onPress={pickImage}>
                                     <Avatar borderColor={cardBg} borderWidth={4} bg="gray.400" size={120}>
@@ -269,29 +275,22 @@ function Page() {
                                 </TouchableOpacity>
                             </Box>
                         </VStack>
-                    ) : (
-                        <VStack
-                            w={'full'}
-                            h={'full'}
-                            justifyContent={'center'}
-                            alignItems={'center'}
-                            bg={bg}
-                            space={1}
-                        >
-                            <AntDesign
-                                name='question'
-                                size={100}
-                                color={COLOR.GRAY}
-                            />
-                            <Text
-                                fontWeight={'bold'}
-                                fontSize={'md'}
-                                color={COLOR.GRAY}
-                            >グループが存在しません</Text>
-                        </VStack>
-                    )}
-                </Center>
-            </ScrollView>
+                    </ScrollView>
+                ) : (
+                    <>
+                        <AntDesign
+                            name='question'
+                            size={100}
+                            color={COLOR.GRAY}
+                        />
+                        <Text
+                            fontWeight={'bold'}
+                            fontSize={'md'}
+                            color={COLOR.GRAY}
+                        >グループが存在しません</Text>
+                    </>
+                )}
+            </Center>
         </Box>
     )
 }

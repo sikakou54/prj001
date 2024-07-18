@@ -397,23 +397,13 @@ export function add_group(user_id: string, code: string, name: string): Promise<
     try {
 
       const group_id = await generate_uuid()
-      const { error } = await SupaBaseRpcApi('add_group', {
+      await SupaBaseRpcApi('add_group', {
         code,
         group_id,
         name,
         user_id,
         public: '1'
       })
-
-      if (error) {
-        if (error.message === 'Failed to fetch' || error.message.includes('Network request failed')) {
-          throw new SystemException(SystemException.NetworkingError)
-        } else if (error.code === '23505') {
-          throw new SystemException(SystemException.TransactionCanceledException)
-        }
-        throw new SystemException(SystemException.SystemError)
-      }
-
       resolve(group_id)
 
     } catch (e: any) {
@@ -599,7 +589,7 @@ export async function add_notify(
     try {
 
       const notify_id = await generate_uuid()
-      const addNotifyResult = await SupaBaseRpcApi('add_notify', {
+      await SupaBaseRpcApi('add_notify', {
         p_user_id: user_id,
         p_notify_id: notify_id,
         p_group_id: group_id,
@@ -607,13 +597,6 @@ export async function add_notify(
         p_name: title,
         p_is_anonym: is_anonym
       })
-
-      if (addNotifyResult.error) {
-        if (addNotifyResult.error.message === 'Failed to fetch' || addNotifyResult.error.message.includes('Network request failed')) {
-          throw new SystemException(SystemException.NetworkingError)
-        }
-        throw new SystemException(SystemException.SystemError)
-      }
 
       const unique_id = await generate_uuid()
       await SupaBaseRpcApi('insert_send_push_notification_by_create_notify', {
@@ -762,13 +745,6 @@ export function get_send_notify_asnwer(notify_id: string, choice: number, offset
       const answer = await SupaBaseRpcApi('get_create_notify_answer_list', { p_notify_id: notify_id, p_choice: choice, p_offset: undefined !== offset ? offset : 0 })
       let items: SendNotifyAsnwer[] = []
 
-      if (answer.error) {
-        if (answer.error.message === 'Failed to fetch' || answer.error.message.includes('Network request failed')) {
-          throw new SystemException(SystemException.NetworkingError)
-        }
-        throw new SystemException(SystemException.SystemError)
-      }
-
       if (answer.data) {
         answer.data.forEach((data: any) => items.push({
           user_id: data.user_id,
@@ -796,14 +772,7 @@ export function get_group_member(group_id: string, offset?: number): Promise<Gro
 
     try {
 
-      const { error, data } = await SupaBaseRpcApi('get_group_member_list', { p_group_id: group_id, p_offset: undefined !== offset ? offset : 0 })
-
-      if (error) {
-        if (error.message === 'Failed to fetch' || error.message.includes('Network request failed')) {
-          throw new SystemException(SystemException.NetworkingError)
-        }
-        throw new SystemException(SystemException.SystemError)
-      }
+      const { data } = await SupaBaseRpcApi('get_group_member_list', { p_group_id: group_id, p_offset: undefined !== offset ? offset : 0 })
 
       if (data) {
         resolve(data.map((item: any) => {
@@ -833,15 +802,8 @@ export function get_send_notify_contents(user_id: string, offset?: number): Prom
 
     try {
 
-      const { error, data } = await SupaBaseRpcApi('get_create_notify_list', { p_user_id: user_id, p_offset: undefined !== offset ? offset : 0 })
+      const { data } = await SupaBaseRpcApi('get_create_notify_list', { p_user_id: user_id, p_offset: undefined !== offset ? offset : 0 })
       let items: SendNotifyContent[] = []
-
-      if (error) {
-        if (error.message === 'Failed to fetch' || error.message.includes('Network request failed')) {
-          throw new SystemException(SystemException.NetworkingError)
-        }
-        throw new SystemException(SystemException.SystemError)
-      }
 
       for (let index = 0; index < data.length; index++) {
         const { percent, is_anonym, name, group_id, notify_id, create_at, img, group_name } = data[index]
@@ -877,13 +839,6 @@ export function get_send_notify_choice(notify_id: string): Promise<SendNotifyCho
       let choiceItems: SendNotifyChoice[] = []
       const choice = await SupaBaseRpcApi('get_notify_choice', { p_notify_id: notify_id })
 
-      if (choice.error) {
-        if (choice.error.message === 'Failed to fetch' || choice.error.message.includes('Network request failed')) {
-          throw new SystemException(SystemException.NetworkingError)
-        }
-        throw new SystemException(SystemException.SystemError)
-      }
-
       if (choice.data) {
         choice.data.forEach((item: any) => {
           choiceItems.push({
@@ -915,12 +870,6 @@ export function get_receive_notifys(user_id: string, offset?: number): Promise<R
 
       let items: ReceiveNotifyContent[] = []
       const answer = await SupaBaseRpcApi('get_receive_notify_list', { p_user_id: user_id, p_offset: undefined !== offset ? offset : 0 })
-      if (answer.error) {
-        if (answer.error.message === 'Failed to fetch' || answer.error.message.includes('Network request failed')) {
-          throw new SystemException(SystemException.NetworkingError)
-        }
-        throw new SystemException(SystemException.SystemError)
-      }
 
       for (let i = 0; i < answer.data.length; i++) {
         const { group_id, group_name, is_anonym, notify_name, user_name, notify_id, img_group, img_user, create_at } = answer.data[i]
@@ -1540,13 +1489,7 @@ export async function get_group_contents(user_id: string, offset?: number): Prom
 
     try {
 
-      const { data, error } = await SupaBaseRpcApi('get_user_member_group_list', { p_user_id: user_id, p_offset: undefined !== offset ? offset : 0 })
-      if (error) {
-        if (error.message === 'Failed to fetch' || error.message.includes('Network request failed')) {
-          throw new SystemException(SystemException.NetworkingError)
-        }
-        throw new SystemException(SystemException.SystemError)
-      }
+      const { data } = await SupaBaseRpcApi('get_user_member_group_list', { p_user_id: user_id, p_offset: undefined !== offset ? offset : 0 })
       resolve(data.map((item) => ({
         group_id: item.group_id,
         count: Number(item.count),
