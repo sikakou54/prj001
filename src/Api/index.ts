@@ -329,10 +329,10 @@ export function add_member(params: { user_id: string, group_id: string }): Promi
 
       const { error } = await supabase
         .from('tt_member')
-        .insert([{
+        .insert({
           user_id: user_id,
           group_id: group_id
-        }])
+        })
 
       if (error) {
         if (error.message === 'Failed to fetch' || error.message.includes('Network request failed')) {
@@ -1032,12 +1032,12 @@ export async function add_ticket(user_id: string, count: number): Promise<void> 
     try {
 
       const ticket_id = await generate_uuid()
-      const { error } = await supabase.from('tt_ticket').insert([{
+      const { error } = await supabase.from('tt_ticket').insert({
         user_id: user_id,
         ticket_id: ticket_id,
         count: count,
         comment: '動画視聴分'
-      }])
+      })
 
       if (error) {
         if (error.message === 'Failed to fetch' || error.message.includes('Network request failed')) {
