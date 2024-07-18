@@ -26,8 +26,8 @@ export default function TextInput(props: Props) {
             roundedBottom={props.roundedBottom}
             w={'full'}
             alignItems={'center'}
-            pt={3}
-            pb={3}
+            pt={2}
+            pb={2}
             pl={3}
         >
             {undefined !== props.label && (
