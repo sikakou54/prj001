@@ -2,8 +2,6 @@ import React, { useCallback, useState } from 'react'
 import {
     Box,
     Button,
-    HStack,
-    Text,
     VStack,
     useColorModeValue
 } from 'native-base'
@@ -13,7 +11,6 @@ import { search_group } from '../../src/Store/Reducer'
 import { ApplicationStatus, ApplicationState, COLOR } from '../../src/Type'
 import { Stack, router } from 'expo-router'
 import TextInput from '../../src/Compenent/TextInput'
-import { AntDesign } from '@expo/vector-icons'
 import TitleHeader from '../../src/Compenent/TitleHeader'
 
 function Page() {

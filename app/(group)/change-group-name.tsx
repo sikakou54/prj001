@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useEffect, useState } from 'react'
+import React, { useCallback, useContext, useState } from 'react'
 import { Box, Button, Text, VStack, useColorModeValue } from 'native-base'
 import { AppDispatch } from '../../src/Store'
 import { shallowEqual, useDispatch, useSelector } from 'react-redux'

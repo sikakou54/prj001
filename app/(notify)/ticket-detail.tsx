@@ -4,7 +4,7 @@ import { shallowEqual, useDispatch, useSelector } from "react-redux"
 import { Box, Button, Divider, HStack, ScrollView, Text, VStack, useColorModeValue } from 'native-base'
 import { ApplicationState, ApplicationStatus, COLOR, SystemException, RootState, UserInfo, Ticket } from "../../src/Type"
 import TextBox from "../../src/Compenent/TextBox"
-import { AntDesign, MaterialCommunityIcons } from "@expo/vector-icons"
+import { MaterialCommunityIcons } from "@expo/vector-icons"
 import Card from "../../src/Compenent/Card"
 import React, { useContext } from 'react'
 import { load_ticket, update_ticket } from "../../src/Store/Reducer"

@@ -37,12 +37,10 @@ import {
 } from 'react-redux'
 import { AppDispatch } from '../../src/Store'
 import { update_answer } from '../../src/Store/Reducer'
-import TextBox from '../../src/Compenent/TextBox'
 import Card from '../../src/Compenent/Card'
 import AdmobBanner from '../../src/Compenent/AdmobBanner'
 import { BannerAdSize } from 'react-native-google-mobile-ads'
 import {
-    AntDesign,
     FontAwesome
 } from '@expo/vector-icons'
 import AvatarIcon from '../../src/Compenent/AvatorIcon'
