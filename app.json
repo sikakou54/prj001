@@ -11,8 +11,7 @@
     "scheme": "com.app.prj0001",
     "platforms": [
       "ios",
-      "android",
-      "web"
+      "android"
     ],
     "userInterfaceStyle": "automatic",
     "splash": {
