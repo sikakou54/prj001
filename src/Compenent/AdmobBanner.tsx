@@ -20,6 +20,7 @@ export default function AdmobBanner({ size, debug, android, ios }: Props) {
     const [unitId, setUnitId] = useState<string>(TestIds.BANNER)
 
     useEffect(() => {
+        //console.log({ debug, android, ios })
         if (!debug && undefined !== android && undefined !== ios) {
             const id = Platform.select({ ios, android })
             if (undefined !== id) {

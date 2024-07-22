@@ -18,6 +18,7 @@ export default function AdmobRewardTest({ onClose, debug, ios, android }: Props)
     const bg = useColorModeValue(COLOR.LIGHT_GRAY, COLOR.DEEP_BLACK)
 
     useEffect(() => {
+        //console.log({ debug, android, ios })
         if (!debug && undefined !== android && undefined !== ios) {
             const adUnitID = Platform.select({ ios, android })
             setUnitId(undefined !== adUnitID ? adUnitID : TestIds.REWARDED)
