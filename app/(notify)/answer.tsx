@@ -75,15 +75,14 @@ function Page() {
                 if (status === ApplicationState.Success) {
                     toast?.showToast({
                         title: '回答しました',
-                        bg: COLOR.LIGHT_GREEN,
-
+                        bg: COLOR.LIGHT_GREEN
                     })
                     router.back()
                 } else if (code === SystemException.ConditionalCheckFailedException) {
                     alert?.setAlert({
                         type: AlertType.Ok,
                         title: '既に回答済みです',
-                        disc: '情報を最新化してください',
+                        disc: '情報を最新化してください'
                     })
                 }
             })
