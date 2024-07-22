@@ -49,6 +49,7 @@ export default function ReceiveNotifyList() {
             group_name={item.group_name}
             img={item.img}
             img_user={item.img_user}
+            user_name={item.user_name}
             is_anonym={item.is_anonym}
         />
     ), [])

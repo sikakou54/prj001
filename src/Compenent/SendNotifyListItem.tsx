@@ -53,7 +53,7 @@ export default function SendNotifyListItem(props: Props) {
                             <AvatarIcon
                                 img={props.img}
                                 defaultIcon={<Text color={COLOR.WHITE}>{props.group_name.substring(0, 1)}</Text>}
-                                size={45}
+                                size={42}
                             />
                         </Box>
                         <Box
@@ -91,8 +91,8 @@ export default function SendNotifyListItem(props: Props) {
                     )}
                 </HStack>
                 <HStack
+                    w={'full'}
                     alignItems={'center'}
-                    justifyContent={'space-between'}
                 >
                     <Progress
                         w={'85%'}

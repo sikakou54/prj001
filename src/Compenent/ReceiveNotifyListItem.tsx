@@ -17,6 +17,7 @@ interface Props {
     name: string,
     notify_id: string,
     group_name: string,
+    user_name: string,
     img: string | null,
     img_user: string | null
     is_anonym: number
@@ -39,7 +40,7 @@ export default function ReceiveNotifyListItem(props: Props) {
                 >
                     <AvatarIcon
                         img={props.img_user}
-                        defaultIcon={<Text color={COLOR.WHITE}>{props.group_name.substring(0, 1)}</Text>}
+                        defaultIcon={<Text color={COLOR.WHITE}>{props.user_name.substring(0, 1)}</Text>}
                         size={42}
                     />
                     <Box

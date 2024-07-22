@@ -151,8 +151,8 @@ function Page() {
                                             w={'full'}
                                         >
                                             <AvatarIcon
-                                                img={content.img}
-                                                defaultIcon={<Text color={COLOR.WHITE}>{content.group_name.substring(0, 1)}</Text>}
+                                                img={content.img_user}
+                                                defaultIcon={<Text color={COLOR.WHITE}>{content.user_name.substring(0, 1)}</Text>}
                                                 size={42}
                                             />
                                             <Box
@@ -160,8 +160,8 @@ function Page() {
                                                 right={1}
                                             >
                                                 <AvatarIcon
-                                                    img={content.img_user}
-                                                    defaultIcon={<Text color={COLOR.WHITE}>{content.user_name.substring(0, 1)}</Text>}
+                                                    img={content.img}
+                                                    defaultIcon={<Text color={COLOR.WHITE}>{content.group_name.substring(0, 1)}</Text>}
                                                     size={36}
                                                 />
                                             </Box>

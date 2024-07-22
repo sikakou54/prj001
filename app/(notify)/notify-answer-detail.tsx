@@ -274,12 +274,14 @@ export default function Page() {
                     gestureDirection: 'vertical'
                 }}
             />
-            <TitleHeader title={undefined !== content ? content.name : 'CLOSE済みの通知'} />
+            <TitleHeader
+                title={undefined !== content ? content.name : 'CLOSE済みの通知'}
+            />
             {undefined !== content ? (
                 <>
                     <ScrollView
                         w={'full'}
-                        h={'82%'}
+                        h={'84%'}
                         refreshControl={
                             <RefreshControl
                                 refreshing={false}
@@ -386,7 +388,7 @@ export default function Page() {
                     </ScrollView>
                     <Box
                         w={'full'}
-                        h={'10%'}
+                        h={'8%'}
                         alignItems={'center'}
                         justifyContent={'center'}
                     >
