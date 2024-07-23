@@ -63,7 +63,7 @@ function Page() {
             <ScrollView w={'95%'} h={'82%'} >
                 <VStack
                     w={'full'}
-                    space={2}
+                    space={3}
                     mt={5}
                     mb={5}
                     alignItems={'center'}
