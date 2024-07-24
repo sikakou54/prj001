@@ -37,10 +37,7 @@ function Page() {
             const { status, code } = item.payload as ApplicationStatus
             if (status === ApplicationState.Success) {
                 router.push({
-                    pathname: '/(auth)/send-auth-mail-change-password',
-                    params: {
-                        mail: UserInfo.mail,
-                    },
+                    pathname: '/(auth)/send-auth-mail-change-password'
                 })
             } else if (code === SystemException.LimitExceededException) {
                 toast?.showToast({
