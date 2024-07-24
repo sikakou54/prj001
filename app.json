@@ -32,7 +32,7 @@
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/icon.png",
-        "backgroundColor": "#ffffff"
+        "backgroundColor": "#f0f4f5"
       },
       "googleServicesFile": "./google-services.json",
       "package": "com.app.prj0001"
