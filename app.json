@@ -27,7 +27,7 @@
       "supportsTablet": false,
       "googleServicesFile": "./GoogleService-Info.plist",
       "bundleIdentifier": "com.app.prj0001",
-      "buildNumber": "15"
+      "buildNumber": "16"
     },
     "android": {
       "adaptiveIcon": {

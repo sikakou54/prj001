@@ -476,7 +476,7 @@ export const load = createAsyncThunk('load', async (_, api) => {
         data: {},
       } as ApplicationStatus)
     }
-    const result = await Api.checkForUpdate()
+    //const result = await Api.checkForUpdate()
     const userInfo = await Api.get_userInfo()
     const deviceInfo = await Api.get_deviceInfo(userInfo.id)
     const contents = await Api.get_group_contents(userInfo.id)
