@@ -112,7 +112,12 @@ function Page() {
                                         numberOfLines={2}
                                         key={index}
                                         leftIcon={<Icon
-                                            as={<Number_1_10 num={index + 1} size={25} />}
+                                            as={
+                                                <Number_1_10
+                                                    num={index + 1}
+                                                    size={25}
+                                                />
+                                            }
                                             size={'2xl'}
                                             w={'20%'}
                                         />}

@@ -1,10 +1,9 @@
-import { Box, Text, VStack, useColorModeValue } from 'native-base'
+import { Box, VStack, useColorModeValue } from 'native-base'
 import React, { useCallback, useContext } from 'react'
 import { shallowEqual, useDispatch, useSelector } from 'react-redux'
 import { AlertResult, AlertType, ApplicationState, ApplicationStatus, COLOR, DeviceInfo, RootState, UserInfo } from '../../src/Type'
-import { TouchableOpacity } from 'react-native'
 import { Stack, router, useNavigation } from 'expo-router'
-import { AntDesign } from '@expo/vector-icons'
+import { AntDesign, MaterialIcons } from '@expo/vector-icons'
 import { AppDispatch } from '../../src/Store'
 import { signOut } from '../../src/Store/Reducer'
 import TextBox from '../../src/Compenent/TextBox'
@@ -76,13 +75,44 @@ export default function Page() {
                     text={'アカウント'}
                     fontSize={'sm'}
                     roundedTop={'md'}
+                />
+                <TextBox
+                    onPress={() => router.push('/policy')}
+                    leftIcon={
+                        <MaterialIcons
+                            name="policy"
+                            size={18}
+                            color={useColorModeValue(COLOR.BLACK, COLOR.WHITE)}
+                        />
+                    }
+                    text={'プライバシーポリシー'}
+                    fontSize={'sm'}
+                />
+                <TextBox
+                    onPress={() => router.push('/terms')}
+                    leftIcon={
+                        <AntDesign
+                            name="filetext1"
+                            size={18}
+                            color={useColorModeValue(COLOR.BLACK, COLOR.WHITE)}
+                        />
+                    }
+                    text={'利用規約'}
+                    fontSize={'sm'}
+                />
+                <TextBox
+                    onPress={onPressLogOut}
+                    leftIcon={
+                        <MaterialIcons
+                            name="logout"
+                            size={18}
+                            color={useColorModeValue(COLOR.BLACK, COLOR.WHITE)}
+                        />
+                    }
+                    text={'ログアウト'}
+                    fontSize={'sm'}
                     roundedBottom={'md'}
                 />
-                <TouchableOpacity onPress={onPressLogOut}>
-                    <Box w={'full'} alignItems={'center'} justifyContent={'center'} >
-                        <Text m={5} color={COLOR.RED} fontSize={'sm'}>ログアウト</Text>
-                    </Box>
-                </TouchableOpacity>
             </VStack>
         </Box>
     )

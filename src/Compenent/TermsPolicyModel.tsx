@@ -24,7 +24,7 @@ const TermsPolicyModel = (props: Props) => {
             h={'full'}
         >
             <Modal.Content
-                w={'95%'}
+                w={'99%'}
             >
                 {!props.isRequired && (
                     <Modal.CloseButton

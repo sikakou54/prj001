@@ -221,9 +221,14 @@ export default function Page() {
                                     />
                                 ) : (
                                     <Icon
-                                        as={<Number_1_10 num={choice} size={25} />}
+                                        as={
+                                            <Number_1_10
+                                                num={choice}
+                                                size={25}
+                                                color={isSelect ? COLOR.WHITE : COLOR.GRAY}
+                                            />
+                                        }
                                         size={26}
-                                        color={isSelect ? COLOR.WHITE : COLOR.GRAY}
                                     />
                                 )}
                             </Box>

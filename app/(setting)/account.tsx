@@ -61,7 +61,7 @@ function Page() {
                     headerShown: false,
                     animation: 'slide_from_bottom',
                     gestureEnabled: true,
-                    gestureDirection: 'vertical',
+                    gestureDirection: 'vertical'
                 }}
             />
             <TitleHeader title={'アカウント'} />
