@@ -24,7 +24,7 @@ const TermsPolicyModel = (props: Props) => {
             h={'full'}
         >
             <Modal.Content
-                w={'99%'}
+                w={'full'}
             >
                 {!props.isRequired && (
                     <Modal.CloseButton
@@ -40,14 +40,11 @@ const TermsPolicyModel = (props: Props) => {
                 >Opiniのご利用に関する同意事項</Modal.Header>
                 <Modal.Body
                     w={'full'}
-                    h={'full'}
                     alignItems={'center'}
                 >
                     <VStack
                         w={'full'}
-                        h={'full'}
                         alignItems={'center'}
-                        justifyContent={'space-between'}
                         space={3}
                     >
                         {undefined !== props.terms && (
@@ -58,7 +55,7 @@ const TermsPolicyModel = (props: Props) => {
                                 >利用規約</Heading>
                                 <Box
                                     w={'full'}
-                                    h={150}
+                                    h={190}
                                     rounded={'md'}
                                 >
                                     <WebView
@@ -78,7 +75,7 @@ const TermsPolicyModel = (props: Props) => {
                                 >プライバシーポリシー</Heading>
                                 <Box
                                     w={'full'}
-                                    h={150}
+                                    h={190}
                                     rounded={'md'}
                                 >
                                     <WebView
