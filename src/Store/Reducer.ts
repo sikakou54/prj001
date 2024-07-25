@@ -482,7 +482,7 @@ export const load = createAsyncThunk('load', async (_, api) => {
     const contents = await Api.get_group_contents(userInfo.id)
     const notifyContents = await Api.get_send_notify_contents(userInfo.id)
     const joinNotifys = await Api.get_receive_notifys(userInfo.id)
-    const tickets = await Api.get_tickets(userInfo.id);
+    const tickets = await Api.get_tickets(userInfo.id)
 
     api.dispatch(actions.set_user_info(userInfo))
     api.dispatch(actions.set_device_info(deviceInfo))
