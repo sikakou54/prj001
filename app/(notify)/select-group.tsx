@@ -1,5 +1,5 @@
 import React, { memo, useCallback } from 'react'
-import { COLOR, RootState, UserInfo } from '../../src/Type'
+import { COLOR, RootState } from '../../src/Type'
 import { shallowEqual, useDispatch, useSelector } from 'react-redux'
 import {
     Box,
@@ -17,7 +17,6 @@ import { load_group_list, load_group_list_paging } from '../../src/Store/Reducer
 
 function Page() {
     const dispatch: AppDispatch = useDispatch()
-    const UserInfo: UserInfo = useSelector((state: RootState) => state.UserInfo, shallowEqual)
     const bg = useColorModeValue(COLOR.LIGHT_GRAY, COLOR.DEEP_BLACK)
     const cardBg = useColorModeValue(COLOR.WHITE, COLOR.BLACK)
     const { title, choiceItems, isChecked } = useLocalSearchParams<{
@@ -82,8 +81,8 @@ function Page() {
     const keyExtractor = useCallback((item: GroupContent) => item.group_id, [])
     const onEndReached = useCallback(({ distanceFromEnd }: { distanceFromEnd: number }) => {
         //console.log('onEndReached!', distanceFromEnd)
-        dispatch(load_group_list_paging({ user_id: UserInfo.id, offset: contents.length }))
-    }, [contents, UserInfo])
+        dispatch(load_group_list_paging({ offset: contents.length }))
+    }, [contents])
 
     return (
         <Box

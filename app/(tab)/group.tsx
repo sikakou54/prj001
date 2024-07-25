@@ -15,14 +15,13 @@ import Card from '../../src/Compenent/Card'
 import { AppDispatch } from '../../src/Store'
 import AvatarIcon from '../../src/Compenent/AvatorIcon'
 import { COLOR, GroupContent } from '../../src/Type'
-import { RootState, UserInfo } from '../../src/Type'
+import { RootState } from '../../src/Type'
 import { load_group_list, load_group_list_paging } from '../../src/Store/Reducer'
 import { AntDesign } from '@expo/vector-icons'
 
 export default function Page() {
     const bg = useColorModeValue(COLOR.LIGHT_GRAY, COLOR.DEEP_BLACK)
     const contents: GroupContent[] = useSelector((state: RootState) => state.Group.contents, shallowEqual)
-    const userInfo: UserInfo = useSelector((state: RootState) => state.UserInfo, shallowEqual)
     const dispatch: AppDispatch = useDispatch()
     const { colorMode } = useColorMode()
     const ListItem = React.memo(({ group_id, name, count, img }: { group_id: string, name: string, img: string | null, count: number }) => {
@@ -123,7 +122,7 @@ export default function Page() {
     }, [colorMode])
     const onEndReached = useCallback(({ distanceFromEnd }: { distanceFromEnd: number }) => {
         //console.log('onEndReached!', distanceFromEnd)
-        dispatch(load_group_list_paging({ user_id: userInfo.id, offset: contents.length }))
+        dispatch(load_group_list_paging({ offset: contents.length }))
     }, [contents])
 
     if (contents.length > 0) {
