@@ -700,7 +700,7 @@ export const load_group_member = createAsyncThunk(
 
       api.dispatch(actions.set_user_info(userInfo))
       if (null !== content) {
-        api.dispatch(actions.set_group_contents({ contents: [content], is_offset: true }))
+        api.dispatch(actions.set_group_content(content))
         api.dispatch(actions.set_group_member({ member, is_offset: false }))
       } else {
         api.dispatch(actions.set_group_member({ member: [], is_offset: false }))
@@ -2337,7 +2337,7 @@ export const upload_group_avator = createAsyncThunk(
 
       api.dispatch(actions.set_user_info(userInfo))
       if (null !== content) {
-        api.dispatch(actions.set_group_contents({ contents: [content], is_offset: false }))
+        api.dispatch(actions.set_group_content(content))
         api.dispatch(actions.set_notify_group_image({ group_id, img: content.img }))
       } else {
         api.dispatch(actions.remove_group_contents({ group_id }))
@@ -2401,13 +2401,11 @@ export const delete_group_avator = createAsyncThunk(
 
       api.dispatch(actions.set_user_info(userInfo))
       if (null !== content) {
-        api.dispatch(actions.set_group_contents({ contents: [content], is_offset: false }))
+        api.dispatch(actions.set_group_content(content))
         api.dispatch(actions.set_notify_group_image({ group_id, img: content.img }))
       } else {
         api.dispatch(actions.remove_group_contents({ group_id }))
       }
-
-
 
       return api.fulfillWithValue({
         status: ApplicationState.Success,
