@@ -834,6 +834,7 @@ export function get_notify_choice(notify_id: string): Promise<SendNotifyChoice[]
         data.forEach((item: any) => {
           choiceItems.push({
             choice: item.choice,
+            is_remarks: Number(item.is_remarks),
             count: item.count,
             text: item.name
           })

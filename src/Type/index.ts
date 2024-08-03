@@ -69,6 +69,7 @@ export interface SendNotifyContent {
 export interface SendNotifyChoice {
     choice: number
     text: string
+    is_remarks: number
     count: number
 }
 

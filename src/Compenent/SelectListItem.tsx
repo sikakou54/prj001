@@ -20,7 +20,10 @@ export default function SelectListItem({ idx, name, is_remarks, onChangeCheckBox
     }, [idx, name, is_remarks, onChangeCheckBox, onPressDeleteIcon])
 
     return (
-        <HStack pt={2} pb={2} justifyContent={'center'}>
+        <HStack
+            h={20}
+            alignItems={'center'}
+        >
             <Center w={'15%'}>
                 <Number_1_10
                     num={idx + 1}
@@ -28,7 +31,7 @@ export default function SelectListItem({ idx, name, is_remarks, onChangeCheckBox
                 />
             </Center>
             <VStack w={'70%'} space={1} justifyContent={'center'}>
-                <Text w={'100%'} numberOfLines={2}>{name}</Text>
+                <Text w={'95%'} numberOfLines={2}>{name}</Text>
                 <Checkbox
                     value='1'
                     isChecked={is_remarks === 1 ? true : false}

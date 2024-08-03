@@ -22,6 +22,7 @@ import {
     ScrollView,
     Text,
     useColorModeValue,
+    VStack,
 } from 'native-base'
 import {
     shallowEqual,
@@ -78,6 +79,7 @@ export default function Page() {
     const Choices = useMemo(() => (SendNotify.choices), [SendNotify.choices])
     const [data, setChartData] = useState<{
         choice: number
+        is_remarks: number
         y: number
         labels: string
         text: string
@@ -127,6 +129,7 @@ export default function Page() {
             choice: item.choice,
             y: item.count,
             isSelect: false,
+            is_remarks: item.is_remarks
         })))
     }, [Choices])
 
@@ -180,7 +183,7 @@ export default function Page() {
         })
     }, [notify_id])
 
-    const ChoiceListItem = useCallback(({ isSelect, choice, text }: { isSelect: boolean, choice: number, text: string }) => {
+    const ChoiceListItem = useCallback(({ isSelect, isRemarks, choice, text }: { isSelect: boolean, isRemarks: boolean, choice: number, text: string }) => {
         const count = Choices.find((choceItem) => choice === choceItem.choice)?.count
         if (choice === 0 && (undefined !== count && count === 0)) {
             return null
@@ -190,7 +193,7 @@ export default function Page() {
                     bg={isSelect ? COLOR.SKYBLUE : cardBg}
                     key={choice}
                     onPress={() => {
-                        if (content.is_anonym !== 1 && undefined !== count && count > 0) {
+                        if (content.is_anonym !== 1 && undefined !== count && count > 0 || (isRemarks && undefined !== count && count > 0)) {
                             fetch_notify_choice_user_list(choice)
                         }
                     }}
@@ -240,12 +243,25 @@ export default function Page() {
                                 space={1}
                                 pr={1.5}
                             >
-                                <Text
-                                    fontSize={'sm'}
-                                    numberOfLines={2}
-                                    color={isSelect ? COLOR.WHITE : undefined}
+                                <VStack
                                     w={'80%'}
-                                >{text}</Text>
+                                    space={1}
+                                    alignItems={'center'}
+                                >
+                                    <Text
+                                        fontSize={'sm'}
+                                        numberOfLines={2}
+                                        color={isSelect ? COLOR.WHITE : undefined}
+                                        w={'full'}
+                                    >{text}</Text>
+                                    {isRemarks && (
+                                        <Text
+                                            fontSize={'xs'}
+                                            color={COLOR.GRAY}
+                                            w={'full'}
+                                        >テキスト入力</Text>
+                                    )}
+                                </VStack>
                                 <Text
                                     w={'20%'}
                                     fontSize={'sm'}
@@ -373,6 +389,7 @@ export default function Page() {
                                 key={item.choice}
                                 choice={item.choice}
                                 isSelect={item.isSelect}
+                                isRemarks={item.is_remarks === 1 ? true : false}
                                 text={item.text}
                             />
                         ))}

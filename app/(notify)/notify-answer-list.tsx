@@ -1,9 +1,10 @@
-import React, { useCallback } from 'react'
+import React, { useCallback, useMemo } from 'react'
 import {
     COLOR,
     SendNotifyAsnwer,
     SendNotifyChoice,
-    RootState
+    RootState,
+    SendNotifyContent
 } from '../../src/Type'
 import {
     Box,
@@ -21,8 +22,6 @@ import { Stack, useLocalSearchParams } from 'expo-router'
 import { load_send_notify_answer_list, load_send_notify_answer_list_paging } from '../../src/Store/Reducer'
 import { textTrim } from '../../src/Api/Common'
 import AvatarIcon from '../../src/Compenent/AvatorIcon'
-import TextBox from '../../src/Compenent/TextBox'
-import { GroupContent } from '../../src/Type'
 import Card from '../../src/Compenent/Card'
 
 export default function NotifyAnswerMemberList() {
@@ -35,27 +34,43 @@ export default function NotifyAnswerMemberList() {
     const cardBg = useColorModeValue(COLOR.WHITE, COLOR.BLACK)
     const dispatch: AppDispatch = useDispatch()
     const answer: SendNotifyAsnwer[] = useSelector((state: RootState) => state.Notify.Send.answer, shallowEqual)
-    const ChoiceItem: SendNotifyChoice[] = useSelector((state: RootState) => state.Notify.Send.choices, shallowEqual)
-    const contents: GroupContent[] = useSelector((state: RootState) => state.Group.contents, shallowEqual)
+    const choices: SendNotifyChoice[] = useSelector((state: RootState) => state.Notify.Send.choices, shallowEqual)
+    const contents: SendNotifyContent[] = useSelector((state: RootState) => state.Notify.Send.contents, shallowEqual)
+    const Choice = useMemo(() => choices.find((item) => item.choice === Number(choice)), [choices])
+    const content = useMemo(() => contents.find((item) => item.notify_id === notify_id), [contents])
     const ListItem = React.memo(({ name, img, remarks }: { name: string, img: string | null, remarks: string | null }) => {
         return (
             <Card bg={cardBg} p={3}>
-                <HStack w={'full'} alignItems={'center'} space={3}>
-                    <AvatarIcon
-                        img={img}
-                        defaultIcon={<Text color={COLOR.WHITE}>{name.substring(0, 1)}</Text>}
-                    />
-                    <VStack w={'full'} space={1}>
-                        <Text fontSize={'sm'}>{name}</Text>
-                        {remarks !== null && (
-                            <Text fontSize={'xs'} color={COLOR.GRAY}>{remarks}</Text>
-                        )}
-                    </VStack>
-                </HStack>
+                {content?.is_anonym === 1 ? (
+                    <HStack w={'full'} alignItems={'center'} space={3}>
+                        <AvatarIcon
+                            img={null}
+                            defaultIcon={<Text color={COLOR.WHITE}>匿</Text>}
+                        />
+                        <VStack w={'full'} space={1}>
+                            {remarks !== null && (
+                                <Text fontSize={'sm'}>{remarks}</Text>
+                            )}
+                        </VStack>
+                    </HStack>
+                ) : (
+                    <HStack w={'full'} alignItems={'center'} space={3}>
+                        <AvatarIcon
+                            img={img}
+                            defaultIcon={<Text color={COLOR.WHITE}>{name.substring(0, 1)}</Text>}
+                        />
+                        <VStack w={'full'} space={1}>
+                            <Text fontSize={'sm'}>{name}</Text>
+                            {remarks !== null && (
+                                <Text fontSize={'xs'} color={COLOR.GRAY}>{remarks}</Text>
+                            )}
+                        </VStack>
+                    </HStack>
+                )}
+
             </Card>
         )
     })
-
     const renderItem = useCallback(({ item }: { item: SendNotifyAsnwer }) => (
         <ListItem
             name={item.name}
@@ -65,9 +80,8 @@ export default function NotifyAnswerMemberList() {
     ), [contents])
     const keyExtractor = useCallback((item: SendNotifyAsnwer) => item.user_id, [])
     const useTitle = useCallback(() => {
-        const title = ChoiceItem.find((item) => item.choice === Number(choice))?.text
-        return undefined !== title ? title : ''
-    }, [ChoiceItem])
+        return undefined !== Choice?.text ? Choice?.text : ''
+    }, [Choice])
     const onEndReached = useCallback(({ distanceFromEnd }: { distanceFromEnd: number }) => {
         //console.log('onEndReached!', distanceFromEnd)
         dispatch(load_send_notify_answer_list_paging({ choice: Number(choice), notify_id, offset: answer.length }))

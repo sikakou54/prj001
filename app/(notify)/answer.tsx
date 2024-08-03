@@ -289,7 +289,6 @@ function Page() {
                                     </Checkbox.Group>
                                 </VStack>
                             </Box>
-
                         </ScrollView>
                     </VStack>
                     <Box

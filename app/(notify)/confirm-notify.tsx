@@ -90,7 +90,7 @@ function Page() {
                             roundedBottom={'md'}
                         >
                             {choices.map((item, index) => (
-                                <HStack pt={2} pb={2} key={index} alignItems={'center'}>
+                                <HStack key={index} h={20} alignItems={'center'}>
                                     <Center w={'15%'}>
                                         <Number_1_10
                                             num={item.idx + 1}
@@ -98,7 +98,7 @@ function Page() {
                                         />
                                     </Center>
                                     <VStack w={'85%'} space={1} justifyContent={'center'}>
-                                        <Text w={'100%'} numberOfLines={2}>{item.name}</Text>
+                                        <Text w={'95%'} numberOfLines={2}>{item.name}</Text>
                                         {Number(item.is_remarks) === 1 && (
                                             <Text color={COLOR.GRAY} fontSize={'xs'}>テキスト入力</Text>
                                         )}
