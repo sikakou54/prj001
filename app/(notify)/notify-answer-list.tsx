@@ -38,36 +38,27 @@ export default function NotifyAnswerMemberList() {
     const contents: SendNotifyContent[] = useSelector((state: RootState) => state.Notify.Send.contents, shallowEqual)
     const Choice = useMemo(() => choices.find((item) => item.choice === Number(choice)), [choices])
     const content = useMemo(() => contents.find((item) => item.notify_id === notify_id), [contents])
-    const ListItem = React.memo(({ name, img, remarks }: { name: string, img: string | null, remarks: string | null }) => {
+    const ListItem = React.memo(({ name, img, remarks, is_anonym }: { name: string, img: string | null, remarks: string | null, is_anonym: boolean }) => {
         return (
             <Card bg={cardBg} p={3}>
-                {content?.is_anonym === 1 ? (
-                    <HStack w={'full'} alignItems={'center'} space={3}>
-                        <AvatarIcon
-                            img={null}
-                            defaultIcon={<Text color={COLOR.WHITE}>匿</Text>}
-                        />
-                        <VStack w={'full'} space={1}>
-                            {remarks !== null && (
-                                <Text fontSize={'sm'}>{remarks}</Text>
-                            )}
-                        </VStack>
-                    </HStack>
-                ) : (
-                    <HStack w={'full'} alignItems={'center'} space={3}>
-                        <AvatarIcon
-                            img={img}
-                            defaultIcon={<Text color={COLOR.WHITE}>{name.substring(0, 1)}</Text>}
-                        />
-                        <VStack w={'full'} space={1}>
+                <HStack
+                    w={'full'}
+                    alignItems={'center'}
+                    space={3}
+                >
+                    <AvatarIcon
+                        img={is_anonym ? null : img}
+                        defaultIcon={<Text color={COLOR.WHITE}>{is_anonym ? '匿' : name.substring(0, 1)}</Text>}
+                    />
+                    <VStack w={'full'} space={1}>
+                        {!is_anonym && (
                             <Text fontSize={'sm'}>{name}</Text>
-                            {remarks !== null && (
-                                <Text fontSize={'xs'} color={COLOR.GRAY}>{remarks}</Text>
-                            )}
-                        </VStack>
-                    </HStack>
-                )}
-
+                        )}
+                        {remarks !== null && (
+                            <Text w={'90%'} fontSize={is_anonym ? 'sm' : 'xs'} color={is_anonym ? undefined : COLOR.GRAY}>{remarks}</Text>
+                        )}
+                    </VStack>
+                </HStack>
             </Card>
         )
     })
@@ -76,8 +67,9 @@ export default function NotifyAnswerMemberList() {
             name={item.name}
             img={item.img}
             remarks={item.remarks}
+            is_anonym={content?.is_anonym === 1 ? true : false}
         />
-    ), [contents])
+    ), [content])
     const keyExtractor = useCallback((item: SendNotifyAsnwer) => item.user_id, [])
     const useTitle = useCallback(() => {
         return undefined !== Choice?.text ? Choice?.text : ''
