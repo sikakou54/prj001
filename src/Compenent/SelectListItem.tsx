@@ -1,5 +1,5 @@
-import React, { useCallback } from 'react'
-import { Center, Checkbox, HStack, Text, VStack } from 'native-base'
+import React, { useCallback, useState } from 'react'
+import { Center, Checkbox, HStack, Select, Text, VStack } from 'native-base'
 import Number_1_10 from './Number_1_10'
 import { COLOR } from '../Type'
 import { TouchableOpacity } from 'react-native'
@@ -8,16 +8,21 @@ import { AntDesign } from '@expo/vector-icons'
 interface Props {
     idx: number
     name: string
-    is_remarks: number
-    onChangeCheckBox: (item: { idx: number, name: string, is_remarks: number }) => void
+    desc_type: number
+    onChangeCheckBox: (item: { idx: number, name: string, desc_type: number }) => void
     onPressDeleteIcon: (index: number) => void
 }
-export default function SelectListItem({ idx, name, is_remarks, onChangeCheckBox, onPressDeleteIcon }: Props) {
+export default function SelectListItem({ idx, name, desc_type, onChangeCheckBox, onPressDeleteIcon }: Props) {
 
-    const onChange = useCallback((checked: boolean) => {
-        console.log('onChange', { idx, name, is_remarks: checked ? 1 : 0 })
-        onChangeCheckBox({ idx, name, is_remarks: checked ? 1 : 0 })
-    }, [idx, name, is_remarks, onChangeCheckBox, onPressDeleteIcon])
+    const [type, setType] = useState<number>(1)
+    const onChangeCheck = useCallback((checked: boolean) => {
+        onChangeCheckBox({ idx, name, desc_type: checked ? 1 : 0 })
+    }, [idx, name, desc_type, onChangeCheckBox, onPressDeleteIcon])
+
+    const onChangeSelect = useCallback((desc_type: number) => {
+        onChangeCheckBox({ idx, name, desc_type })
+        setType(desc_type)
+    }, [idx, name, desc_type, onChangeCheckBox, onPressDeleteIcon])
 
     return (
         <HStack
@@ -32,16 +37,28 @@ export default function SelectListItem({ idx, name, is_remarks, onChangeCheckBox
             </Center>
             <VStack w={'70%'} space={1} justifyContent={'center'}>
                 <Text w={'95%'} numberOfLines={2}>{name}</Text>
-                <Checkbox
-                    value='1'
-                    isChecked={is_remarks === 1 ? true : false}
-                    onChange={onChange}
-                    _checked={{ backgroundColor: COLOR.LIGHT_GREEN, borderColor: COLOR.LIGHT_GREEN }}
-                    _icon={{ color: COLOR.WHITE }}
-                    size={'sm'}
-                >
-                    <Text fontSize={'xs'}>テキスト入力</Text>
-                </Checkbox>
+                <HStack w={'95%'} h={8} alignItems={'center'} space={3}>
+                    <Checkbox
+                        alignItems={'center'}
+                        value='1'
+                        isChecked={desc_type === 1 ? true : false}
+                        onChange={onChangeCheck}
+                        _checked={{ backgroundColor: COLOR.LIGHT_GREEN, borderColor: COLOR.LIGHT_GREEN }}
+                        _icon={{ color: COLOR.WHITE }}
+                        size={'sm'}
+                    >
+                        {desc_type === 0 ? (
+                            <Text fontSize={'xs'}>記述形式</Text>
+                        ) : (
+                            <Select selectedValue={type.toString()} size={'xs'} w={120} accessibilityLabel="Choose Service" placeholder="Choose Service" _selectedItem={{
+                                bg: COLOR.LIGHT_GREEN
+                            }} mt={1} onValueChange={(value => onChangeSelect(Number(value)))}>
+                                <Select.Item label={'必須入力'} value={'1'} />
+                                <Select.Item label={'任意入力'} value={'2'} />
+                            </Select>
+                        )}
+                    </Checkbox>
+                </HStack>
             </VStack>
             <Center w={'15%'}>
                 <TouchableOpacity onPress={() => onPressDeleteIcon(idx)}>

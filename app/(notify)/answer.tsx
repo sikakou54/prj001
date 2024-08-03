@@ -266,7 +266,7 @@ function Page() {
                                                             numberOfLines={2}
                                                             w={'90%'}
                                                         >{item.text}</Text>
-                                                        {item.is_remarks === 1 && checked.find((value) => value === index.toString()) !== undefined && (
+                                                        {item.desc_type === 1 && checked.find((value) => value === index.toString()) !== undefined && (
                                                             <Input
                                                                 size={'sm'}
                                                                 w={'90%'}

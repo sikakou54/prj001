@@ -1,6 +1,6 @@
 export interface Choice {
     choice: number
-    is_remarks: number
+    desc_type: number
     text: string
 }
 
@@ -69,7 +69,7 @@ export interface SendNotifyContent {
 export interface SendNotifyChoice {
     choice: number
     text: string
-    is_remarks: number
+    desc_type: number
     count: number
 }
 
@@ -171,7 +171,7 @@ export type answer_choice_type = {
 
 export type notify_choice_type = {
     name: string
-    is_remarks: string
+    desc_type: number
 }
 
 export enum ApplicationState {

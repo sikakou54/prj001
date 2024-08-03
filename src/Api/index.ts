@@ -571,6 +571,8 @@ export async function add_notify(
   format: number
 ): Promise<SendNotifyContent> {
 
+  console.log(choices)
+
   return new Promise(async (resolve, reject) => {
 
     try {
@@ -834,7 +836,7 @@ export function get_notify_choice(notify_id: string): Promise<SendNotifyChoice[]
         data.forEach((item: any) => {
           choiceItems.push({
             choice: item.choice,
-            is_remarks: Number(item.is_remarks),
+            desc_type: Number(item.desc_type),
             count: item.count,
             text: item.name
           })
@@ -1645,7 +1647,7 @@ export async function get_receive_notify_choice(notify_id: string): Promise<Choi
 
       const { data, error } = await supabase
         .from('tt_choice')
-        .select('choice,name,is_remarks')
+        .select('choice,name,desc_type')
         .eq('notify_id', notify_id)
         .neq('choice', 0)
       if (error) {
@@ -1660,7 +1662,7 @@ export async function get_receive_notify_choice(notify_id: string): Promise<Choi
         resolve(data.map((item: any) => ({
           choice: item.choice,
           text: item.name,
-          is_remarks: Number(item.is_remarks)
+          desc_type: Number(item.desc_type)
         })))
       } else {
         resolve([])

@@ -79,7 +79,7 @@ export default function Page() {
     const Choices = useMemo(() => (SendNotify.choices), [SendNotify.choices])
     const [data, setChartData] = useState<{
         choice: number
-        is_remarks: number
+        desc_type: number
         y: number
         labels: string
         text: string
@@ -129,7 +129,7 @@ export default function Page() {
             choice: item.choice,
             y: item.count,
             isSelect: false,
-            is_remarks: item.is_remarks
+            desc_type: item.desc_type
         })))
     }, [Choices])
 
@@ -183,7 +183,7 @@ export default function Page() {
         })
     }, [notify_id])
 
-    const ChoiceListItem = useCallback(({ isSelect, isRemarks, choice, text }: { isSelect: boolean, isRemarks: boolean, choice: number, text: string }) => {
+    const ChoiceListItem = useCallback(({ isSelect, desc_type, choice, text }: { isSelect: boolean, desc_type: number, choice: number, text: string }) => {
         const count = Choices.find((choceItem) => choice === choceItem.choice)?.count
         if (choice === 0 && (undefined !== count && count === 0)) {
             return null
@@ -193,7 +193,7 @@ export default function Page() {
                     bg={isSelect ? COLOR.SKYBLUE : cardBg}
                     key={choice}
                     onPress={() => {
-                        if (content.is_anonym !== 1 && undefined !== count && count > 0 || (isRemarks && undefined !== count && count > 0)) {
+                        if (content.is_anonym !== 1 && undefined !== count && count > 0 || (desc_type !== 0 && undefined !== count && count > 0)) {
                             fetch_notify_choice_user_list(choice)
                         }
                     }}
@@ -254,12 +254,12 @@ export default function Page() {
                                         color={isSelect ? COLOR.WHITE : undefined}
                                         w={'full'}
                                     >{text}</Text>
-                                    {isRemarks && (
+                                    {desc_type !== 0 && (
                                         <Text
                                             fontSize={'xs'}
                                             color={COLOR.GRAY}
                                             w={'full'}
-                                        >テキスト入力</Text>
+                                        >記述形式( {desc_type === 1 ? '必須入力' : '任意入力'} )</Text>
                                     )}
                                 </VStack>
                                 <Text
@@ -389,7 +389,7 @@ export default function Page() {
                                 key={item.choice}
                                 choice={item.choice}
                                 isSelect={item.isSelect}
-                                isRemarks={item.is_remarks === 1 ? true : false}
+                                desc_type={item.desc_type}
                                 text={item.text}
                             />
                         ))}

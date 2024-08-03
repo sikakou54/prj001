@@ -22,7 +22,7 @@ import SelectListItem from '../../src/Compenent/SelectListItem';
 function Page() {
     const [title, setTitle] = useState<string>('');
     const [inputSelection, setInputSelection] = useState<string>('');
-    const [choiceItems, setChoiceItems] = useState<{ idx: number, name: string, is_remarks: number }[]>([]);
+    const [choiceItems, setChoiceItems] = useState<{ idx: number, name: string, desc_type: number }[]>([]);
     const [isChecked, setIsChecked] = useState<boolean>(false);
     const [isNext, setIsNext] = useState<boolean>(false);
     const [format, setFormat] = useState<number>(1);
@@ -33,12 +33,12 @@ function Page() {
         console.log(choiceItems);
     }, [choiceItems]);
 
-    const addSelection = useCallback((item: { name: string, is_remarks: number }) => {
+    const addSelection = useCallback((item: { name: string, desc_type: number }) => {
         setInputSelection('');
         setChoiceItems(prev => [...prev, { ...item, idx: prev.length }]);
     }, []);
 
-    const updateSelection = useCallback((_item: { idx: number, name: string, is_remarks: number }) => {
+    const updateSelection = useCallback((_item: { idx: number, name: string, desc_type: number }) => {
         setChoiceItems(prev => prev.map((item, idx) => idx === _item.idx ? { ..._item } : { ...item }));
     }, []);
 
@@ -102,33 +102,31 @@ function Page() {
                                 rightIcon={
                                     <AntDesign name='plussquareo'
                                         color={useColorModeValue(COLOR.BLACK, COLOR.WHITE)}
-                                        onPress={() => inputSelection !== '' && addSelection({ name: inputSelection, is_remarks: 0 })}
+                                        onPress={() => inputSelection !== '' && addSelection({ name: inputSelection, desc_type: 0 })}
                                     />
                                 }
-                                onSubmitEditing={() => inputSelection !== '' && addSelection({ name: inputSelection, is_remarks: 0 })}
+                                onSubmitEditing={() => inputSelection !== '' && addSelection({ name: inputSelection, desc_type: 0 })}
                             />
                         )}
                     </VStack>
-                    <VStack
-                        w={'full'}
+                    <Card
+                        bg={cardBg}
+                        pt={choiceItems.length > 0 ? 2 : undefined}
+                        pb={choiceItems.length > 0 ? 2 : undefined}
+                        roundedTop={'md'}
+                        roundedBottom={'md'}
                     >
-                        <Card
-                            bg={cardBg}
-                            roundedTop={'md'}
-                            roundedBottom={'md'}
-                        >
-                            {choiceItems.map((item, index) => (
-                                <SelectListItem
-                                    key={item.idx.toString() + item.is_remarks.toString() + item.name}
-                                    idx={item.idx}
-                                    name={item.name}
-                                    is_remarks={item.is_remarks}
-                                    onChangeCheckBox={updateSelection}
-                                    onPressDeleteIcon={delSelection}
-                                />
-                            ))}
-                        </Card>
-                    </VStack>
+                        {choiceItems.map((item, index) => (
+                            <SelectListItem
+                                key={item.idx.toString() + item.desc_type.toString() + item.name}
+                                idx={item.idx}
+                                name={item.name}
+                                desc_type={item.desc_type}
+                                onChangeCheckBox={updateSelection}
+                                onPressDeleteIcon={delSelection}
+                            />
+                        ))}
+                    </Card>
                     <FormControl.Label
                         w={'full'}
                         fontWeight={'bold'}

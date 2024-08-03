@@ -33,10 +33,12 @@ function Page() {
     const contents: GroupContent[] = useSelector((state: RootState) => state.Group.contents, shallowEqual)
     const { group_id, title, choiceItems, isChecked, format } = useLocalSearchParams<{ group_id: string, title: string, choiceItems: string, isChecked: string, format: string }>()
     const is_anonym: boolean = isChecked === '1' ? true : false
-    const choices = JSON.parse(choiceItems) as { idx: number, name: string, is_remarks: string }[]
+    const choices = JSON.parse(choiceItems) as { idx: number, name: string, desc_type: number }[]
     const dispatch: AppDispatch = useDispatch()
     const toast = useContext(ToastContext)
     const content = useMemo(() => { return contents.find((group) => group.group_id === group_id) }, [group_id])
+
+    console.log('confirm', choices)
 
     return (
         <Box
@@ -86,11 +88,13 @@ function Page() {
                     {choices.length > 0 && (
                         <Card
                             bg={cardBg}
+                            pt={3}
+                            pb={3}
                             roundedTop={'md'}
                             roundedBottom={'md'}
                         >
                             {choices.map((item, index) => (
-                                <HStack key={index} h={20} alignItems={'center'}>
+                                <HStack key={index} h={16} alignItems={'center'}>
                                     <Center w={'15%'}>
                                         <Number_1_10
                                             num={item.idx + 1}
@@ -98,9 +102,9 @@ function Page() {
                                         />
                                     </Center>
                                     <VStack w={'85%'} space={1} justifyContent={'center'}>
-                                        <Text w={'95%'} numberOfLines={2}>{item.name}</Text>
-                                        {Number(item.is_remarks) === 1 && (
-                                            <Text color={COLOR.GRAY} fontSize={'xs'}>テキスト入力</Text>
+                                        <Text w={'95%'} fontSize={'sm'} numberOfLines={2}>{item.name}</Text>
+                                        {item.desc_type !== 0 && (
+                                            <Text color={COLOR.GRAY} fontSize={'xs'}>記述形式( {item.desc_type === 1 ? '必須入力' : '任意入力'} )</Text>
                                         )}
                                     </VStack>
                                 </HStack>
@@ -136,8 +140,34 @@ function Page() {
                         <Card
                             bg={cardBg}
                             roundedTop={'md'}
+                            p={3}
+                        >
+                            <HStack
+                                w={'100%'}
+                                justifyContent={'space-between'}
+                                alignItems={'center'}
+                            >
+                                <Text w={'80%'} fontSize={'sm'}>選択形式</Text>
+                                <Box
+                                    w={'20%'}
+                                    p={1}
+                                >
+                                    <Text
+                                        fontSize={'sm'}
+                                        w={'full'}
+                                        textAlign={'center'}
+                                        fontWeight={'bold'}
+                                        color={COLOR.GRAY}
+                                    >
+                                        {Number(format) === 1 ? '単選択' : '複数選択'}
+                                    </Text>
+                                </Box>
+                            </HStack>
+                        </Card>
+                        <Card
+                            bg={cardBg}
                             roundedBottom={'md'}
-                            p={5}
+                            p={3}
                         >
                             <HStack
                                 w={'100%'}
@@ -147,20 +177,16 @@ function Page() {
                                 <Text w={'80%'} fontSize={'sm'}>匿名回答にする</Text>
                                 <Box
                                     w={'20%'}
-                                    bg={is_anonym ? COLOR.GREEN : 'gray.300'}
-                                    borderColor={is_anonym ? COLOR.GREEN : 'gray.300'}
-                                    borderRadius={20}
-                                    borderWidth={0.5}
                                     p={1}
                                 >
                                     <Text
                                         fontSize={'sm'}
                                         w={'full'}
                                         textAlign={'center'}
-                                        fontWeight={is_anonym ? 'bold' : 'normal'}
-                                        color={is_anonym ? 'muted.50' : 'muted.800'}
+                                        fontWeight={'bold'}
+                                        color={COLOR.GRAY}
                                     >
-                                        {is_anonym ? 'オン' : 'オフ'}
+                                        {is_anonym ? 'する' : 'しない'}
                                     </Text>
                                 </Box>
                             </HStack>
