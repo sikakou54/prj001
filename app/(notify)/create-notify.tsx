@@ -1,47 +1,54 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react';
 import {
     Box,
     Button,
     FormControl,
     HStack,
-    Icon,
     ScrollView,
+    Select,
     Switch,
     Text,
     VStack,
     useColorModeValue,
-} from 'native-base'
-import {
-    AntDesign
-} from '@expo/vector-icons'
-import { Stack, router } from 'expo-router'
-import TextInput from '../../src/Compenent/TextInput'
-import Card from '../../src/Compenent/Card'
-import TextBox from '../../src/Compenent/TextBox'
-import { COLOR, MAX_CHOICE_NUM } from '../../src/Type'
-import Number_1_10 from '../../src/Compenent/Number_1_10'
-import TitleHeader from '../../src/Compenent/TitleHeader'
+} from 'native-base';
+import { AntDesign } from '@expo/vector-icons';
+import { Stack, router } from 'expo-router';
+import TextInput from '../../src/Compenent/TextInput';
+import Card from '../../src/Compenent/Card';
+import { COLOR, MAX_CHOICE_NUM } from '../../src/Type';
+import TitleHeader from '../../src/Compenent/TitleHeader';
+import SelectListItem from '../../src/Compenent/SelectListItem';
 
 function Page() {
-    const [title, setTitle] = useState<string>('')
-    const [inputSelection, setInputSelection] = useState<string>('')
-    const [choiceItems, setChoiceItems] = useState<string[]>([])
-    const [isChecked, setIsChecked] = useState<boolean>(false)
-    const [isNext, setIsNext] = useState<boolean>(false)
-    const bg = useColorModeValue(COLOR.LIGHT_GRAY, COLOR.DEEP_BLACK)
-    const cardBg = useColorModeValue(COLOR.WHITE, COLOR.BLACK)
-
-    const addSelection = useCallback((item: string) => {
-        setInputSelection('')
-        setChoiceItems(choiceItems.concat(item))
-    }, [choiceItems])
-    const delSelection = useCallback((_index: number) => {
-        setChoiceItems(choiceItems.filter((_, index) => index !== _index))
-    }, [choiceItems])
+    const [title, setTitle] = useState<string>('');
+    const [inputSelection, setInputSelection] = useState<string>('');
+    const [choiceItems, setChoiceItems] = useState<{ idx: number, name: string, is_remarks: number }[]>([]);
+    const [isChecked, setIsChecked] = useState<boolean>(false);
+    const [isNext, setIsNext] = useState<boolean>(false);
+    const [format, setFormat] = useState<number>(1);
+    const bg = useColorModeValue(COLOR.LIGHT_GRAY, COLOR.DEEP_BLACK);
+    const cardBg = useColorModeValue(COLOR.WHITE, COLOR.BLACK);
 
     useEffect(() => {
-        setIsNext(title === '' || choiceItems.length === 0)
-    }, [title, choiceItems])
+        console.log(choiceItems);
+    }, [choiceItems]);
+
+    const addSelection = useCallback((item: { name: string, is_remarks: number }) => {
+        setInputSelection('');
+        setChoiceItems(prev => [...prev, { ...item, idx: prev.length }]);
+    }, []);
+
+    const updateSelection = useCallback((_item: { idx: number, name: string, is_remarks: number }) => {
+        setChoiceItems(prev => prev.map((item, idx) => idx === _item.idx ? { ..._item } : { ...item }));
+    }, []);
+
+    const delSelection = useCallback((_index: number) => {
+        setChoiceItems(prev => prev.filter((_, index) => index !== _index).map((item, idx) => ({ ...item, idx })));
+    }, []);
+
+    useEffect(() => {
+        setIsNext(title === '' || choiceItems.length === 0);
+    }, [title, choiceItems]);
 
     return (
         <Box
@@ -95,75 +102,81 @@ function Page() {
                                 rightIcon={
                                     <AntDesign name='plussquareo'
                                         color={useColorModeValue(COLOR.BLACK, COLOR.WHITE)}
-                                        onPress={() => inputSelection !== '' && addSelection(inputSelection)}
+                                        onPress={() => inputSelection !== '' && addSelection({ name: inputSelection, is_remarks: 0 })}
                                     />
                                 }
-                                onSubmitEditing={() => inputSelection !== '' && addSelection(inputSelection)}
+                                onSubmitEditing={() => inputSelection !== '' && addSelection({ name: inputSelection, is_remarks: 0 })}
                             />
                         )}
                     </VStack>
                     <VStack
                         w={'full'}
                     >
-                        {choiceItems.length > 0 && (
-                            <>
-                                {choiceItems.map((item, index) => (
-                                    <TextBox
-                                        numberOfLines={2}
-                                        key={index}
-                                        leftIcon={<Icon
-                                            as={
-                                                <Number_1_10
-                                                    num={index + 1}
-                                                    size={25}
-                                                />
-                                            }
-                                            size={'2xl'}
-                                            w={'20%'}
-                                        />}
-                                        rightIcon={
-                                            <AntDesign
-                                                name='delete'
-                                                size={24}
-                                                color={COLOR.RED}
-                                                onPress={() => delSelection(index)}
-                                            />
-                                        }
-                                        text={item}
-                                        roundedTop={index === 0 ? 'md' : undefined}
-                                        roundedBottom={index === choiceItems.length - 1 ? 'md' : undefined}
-                                    />
-                                ))}
-                            </>
-                        )}
+                        <Card
+                            bg={cardBg}
+                            roundedTop={'md'}
+                            roundedBottom={'md'}
+                        >
+                            {choiceItems.map((item, index) => (
+                                <SelectListItem
+                                    key={item.idx.toString() + item.is_remarks.toString() + item.name}
+                                    idx={item.idx}
+                                    name={item.name}
+                                    is_remarks={item.is_remarks}
+                                    onChangeCheckBox={updateSelection}
+                                    onPressDeleteIcon={delSelection}
+                                />
+                            ))}
+                        </Card>
                     </VStack>
                     <FormControl.Label
                         w={'full'}
                         fontWeight={'bold'}
                         pl={1}
                     >設定</FormControl.Label>
-                    <Card
-                        p={5}
-                        bg={cardBg}
-                        roundedTop={'md'}
-                        roundedBottom={'md'}
-                    >
-                        <Box w={'full'}>
-                            <HStack
-                                justifyContent={'space-between'}
-                                alignItems={'center'}
-                            >
-                                <Text fontSize={'sm'}>匿名回答にする</Text>
-                                <Switch
-                                    size={'md'}
-                                    onToggle={(isChecked) =>
-                                        setIsChecked(isChecked)
-                                    }
-                                    value={isChecked}
-                                />
-                            </HStack>
-                        </Box>
-                    </Card>
+                    <Box w={'full'}>
+                        <Card
+                            p={5}
+                            bg={cardBg}
+                            roundedTop={'md'}
+                        >
+                            <Box w={'full'}>
+                                <HStack
+                                    justifyContent={'space-between'}
+                                    alignItems={'center'}
+                                >
+                                    <Text fontSize={'sm'}>選択形式</Text>
+                                    <Select selectedValue={format.toString()} w={120} accessibilityLabel="Choose Service" placeholder="Choose Service" _selectedItem={{
+                                        bg: COLOR.LIGHT_GREEN
+                                    }} mt={1} onValueChange={value => setFormat(Number(value))}>
+                                        <Select.Item label="単選択" value="1" />
+                                        <Select.Item label="複数選択" value="2" />
+                                    </Select>
+                                </HStack>
+                            </Box>
+                        </Card>
+                        <Card
+                            p={5}
+                            bg={cardBg}
+                            roundedBottom={'md'}
+                        >
+                            <Box w={'full'}>
+                                <HStack
+                                    justifyContent={'space-between'}
+                                    alignItems={'center'}
+                                >
+                                    <Text fontSize={'sm'}>匿名回答にする</Text>
+                                    <Switch
+                                        size={'md'}
+                                        onToggle={(isChecked) =>
+                                            setIsChecked(isChecked)
+                                        }
+                                        value={isChecked}
+                                    />
+                                </HStack>
+                            </Box>
+                        </Card>
+                    </Box>
                 </VStack>
             </ScrollView>
             <Button
@@ -178,13 +191,10 @@ function Page() {
                         params: {
                             title,
                             choiceItems: JSON.stringify(
-                                choiceItems.map((item) => {
-                                    return {
-                                        item,
-                                    }
-                                })
+                                choiceItems.map((item) => (item))
                             ),
                             isChecked: isChecked ? 1 : 0,
+                            format
                         },
                     })
                 }}
@@ -200,4 +210,4 @@ function Page() {
     )
 }
 
-export default Page
+export default Page;

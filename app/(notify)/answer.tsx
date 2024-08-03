@@ -1,6 +1,8 @@
 import React, {
     useCallback,
     useContext,
+    useEffect,
+    useRef,
     useState
 } from 'react'
 import {
@@ -11,8 +13,10 @@ import {
 import {
     Box,
     Button,
+    Checkbox,
     FormControl,
     HStack,
+    Input,
     Radio,
     ScrollView,
     Text,
@@ -28,7 +32,8 @@ import {
     SystemException,
     RootState,
     Choice,
-    AlertType
+    AlertType,
+    answer_choice_type
 } from '../../src/Type'
 import {
     shallowEqual,
@@ -50,6 +55,7 @@ import {
     ToastContext
 } from '../../src/context'
 import TitleHeader from '../../src/Compenent/TitleHeader'
+import TextInput from '../../src/Compenent/TextInput'
 
 function Page() {
     const bg = useColorModeValue(COLOR.LIGHT_GRAY, COLOR.DEEP_BLACK)
@@ -59,15 +65,59 @@ function Page() {
     const contents: ReceiveNotifyContent[] = useSelector((state: RootState) => state.Notify.Receive.contents, shallowEqual)
     const choices: Choice[] = useSelector((state: RootState) => state.Notify.Receive.choices, shallowEqual)
     const content = contents.find((item) => item.notify_id === params.notify_id)
-    const [choice, setChoice] = useState<string>('')
+    const [checked, setChecked] = useState<string[]>([])
+    const groupValues = useRef<string[]>([])
+    const remarks = useRef<{ idx: number, text: string }[]>([])
     const toast = useContext(ToastContext)
     const alert = useContext(AlertContext)
     const config = useContext(AppConfigContext)
 
+    useEffect(() => {
+        console.log(groupValues.current)
+    }, [groupValues.current])
+
+    const onChangeChoice = useCallback((idx: number, check: boolean) => {
+        console.log('onChangeChoice', idx, check, groupValues.current, content?.format)
+        //　単選択の場合チェックされたらOFFにする
+        // 他のチェックの場合はリセットしてONにする
+        if (content?.format === 1) {
+            if (groupValues.current.filter((value) => value === idx.toString()).length > 0) {
+                groupValues.current = []
+            } else {
+                groupValues.current = [idx.toString()]
+            }
+        } else {
+            if (groupValues.current.filter((value) => value === idx.toString()).length > 0) {
+                groupValues.current = groupValues.current.filter((value) => value !== idx.toString())
+            } else {
+                groupValues.current = groupValues.current.concat(idx.toString())
+            }
+        }
+        setChecked(groupValues.current)
+    }, [groupValues.current])
+
+    const onChangeRemarks = useCallback((idx: number, text: string) => {
+
+        if (remarks.current.find((item) => item.idx === idx) !== undefined) {
+            remarks.current = remarks.current.map((item) => {
+                return item.idx === idx ? { idx, text } : item
+            })
+        } else {
+            remarks.current.push({ idx, text })
+        }
+
+    }, [remarks.current])
+
     const answer = useCallback(() => {
         if (content) {
             dispatch(update_answer({
-                choice: Number(choice),
+                choices: checked.map((value) => {
+                    const text = remarks.current.find(({ idx }) => idx === Number(value))?.text
+                    return {
+                        choice: Number(value) + 1,
+                        remarks: undefined !== text ? text : null
+                    } as answer_choice_type
+                }),
                 group_id: content.group_id,
                 notify_id: content.notify_id
             })).then((item) => {
@@ -78,7 +128,7 @@ function Page() {
                         bg: COLOR.LIGHT_GREEN
                     })
                     router.back()
-                } else if (code === SystemException.ConditionalCheckFailedException) {
+                } else if (code === SystemException.TransactionCanceledException) {
                     alert?.setAlert({
                         type: AlertType.Ok,
                         title: '既に回答済みです',
@@ -87,7 +137,7 @@ function Page() {
                 }
             })
         }
-    }, [content, choice])
+    }, [content, checked, remarks])
 
     return (
         <Box
@@ -190,14 +240,9 @@ function Page() {
                             w={'full'}
                             bg={bg}
                         >
-                            <Radio.Group
-                                w={'full'}
-                                name='RadioGroup'
-                                value={choice}
-                                onChange={(nextValue) => setChoice(nextValue)}
-                            >
-                                <Box w={'full'} alignItems={'center'}>
-                                    <VStack justifyContent={'center'} w={'95%'}>
+                            <Box w={'full'} alignItems={'center'}>
+                                <VStack justifyContent={'center'} w={'95%'}>
+                                    <Checkbox.Group value={checked} >
                                         {choices.map((item, index) => (
                                             <Card
                                                 key={index}
@@ -206,25 +251,45 @@ function Page() {
                                                 roundedTop={0 === index ? 'md' : undefined}
                                                 roundedBottom={choices.length - 1 === index ? 'md' : undefined}
                                             >
-                                                <Radio
-                                                    my={1}
-                                                    value={item.choice.toString()}
-                                                    size={'lg'}
-                                                    w={'full'}
-                                                    _checked={{ backgroundColor: useColorModeValue(COLOR.DEEP_GREEN, COLOR.WHITE), borderColor: useColorModeValue(COLOR.DEEP_GREEN, COLOR.WHITE) }}
-                                                    _icon={{ color: COLOR.LIGHT_GREEN }}
-                                                >
-                                                    <Text
-                                                        fontSize={'sm'}
-                                                        numberOfLines={2}
-                                                        w={'90%'}
-                                                    >{item.text}</Text>
-                                                </Radio>
+                                                <HStack w={'full'} alignItems={'center'} space={3}>
+                                                    <Checkbox
+                                                        value={index.toString()}
+                                                        onChange={(flg) => onChangeChoice(index, flg)}
+                                                        _checked={{ backgroundColor: COLOR.LIGHT_GREEN, borderColor: COLOR.LIGHT_GREEN }}
+                                                        _icon={{ color: COLOR.WHITE }}
+                                                        size={'lg'}
+                                                        aria-label={'Checkbox'}
+                                                    />
+                                                    <VStack w={'full'} space={1} justifyContent={'center'}>
+                                                        <Text
+                                                            fontSize={'sm'}
+                                                            numberOfLines={2}
+                                                            w={'90%'}
+                                                        >{item.text}</Text>
+                                                        {item.is_remarks === 1 && checked.find((value) => value === index.toString()) !== undefined && (
+                                                            <Input
+                                                                size={'sm'}
+                                                                w={'90%'}
+                                                                variant="filled"
+                                                                backgroundColor={useColorModeValue(COLOR.WHITE, COLOR.BLACK)}
+                                                                borderColor={COLOR.GRAY}
+                                                                _focus={{ backgroundColor: useColorModeValue(COLOR.WHITE, COLOR.BLACK), borderColor: COLOR.GRAY }}
+                                                                _input={{
+                                                                    selectionColor: useColorModeValue(COLOR.BLACK, COLOR.WHITE),
+                                                                    cursorColor: useColorModeValue(COLOR.BLACK, COLOR.WHITE)
+                                                                }}
+                                                                numberOfLines={2}
+                                                                onChangeText={(text) => onChangeRemarks(index, text)}
+                                                            />
+                                                        )}
+                                                    </VStack>
+                                                </HStack>
                                             </Card>
                                         ))}
-                                    </VStack>
-                                </Box>
-                            </Radio.Group>
+                                    </Checkbox.Group>
+                                </VStack>
+                            </Box>
+
                         </ScrollView>
                     </VStack>
                     <Box
@@ -244,7 +309,7 @@ function Page() {
                         w={'full'}
                         h={'10%'}
                         onPress={answer}
-                        isDisabled={choice === ''}
+                        isDisabled={checked.length === 0}
                         bg={COLOR.LIGHT_GREEN}
                         borderRadius={0}
                     >

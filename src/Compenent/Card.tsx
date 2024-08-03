@@ -25,6 +25,8 @@ export default function Card(props: Props) {
                     w={'full'}
                     rounded={undefined !== props.rounded ? props.rounded : 'none'}
                     p={props.p}
+                    pt={props.pt}
+                    pb={props.pb}
                     bg={props.bg ? props.bg : null}
                     m={props.m ? props.m : null}
                     mt={props.mt ? props.mt : null}
@@ -41,6 +43,8 @@ export default function Card(props: Props) {
                 alignItems={'center'}
                 rounded={undefined !== props.rounded ? props.rounded : 'none'}
                 p={props.p}
+                pt={props.pt}
+                pb={props.pb}
                 bg={props.bg ? props.bg : null}
                 m={props.m ? props.m : null}
                 mt={props.mt ? props.mt : null}

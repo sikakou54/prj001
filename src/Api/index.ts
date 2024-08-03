@@ -11,6 +11,8 @@ import {
   UserInfo,
   AppConfig,
   Choice,
+  answer_choice_type,
+  notify_choice_type,
 } from '../Type'
 import messaging from "@react-native-firebase/messaging"
 import * as ImagePicker from 'expo-image-picker'
@@ -352,32 +354,16 @@ export function add_member(params: { user_id: string, group_id: string }): Promi
   })
 }
 
-export function update_answer(params: { user_id: string, group_id: string, notify_id: string, choice?: number, }): Promise<void> {
+//p_notify_id uuid, p_group_id uuid, p_user_id uuid, p_choice public.answer_choice_type[]
+export function update_answer(params: { user_id: string, group_id: string, notify_id: string, choices: answer_choice_type[], }): Promise<void> {
 
-  const { user_id, group_id, notify_id, choice } = params
+  const { user_id, group_id, notify_id, choices } = params
 
   return new Promise(async (resolve, reject) => {
 
     try {
 
-      const { data, error } = await supabase
-        .from('tt_answer')
-        .update({ choice: choice, update_at: new Date().toISOString() })
-        .eq('user_id', user_id)
-        .eq('group_id', group_id)
-        .eq('notify_id', notify_id)
-        .eq('choice', 0)
-        .select().maybeSingle()
-
-      if (error) {
-        if (error.message === 'Failed to fetch' || error.message.includes('Network request failed')) {
-          throw new SystemException(SystemException.NetworkingError)
-        }
-        throw new SystemException(SystemException.SystemError)
-      }
-      if (null === data) {
-        throw new SystemException(SystemException.ConditionalCheckFailedException)
-      }
+      await SupaBaseRpcApi('add_answer', { p_notify_id: notify_id, p_group_id: group_id, p_user_id: user_id, p_choice: choices })
       resolve()
 
     } catch (e: any) {
@@ -579,9 +565,10 @@ export function update_group_name(group_id: string, name: string): Promise<void>
 export async function add_notify(
   user_id: string,
   title: string,
-  choices: string[],
+  choices: notify_choice_type[],
   group_id: string,
-  is_anonym: number
+  is_anonym: number,
+  format: number
 ): Promise<SendNotifyContent> {
 
   return new Promise(async (resolve, reject) => {
@@ -595,7 +582,8 @@ export async function add_notify(
         p_group_id: group_id,
         p_choice: choices,
         p_name: title,
-        p_is_anonym: is_anonym
+        p_is_anonym: is_anonym,
+        p_format: format
       })
 
       const unique_id = await generate_uuid()
@@ -616,6 +604,7 @@ export async function add_notify(
           img,
           is_anonym: is_anonym,
           percent,
+          format,
           create_at: new Date(create_at)
         })
       } else {
@@ -750,6 +739,7 @@ export function get_send_notify_asnwer(notify_id: string, choice: number, offset
           user_id: data.user_id,
           name: data.name,
           img: data.img !== null ? data.img : null,
+          remarks: data.remarks,
           update_at: new Date(data.update_at)
         }))
       }
@@ -806,7 +796,7 @@ export function get_send_notify_contents(user_id: string, offset?: number): Prom
       let items: SendNotifyContent[] = []
 
       for (let index = 0; index < data.length; index++) {
-        const { percent, is_anonym, name, group_id, notify_id, create_at, img, group_name } = data[index]
+        const { percent, is_anonym, name, group_id, notify_id, create_at, img, group_name, format } = data[index] as SendNotifyContent
         items.push({
           percent,
           is_anonym: Number(is_anonym),
@@ -815,6 +805,7 @@ export function get_send_notify_contents(user_id: string, offset?: number): Prom
           group_id: group_id,
           notify_id: notify_id,
           img: img !== null ? img : null,
+          format,
           create_at
         })
       }
@@ -830,7 +821,7 @@ export function get_send_notify_contents(user_id: string, offset?: number): Prom
   })
 }
 
-export function get_send_notify_choice(notify_id: string): Promise<SendNotifyChoice[]> {
+export function get_notify_choice(notify_id: string): Promise<SendNotifyChoice[]> {
 
   return new Promise(async (resolve, reject) => {
 
@@ -853,7 +844,7 @@ export function get_send_notify_choice(notify_id: string): Promise<SendNotifyCho
       }
 
     } catch (e: any) {
-      console.log("get_send_notify_choice", e)
+      console.log("get_notify_choice", e)
       if (e instanceof SystemException) {
         return reject(e)
       }
@@ -872,16 +863,17 @@ export function get_receive_notifys(user_id: string, offset?: number): Promise<R
       const { data } = await SupaBaseRpcApi('get_receive_notify_list', { p_user_id: user_id, p_offset: undefined !== offset ? offset : 0 })
 
       for (let i = 0; i < data.length; i++) {
-        const { group_id, group_name, is_anonym, notify_name, user_name, notify_id, img_group, img_user, create_at } = data[i]
+        const { group_id, group_name, is_anonym, notify_name, user_name, notify_id, img_group, img_user, format, create_at } = data[i]
         items.push({
-          group_id: group_id,
-          group_name: group_name,
+          group_id,
+          group_name,
           is_anonym: Number(is_anonym),
           name: notify_name,
           user_name,
-          notify_id: notify_id,
+          notify_id,
           img: null !== img_group ? img_group : null,
           img_user: null !== img_user ? img_user : null,
+          format,
           create_at: new Date(create_at)
         })
       }
@@ -915,16 +907,17 @@ export function get_receive_notify(user_id: string, notify_id: string): Promise<
 
       if (null !== receive_notify.data) {
 
-        const { group_id, group_name, is_anonym, notify_name, user_name, img_group, img_user, create_at } = receive_notify.data
+        const { group_id, group_name, is_anonym, notify_name, user_name, img_group, img_user, format, create_at } = receive_notify.data
         resolve({
-          group_id: group_id,
-          group_name: group_name,
+          group_id,
+          group_name,
           is_anonym: Number(is_anonym),
           name: notify_name,
           user_name,
-          notify_id: notify_id,
+          notify_id,
           img: null !== img_group ? img_group : null,
           img_user: null !== img_user ? img_user : null,
+          format,
           create_at: new Date(create_at)
         })
 
@@ -963,7 +956,7 @@ export function get_send_notify(user_id: string, notify_id: string): Promise<Sen
       }
 
       if (null !== notify.data) {
-        const { percent, is_anonym, name, group_id, create_at, img, group_name } = notify.data
+        const { percent, is_anonym, name, group_id, create_at, img, group_name, format } = notify.data as SendNotifyContent
         resolve({
           notify_id,
           name,
@@ -972,6 +965,7 @@ export function get_send_notify(user_id: string, notify_id: string): Promise<Sen
           img,
           is_anonym: Number(is_anonym),
           percent,
+          format,
           create_at: new Date(create_at)
         })
       } else {
@@ -1650,7 +1644,7 @@ export async function get_receive_notify_choice(notify_id: string): Promise<Choi
 
       const { data, error } = await supabase
         .from('tt_choice')
-        .select('choice,name')
+        .select('choice,name,is_remarks')
         .eq('notify_id', notify_id)
         .neq('choice', 0)
       if (error) {
@@ -1660,10 +1654,12 @@ export async function get_receive_notify_choice(notify_id: string): Promise<Choi
         throw new SystemException(SystemException.SystemError)
       }
 
+      console.log('get_receive_notify_choice', data)
       if (data.length > 0) {
         resolve(data.map((item: any) => ({
           choice: item.choice,
-          text: item.name
+          text: item.name,
+          is_remarks: Number(item.is_remarks)
         })))
       } else {
         resolve([])

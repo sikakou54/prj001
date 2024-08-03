@@ -19,10 +19,11 @@ function Page() {
     const dispatch: AppDispatch = useDispatch()
     const bg = useColorModeValue(COLOR.LIGHT_GRAY, COLOR.DEEP_BLACK)
     const cardBg = useColorModeValue(COLOR.WHITE, COLOR.BLACK)
-    const { title, choiceItems, isChecked } = useLocalSearchParams<{
+    const { title, choiceItems, isChecked, format } = useLocalSearchParams<{
         title: string
         choiceItems: string
         isChecked: string
+        format: string
     }>()
     const contents: GroupContent[] = useSelector((state: RootState) => state.Group.contents, shallowEqual)
 
@@ -33,7 +34,8 @@ function Page() {
                 title,
                 group_id,
                 choiceItems,
-                isChecked
+                isChecked,
+                format
             }
         })
     }, [])

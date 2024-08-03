@@ -17,6 +17,8 @@ import {
   AppConfig,
   Choice,
   Ticket,
+  answer_choice_type,
+  notify_choice_type,
 } from '../Type'
 import * as ImagePicker from 'expo-image-picker'
 import { getFileNameFromUrl } from '../Api/Common'
@@ -916,7 +918,7 @@ export const load_send_notify_answer_list = createAsyncThunk(
 
       api.dispatch(actions.set_user_info(userInfo))
       if (null !== contens) {
-        const choices = await Api.get_send_notify_choice(params.notify_id)
+        const choices = await Api.get_notify_choice(params.notify_id)
         const answers = await Api.get_send_notify_asnwer(params.notify_id, params.choice)
         api.dispatch(actions.set_send_notifys({ contents: [contens], isUpSert: true }))
         api.dispatch(actions.set_send_notify_answers({ answers, is_offset: false }))
@@ -1242,7 +1244,7 @@ export const load_send_notify_detail = createAsyncThunk(
 
       api.dispatch(actions.set_user_info(userInfo))
       if (null !== contens) {
-        const item = await Api.get_send_notify_choice(params.notify_id)
+        const item = await Api.get_notify_choice(params.notify_id)
         api.dispatch(actions.set_send_notifys({ contents: [contens], isUpSert: true }))
         api.dispatch(actions.set_send_notify_choice(item))
         return api.fulfillWithValue({
@@ -1858,9 +1860,10 @@ export const add_notify = createAsyncThunk(
   'add_notify',
   async (params: {
     title: string,
-    choice: string[],
+    choices: notify_choice_type[],
     group_id: string,
     is_anonym: number,
+    format: number
   }, api) => {
 
     try {
@@ -1878,9 +1881,10 @@ export const add_notify = createAsyncThunk(
       const notify = await Api.add_notify(
         userInfo.id,
         params.title,
-        params.choice,
+        params.choices,
         params.group_id,
-        params.is_anonym
+        params.is_anonym,
+        params.format
       )
 
       api.dispatch(actions.set_user_info(userInfo))
@@ -1917,9 +1921,11 @@ export const add_notify = createAsyncThunk(
  ****************************************************************************************************/
 export const update_answer = createAsyncThunk(
   'update_answer',
-  async (params: { group_id: string, notify_id: string, choice: number }, api) => {
+  async (params: { group_id: string, notify_id: string, choices: answer_choice_type[] }, api) => {
 
     try {
+
+      console.log('update_answer', params.choices)
 
       const config = await Api.get_app_config()
       api.dispatch(actions.set_config(config))
@@ -1936,7 +1942,7 @@ export const update_answer = createAsyncThunk(
         user_id: userInfo.id,
         group_id: params.group_id,
         notify_id: params.notify_id,
-        choice: params.choice
+        choices: params.choices
       })
       const userInfo2 = await Api.get_userInfo()
 

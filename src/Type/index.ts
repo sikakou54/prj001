@@ -1,5 +1,6 @@
 export interface Choice {
     choice: number
+    is_remarks: number
     text: string
 }
 
@@ -61,6 +62,7 @@ export interface SendNotifyContent {
     img: string | null
     percent: number
     is_anonym: number
+    format: number
     create_at: Date
 }
 
@@ -74,6 +76,7 @@ export interface SendNotifyAsnwer {
     user_id: string
     name: string
     img: string | null
+    remarks: string | null
     update_at: Date
 }
 
@@ -92,6 +95,7 @@ export interface ReceiveNotifyContent {
     img: string | null
     img_user: string | null
     is_anonym: number
+    format: number
     create_at: Date
 }
 
@@ -157,6 +161,16 @@ export interface RootState {
             choices: Choice[]
         }
     }
+}
+
+export type answer_choice_type = {
+    choice: number
+    remarks: string | null
+}
+
+export type notify_choice_type = {
+    name: string
+    is_remarks: string
 }
 
 export enum ApplicationState {

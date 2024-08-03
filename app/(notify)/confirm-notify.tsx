@@ -7,9 +7,9 @@ import {
 import {
     Box,
     Button,
+    Center,
     FormControl,
     HStack,
-    Icon,
     ScrollView,
     Text,
     VStack,
@@ -31,9 +31,9 @@ function Page() {
     const cardBg = useColorModeValue(COLOR.WHITE, COLOR.BLACK)
     const isGlobalLoading: boolean = useSelector((state: RootState) => state.Condition.isGlobalLoading, shallowEqual)
     const contents: GroupContent[] = useSelector((state: RootState) => state.Group.contents, shallowEqual)
-    const { group_id, title, choiceItems, isChecked } = useLocalSearchParams<{ group_id: string, title: string, choiceItems: string, isChecked: string }>()
+    const { group_id, title, choiceItems, isChecked, format } = useLocalSearchParams<{ group_id: string, title: string, choiceItems: string, isChecked: string, format: string }>()
     const is_anonym: boolean = isChecked === '1' ? true : false
-    const parseChoiceItems = JSON.parse(choiceItems) as { item: string }[]
+    const choices = JSON.parse(choiceItems) as { idx: number, name: string, is_remarks: string }[]
     const dispatch: AppDispatch = useDispatch()
     const toast = useContext(ToastContext)
     const content = useMemo(() => { return contents.find((group) => group.group_id === group_id) }, [group_id])
@@ -83,30 +83,29 @@ function Page() {
                             fontSize={'md'}
                         >選択肢</FormControl.Label>
                     </Box>
-                    {parseChoiceItems.length > 0 && (
-                        <VStack w={'full'}>
-                            {parseChoiceItems.map((item, index) => (
-                                <TextBox
-                                    key={index}
-                                    numberOfLines={2}
-                                    leftIcon={
-                                        <Icon
-                                            as={
-                                                <Number_1_10
-                                                    num={index + 1}
-                                                    size={25}
-                                                />
-                                            }
-                                            size={'2xl'}
-                                            w={'20%'}
+                    {choices.length > 0 && (
+                        <Card
+                            bg={cardBg}
+                            roundedTop={'md'}
+                            roundedBottom={'md'}
+                        >
+                            {choices.map((item, index) => (
+                                <HStack pt={2} pb={2} key={index} alignItems={'center'}>
+                                    <Center w={'15%'}>
+                                        <Number_1_10
+                                            num={item.idx + 1}
+                                            size={25}
                                         />
-                                    }
-                                    text={item.item}
-                                    roundedTop={index === 0 ? 'md' : undefined}
-                                    roundedBottom={index === parseChoiceItems.length - 1 ? 'md' : undefined}
-                                />
+                                    </Center>
+                                    <VStack w={'85%'} space={1} justifyContent={'center'}>
+                                        <Text w={'100%'} numberOfLines={2}>{item.name}</Text>
+                                        {Number(item.is_remarks) === 1 && (
+                                            <Text color={COLOR.GRAY} fontSize={'xs'}>テキスト入力</Text>
+                                        )}
+                                    </VStack>
+                                </HStack>
                             ))}
-                        </VStack>
+                        </Card>
                     )}
                     <Box w={'full'} m={2}>
                         <FormControl.Label
@@ -177,10 +176,11 @@ function Page() {
                 borderRadius={0}
                 onPress={() =>
                     dispatch(add_notify({
-                        choice: parseChoiceItems.map((choice) => choice.item),
+                        choices,
                         title,
                         group_id: group_id,
                         is_anonym: Number(is_anonym) ? 1 : 0,
+                        format: Number(format)
                     })).then((item) => {
                         const { status, code }: ApplicationStatus = item.payload as ApplicationStatus
                         if (status === ApplicationState.Success) {
