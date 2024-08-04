@@ -55,7 +55,8 @@ import {
     ToastContext
 } from '../../src/context'
 import TitleHeader from '../../src/Compenent/TitleHeader'
-import TextInput from '../../src/Compenent/TextInput'
+import { TouchableOpacity } from 'react-native'
+import AnswerRemarksModal from '../../src/Compenent/AnswerRemarksModal'
 
 function Page() {
     const bg = useColorModeValue(COLOR.LIGHT_GRAY, COLOR.DEEP_BLACK)
@@ -66,53 +67,67 @@ function Page() {
     const choices: Choice[] = useSelector((state: RootState) => state.Notify.Receive.choices, shallowEqual)
     const content = contents.find((item) => item.notify_id === params.notify_id)
     const [checked, setChecked] = useState<string[]>([])
-    const groupValues = useRef<string[]>([])
-    const remarks = useRef<{ idx: number, text: string }[]>([])
+    const [remarks, setRemarks] = useState<{ idx: number, text: string }[]>([])
+    const [modal, setModal] = useState<{ open: boolean, idx: number, text: string }>({ open: false, idx: 0, text: '' })
     const toast = useContext(ToastContext)
     const alert = useContext(AlertContext)
     const config = useContext(AppConfigContext)
 
     useEffect(() => {
-        console.log(groupValues.current)
-    }, [groupValues.current])
+        console.log(checked)
+    }, [checked])
+
+    useEffect(() => {
+        console.log(remarks)
+    }, [remarks])
 
     const onChangeChoice = useCallback((idx: number, check: boolean) => {
-        console.log('onChangeChoice', idx, check, groupValues.current, content?.format)
+        console.log('onChangeChoice', idx, check, checked, content?.format)
         //　単選択の場合チェックされたらOFFにする
         // 他のチェックの場合はリセットしてONにする
         if (content?.format === 1) {
-            if (groupValues.current.filter((value) => value === idx.toString()).length > 0) {
-                groupValues.current = []
+            if (checked.filter((value) => value === idx.toString()).length > 0) {
+                setChecked([])
             } else {
-                groupValues.current = [idx.toString()]
+                setChecked([idx.toString()])
             }
         } else {
-            if (groupValues.current.filter((value) => value === idx.toString()).length > 0) {
-                groupValues.current = groupValues.current.filter((value) => value !== idx.toString())
+            if (checked.filter((value) => value === idx.toString()).length > 0) {
+                setChecked(prev => prev.filter((value) => value !== idx.toString()))
             } else {
-                groupValues.current = groupValues.current.concat(idx.toString())
+                setChecked(prev => prev.concat(idx.toString()))
             }
         }
-        setChecked(groupValues.current)
-    }, [groupValues.current])
+    }, [checked])
 
     const onChangeRemarks = useCallback((idx: number, text: string) => {
-
-        if (remarks.current.find((item) => item.idx === idx) !== undefined) {
-            remarks.current = remarks.current.map((item) => {
+        if (remarks.find((item) => item.idx === idx) !== undefined) {
+            setRemarks(prev => prev.map((item) => {
                 return item.idx === idx ? { idx, text } : item
-            })
+            }))
         } else {
-            remarks.current.push({ idx, text })
+            setRemarks(prev => [...prev, { idx, text }])
         }
-
-    }, [remarks.current])
+    }, [remarks])
 
     const answer = useCallback(() => {
         if (content) {
+            for (let index = 0; index < checked.length; index++) {
+                const item = choices.find((value) => value.choice - 1 === Number(checked[index]))
+                if (undefined !== item && item.desc_type === 1) {
+                    const text = remarks.find((value) => value.idx === item.choice - 1)?.text
+                    if (text === undefined || text === '') {
+                        toast?.showToast({
+                            title: '必須入力項目が入力されていません',
+                            bg: COLOR.RED
+                        })
+                        return
+                    }
+                }
+            }
             dispatch(update_answer({
                 choices: checked.map((value) => {
-                    const text = remarks.current.find(({ idx }) => idx === Number(value))?.text
+                    const text = remarks.find(({ idx }) => idx === Number(value))?.text
                     return {
                         choice: Number(value) + 1,
                         remarks: undefined !== text ? text : null
@@ -137,7 +152,30 @@ function Page() {
                 }
             })
         }
-    }, [content, checked, remarks])
+    }, [content, checked, remarks, choices])
+
+    const onModalClose = useCallback((idx: number, text: string) => {
+        onChangeRemarks(idx, text)
+        setModal({ idx: 0, open: false, text: '' })
+    }, [modal])
+
+    const RemarksItem = useCallback(({ desc_type, idx }: { idx: number, desc_type: number }) => {
+        const text = remarks.find((value) => value.idx === idx)?.text
+        return (
+            <TouchableOpacity onPress={() => setModal({ idx, open: true, text: text !== undefined ? text : '' })}>
+                {text === undefined || text === '' ? (
+                    <HStack alignItems={'center'} space={1}>
+                        <Box p={0.5} w={8} bg={desc_type === 1 ? COLOR.RED : COLOR.GRAY} rounded={'md'} alignItems={'center'} justifyContent={'center'}>
+                            <Text fontSize={'xs'}>{desc_type === 1 ? '必須' : '任意'}</Text>
+                        </Box>
+                        <Text fontSize={'xs'} color={COLOR.GRAY}>コメントを入力する</Text>
+                    </HStack>
+                ) : (
+                    <Text fontSize={'xs'} color={COLOR.GRAY}>{text}</Text >
+                )}
+            </TouchableOpacity>
+        )
+    }, [remarks])
 
     return (
         <Box
@@ -266,22 +304,15 @@ function Page() {
                                                             numberOfLines={2}
                                                             w={'90%'}
                                                         >{item.text}</Text>
-                                                        {item.desc_type === 1 && checked.find((value) => value === index.toString()) !== undefined && (
-                                                            <Input
-                                                                size={'sm'}
-                                                                w={'90%'}
-                                                                variant="filled"
-                                                                backgroundColor={useColorModeValue(COLOR.WHITE, COLOR.BLACK)}
-                                                                borderColor={COLOR.GRAY}
-                                                                _focus={{ backgroundColor: useColorModeValue(COLOR.WHITE, COLOR.BLACK), borderColor: COLOR.GRAY }}
-                                                                _input={{
-                                                                    selectionColor: useColorModeValue(COLOR.BLACK, COLOR.WHITE),
-                                                                    cursorColor: useColorModeValue(COLOR.BLACK, COLOR.WHITE)
-                                                                }}
-                                                                numberOfLines={2}
-                                                                onChangeText={(text) => onChangeRemarks(index, text)}
-                                                            />
-                                                        )}
+                                                        {
+                                                            item.desc_type !== 0 &&
+                                                            checked.find((value) => value === index.toString()) !== undefined &&
+                                                            (
+                                                                <RemarksItem
+                                                                    idx={index}
+                                                                    desc_type={item.desc_type}
+                                                                />
+                                                            )}
                                                     </VStack>
                                                 </HStack>
                                             </Card>
@@ -314,6 +345,11 @@ function Page() {
                     >
                         <Text fontSize={'md'} color={'white'}>回答する</Text>
                     </Button>
+                    <AnswerRemarksModal
+                        onClose={onModalClose}
+                        isOpen={modal.open}
+                        idx={modal.idx}
+                    />
                 </>
             ) : (
                 <Box
@@ -330,7 +366,8 @@ function Page() {
                         color={COLOR.GRAY}
                     >回答済み</Text>
                 </Box>
-            )}
+            )
+            }
         </Box >
     )
 }

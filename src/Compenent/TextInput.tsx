@@ -3,7 +3,7 @@ import { COLOR } from '../Type'
 import { AntDesign } from '@expo/vector-icons'
 
 interface Props {
-    text: string,
+    text?: string,
     onChangeText?: (text: string) => void,
     label?: string,
     maxLength?: number,
@@ -46,7 +46,7 @@ export default function TextInput(props: Props) {
                             pr={2}
                             fontSize={'sm'}
                             color={COLOR.GRAY}
-                        >{props.text.length}/{props.maxLength}</Text>
+                        >{props.text !== undefined ? props.text.length : 0}/{props.maxLength}</Text>
                     )}
                 </HStack>
             )}
@@ -62,7 +62,7 @@ export default function TextInput(props: Props) {
                         variant={'unstyled'}
                         pl={0}
                         onChangeText={(text) => props.onChangeText && props.onChangeText(text)}
-                        value={props.text}
+                        defaultValue={props.text}
                         secureTextEntry={props.secureTextEntry ? props.secureTextEntry : false}
                         rightElement={props.rightIcon ? <Icon as={props.rightIcon} size={'lg'} mr={4} /> : <></>}
                         leftElement={props.leftIcon ? <Icon as={props.leftIcon} size={'lg'} /> : <></>}
@@ -99,7 +99,7 @@ export default function TextInput(props: Props) {
                         size={'md'}
                         variant={'unstyled'}
                         onChangeText={(text) => props.onChangeText && props.onChangeText(text)}
-                        value={props.text}
+                        defaultValue={props.text}
                         secureTextEntry={props.secureTextEntry ? props.secureTextEntry : false}
                         rightElement={props.rightIcon ? <Icon as={props.rightIcon} size={'lg'} mr={4} /> : <></>}
                         leftElement={props.leftIcon ? <Icon as={props.leftIcon} size={'lg'} /> : <></>}

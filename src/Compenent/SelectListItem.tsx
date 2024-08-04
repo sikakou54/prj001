@@ -41,7 +41,7 @@ export default function SelectListItem({ idx, name, desc_type, onChangeCheckBox,
                     <Checkbox
                         alignItems={'center'}
                         value='1'
-                        isChecked={desc_type === 1 ? true : false}
+                        isChecked={desc_type !== 0 ? true : false}
                         onChange={onChangeCheck}
                         _checked={{ backgroundColor: COLOR.LIGHT_GREEN, borderColor: COLOR.LIGHT_GREEN }}
                         _icon={{ color: COLOR.WHITE }}
