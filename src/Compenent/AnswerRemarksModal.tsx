@@ -45,7 +45,7 @@ const AnswerRemarksModal = (props: Props) => {
                     >
                         <TextInput
                             label='コメント'
-                            maxLength={50}
+                            maxLength={30}
                             onChangeText={setText}
                             text={text}
                         />

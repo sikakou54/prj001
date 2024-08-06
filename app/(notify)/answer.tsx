@@ -67,6 +67,7 @@ function Page() {
     const choices: Choice[] = useSelector((state: RootState) => state.Notify.Receive.choices, shallowEqual)
     const content = contents.find((item) => item.notify_id === params.notify_id)
     const [checked, setChecked] = useState<string[]>([])
+    const [error, setError] = useState<string[]>([])
     const [remarks, setRemarks] = useState<{ idx: number, text: string }[]>([])
     const [modal, setModal] = useState<{ open: boolean, idx: number, text: string }>({ open: false, idx: 0, text: '' })
     const toast = useContext(ToastContext)
@@ -74,8 +75,8 @@ function Page() {
     const config = useContext(AppConfigContext)
 
     useEffect(() => {
-        console.log(checked)
-    }, [checked])
+        console.log(error)
+    }, [error])
 
     useEffect(() => {
         console.log(remarks)
@@ -112,18 +113,20 @@ function Page() {
 
     const answer = useCallback(() => {
         if (content) {
+            let errors: string[] = checked.map(() => '')
             for (let index = 0; index < checked.length; index++) {
                 const item = choices.find((value) => value.choice - 1 === Number(checked[index]))
                 if (undefined !== item && item.desc_type === 1) {
                     const text = remarks.find((value) => value.idx === item.choice - 1)?.text
                     if (text === undefined || text === '') {
-                        toast?.showToast({
-                            title: '必須入力項目が入力されていません',
-                            bg: COLOR.RED
-                        })
-                        return
+                        errors[index] = '必須入力です'
                     }
                 }
+            }
+            if (errors.filter((item) => item !== '').length > 0) {
+                console.log(errors)
+                setError(errors)
+                return
             }
             dispatch(update_answer({
                 choices: checked.map((value) => {
@@ -171,7 +174,7 @@ function Page() {
                         <Text fontSize={'xs'} color={COLOR.GRAY}>コメントを入力する</Text>
                     </HStack>
                 ) : (
-                    <Text fontSize={'xs'} color={COLOR.GRAY}>{text}</Text >
+                    <Text w={'90%'} numberOfLines={1} fontSize={'xs'} color={COLOR.GRAY}>{text}</Text >
                 )}
             </TouchableOpacity>
         )
@@ -304,15 +307,15 @@ function Page() {
                                                             numberOfLines={2}
                                                             w={'90%'}
                                                         >{item.text}</Text>
-                                                        {
-                                                            item.desc_type !== 0 &&
-                                                            checked.find((value) => value === index.toString()) !== undefined &&
-                                                            (
-                                                                <RemarksItem
-                                                                    idx={index}
-                                                                    desc_type={item.desc_type}
-                                                                />
-                                                            )}
+                                                        {item.desc_type !== 0 && checked.find((value) => value === index.toString()) !== undefined && (
+                                                            <RemarksItem
+                                                                idx={index}
+                                                                desc_type={item.desc_type}
+                                                            />
+                                                        )}
+                                                        {checked.find((value) => value === index.toString()) !== undefined && error[index] !== '' && (
+                                                            <Text fontSize={'xs'} color={COLOR.RED}>{error[index]}</Text>
+                                                        )}
                                                     </VStack>
                                                 </HStack>
                                             </Card>

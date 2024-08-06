@@ -109,24 +109,26 @@ function Page() {
                             />
                         )}
                     </VStack>
-                    <Card
-                        bg={cardBg}
-                        pt={choiceItems.length > 0 ? 2 : undefined}
-                        pb={choiceItems.length > 0 ? 2 : undefined}
-                        roundedTop={'md'}
-                        roundedBottom={'md'}
-                    >
+                    <Box w={'full'}>
                         {choiceItems.map((item, index) => (
-                            <SelectListItem
-                                key={item.idx.toString() + item.desc_type.toString() + item.name}
-                                idx={item.idx}
-                                name={item.name}
-                                desc_type={item.desc_type}
-                                onChangeCheckBox={updateSelection}
-                                onPressDeleteIcon={delSelection}
-                            />
+                            <Card
+                                bg={cardBg}
+                                pt={index === 0 ? 2 : undefined}
+                                pb={index === choiceItems.length - 1 ? 2 : undefined}
+                                roundedTop={index === 0 ? 'md' : undefined}
+                                roundedBottom={index === choiceItems.length - 1 ? 'md' : undefined}
+                            >
+                                <SelectListItem
+                                    key={item.idx.toString() + item.desc_type.toString() + item.name}
+                                    idx={item.idx}
+                                    name={item.name}
+                                    desc_type={item.desc_type}
+                                    onChangeCheckBox={updateSelection}
+                                    onPressDeleteIcon={delSelection}
+                                />
+                            </Card>
                         ))}
-                    </Card>
+                    </Box>
                     <FormControl.Label
                         w={'full'}
                         fontWeight={'bold'}
@@ -204,7 +206,7 @@ function Page() {
                     color={'muted.50'}
                 >次へ</Text>
             </Button>
-        </Box>
+        </Box >
     )
 }
 

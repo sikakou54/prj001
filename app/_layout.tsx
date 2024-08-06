@@ -35,6 +35,7 @@ import {
 import {
     useCallback,
     useEffect,
+    useRef,
     useState
 } from 'react'
 import 'react-native-get-random-values'
@@ -71,10 +72,10 @@ const customTheme = extendTheme({
                     },
                 },
             },
-
         }
     }
 })
+
 function AppContainer() {
     const navigation = useNavigation()
     const bg = useColorModeValue(COLOR.LIGHT_GRAY, COLOR.DEEP_BLACK)
@@ -84,6 +85,7 @@ function AppContainer() {
     const UserInfo: UserInfo = useSelector((state: RootState) => state.UserInfo, shallowEqual)
     const progress: number = useSelector((state: RootState) => state.Condition.progress, shallowEqual)
     const toast = useToast()
+    const toastIdRef = useRef<string | null>(null)
     const [alertText, setAlertText] = useState<{
         type: AlertType
         title: string
@@ -95,8 +97,9 @@ function AppContainer() {
         disc: '',
         callback: (result: AlertResult) => { }
     })
+
     const onClose = useCallback((result: AlertResult) => {
-        if (undefined !== alertText.callback) {
+        if (alertText.callback) {
             alertText.callback(result)
         }
         setAlertText({
@@ -106,27 +109,34 @@ function AppContainer() {
         })
     }, [alertText])
 
-    const showToast = useCallback((param: { title: string, disc?: string, bg?: string, onClose?: () => void }) => {
-        const { title, disc, bg, onClose } = param
-        toast.closeAll()
-        toast.show({
+    const showToast = useCallback(({ title, disc, bg, onClose }: { title: string, disc?: string, bg?: string, onClose?: () => void }) => {
+        // Close any existing toasts
+        if (toastIdRef.current) {
+            toast.close(toastIdRef.current);
+        }
+        // Show the new toast
+        toastIdRef.current = toast.show({
             placement: "top",
             duration: 1500,
             render: ({ id }) => {
+                toastIdRef.current = id;
                 return <ToastItem
-                    onClose={undefined !== onClose ? () => {
-                        toast.close(id)
-                        onClose()
+                    onClose={onClose ? () => {
+                        onClose();
+                        toast.close(id);
                     } : () => toast.close(id)}
-                    bg={undefined !== bg ? bg : COLOR.LIGHT_GREEN}
+                    bg={bg ?? COLOR.LIGHT_GREEN}
                     color={COLOR.WHITE}
                     w={'95%'}
                     title={title}
                     description={disc}
                     variant={"subtle"}
                 />
+            },
+            onCloseComplete: () => {
+                toastIdRef.current = null; // Reset the ref after toast is closed
             }
-        })
+        });
     }, [toast])
 
     useEffect(() => {
@@ -134,7 +144,7 @@ function AppContainer() {
     }, [UserInfo.receive_notify_num])
 
     useEffect(() => {
-        //Android用の戻る操作無効制御
+        // Android用の戻る操作無効制御
         const backAction = () => {
             return isGlobalLoading
         }
@@ -146,30 +156,22 @@ function AppContainer() {
         if (Config.maintenance) {
             navigation.reset({
                 index: 0,
-                routes: [{
-                    name: '(error)/maintenance' as never
-                }]
+                routes: [{ name: '(error)/maintenance' as never }]
             })
         } else if (SystemException.SystemError === Error.code) {
             navigation.reset({
                 index: 0,
-                routes: [{
-                    name: '(error)/system-error' as never
-                }]
+                routes: [{ name: '(error)/system-error' as never }]
             })
         } else if (SystemException.NetworkingError === Error.code) {
             navigation.reset({
                 index: 0,
-                routes: [{
-                    name: '(error)/network-error' as never
-                }]
+                routes: [{ name: '(error)/network-error' as never }]
             })
         } else if (SystemException.NotFoundUser === Error.code) {
             navigation.reset({
                 index: 0,
-                routes: [{
-                    name: '(auth)/home' as never
-                }]
+                routes: [{ name: '(auth)/home' as never }]
             })
         }
     }, [Error, Config])
@@ -221,25 +223,21 @@ function AppContainer() {
                                     rounded={'md'}
                                     shadow={1}
                                 >
-                                    <>
-                                        {progress > 0 ? (
-                                            <>
-                                                {progress >= 100 ? (
-                                                    <>
-                                                        <Spinner size={'lg'} color={COLOR.WHITE} />
-                                                        <Text color={COLOR.WHITE} fontSize={'sm'}>読み込み中</Text>
-                                                    </>
-                                                ) : (
-                                                    <CircularProgress size={70} progress={progress} />
-                                                )}
-                                            </>
-                                        ) : (
+                                    {progress > 0 ? (
+                                        progress >= 100 ? (
                                             <>
                                                 <Spinner size={'lg'} color={COLOR.WHITE} />
                                                 <Text color={COLOR.WHITE} fontSize={'sm'}>読み込み中</Text>
                                             </>
-                                        )}
-                                    </>
+                                        ) : (
+                                            <CircularProgress size={70} progress={progress} />
+                                        )
+                                    ) : (
+                                        <>
+                                            <Spinner size={'lg'} color={COLOR.WHITE} />
+                                            <Text color={COLOR.WHITE} fontSize={'sm'}>読み込み中</Text>
+                                        </>
+                                    )}
                                 </Box>
                             </Box>
                         )}
@@ -253,7 +251,7 @@ function AppContainer() {
                     />
                 </AppConfigContext.Provider>
             </AlertContext.Provider>
-        </ToastContext.Provider >
+        </ToastContext.Provider>
     )
 }
 
